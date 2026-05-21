@@ -742,7 +742,28 @@ Un recuerdo digital creado para permanecer por siempre.
 </p>
 
 </footer>
+<script>
 
+const musica = document.getElementById("musica");
+
+function toggleMusica(){
+
+    if(musica.paused){
+        musica.play();
+
+        document.querySelector(".btn-musica").innerHTML =
+        "⏸️ Pausar Música";
+
+    }else{
+
+        musica.pause();
+
+        document.querySelector(".btn-musica").innerHTML =
+        "🎵 Activar Música";
+    }
+}
+
+</script>
 
 
 <!-- =========================
@@ -770,22 +791,7 @@ function toggleMusica(){
 }
 
 </script>
-    <script>
-
-    function toggleMusica() {
-        var audio = document.getElementById("musica");
-        // Seleccionamos el botón para poder cambiarle el texto
-        var boton = document.querySelector(".btn-musica"); 
-
-        if (audio.paused) {
-            audio.play();
-            boton.innerHTML = "⏸️ Pausar Música";
-        } else {
-            audio.pause();
-            boton.innerHTML = "🎵 Activar Música";
-        }
-    }
-</script>
+    
 <script>
 // =========================
 // SCRIPT DEL VISOR DE IMÁGENES
