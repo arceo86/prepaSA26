@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Libro Digital | Generación 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+    /* BOTÓN VOLVER AL INICIO FLOTANTE (ARRIBA A LA DERECHA) */
+/* BOTÓN VOLVER AL INICIO FLOTANTE (FIJO EN LA PARTE SUPERIOR DERECHA) */
+/* BOTÓN VOLVER AL INICIO - FORZADO ABSOLUTO A LA DERECHA */
+.btn-volver-flotante {
+    position: fixed !important;   /* Congelado en la pantalla */
+    top: 25px !important;         /* Separación del borde superior */
+    right: 25px !important;       /* ¡CRUCIAL! Lo empuja al extremo derecho pase lo que pase */
+    left: auto !important;        /* Cancela cualquier alineación izquierda previa */
+    z-index: 9999 !important;     /* Capa máxima sobre todo el diseño */
+    
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 30px;
+    
+    /* Estética de cristal translúcido oscuro y oro */
+    background: rgba(15, 23, 42, 0.85) !important; 
+    color: #D4AF37 !important;
+    border: 1px solid rgba(212, 175, 55, 0.6) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Efecto al pasar el cursor encima */
+.btn-volver-flotante:hover {
+    background: #D4AF37 !important;
+    color: #020617 !important;
+    border-color: #D4AF37 !important;
+    box-shadow: 0 4px 25px rgba(212, 175, 55, 0.7);
+    transform: translateY(-2px);
+}
+
+/* Adaptación inteligente para Celulares */
+@media (max-width: 768px) {
+    .btn-volver-flotante {
+        position: relative !important; /* En celular vuelve al centro para no tapar nada */
+        top: 0 !important;
+        right: 0 !important;
+        margin: 20px auto 10px auto !important;
+        display: flex !important;
+        max-width: 220px;
+    }
+}
+    
+/* ESTILO PARA EL TEXTO JUSTO ABAJO DE LA FOTO */
+.titulo-bajo-foto {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 10px; /* Despega el texto de la fotografía */
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    
+    /* Efecto de degradado dorado premium */
+    background: linear-gradient(135deg, #FFE57F, #D4AF37, #996515);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Sombra para dar profundidad */
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Ajuste opcional para la etiqueta pequeña flotante por si deseas conservarla */
+.etiqueta-dorada {
+    position: absolute;
+    bottom: -50px; /* La baja un poco para que no estorbe al texto nuevo */
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #ffffff;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 16px;
+    border: 1px solid #D4AF37;
+    border-radius: 20px;
+    z-index: 3;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+/* Responsive para celulares */
+@media (max-width: 768px) {
+    .titulo-bajo-foto {
+        font-size: 18px;
+        margin-top: 15px;
+        letter-spacing: 1px;
+    }
+}
+/* =========================
+RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:
+    radial-gradient(circle at top,#1e293b,#020617);
+    color:white;
+    overflow-x:hidden;
+}
+
+
+/* =========================
+PARTÍCULAS FONDO
+========================= */
+
+body::before{
+    content:'';
+    position:fixed;
+    width:100%;
+    height:100%;
+    background-image:
+    radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size:40px 40px;
+    z-index:-1;
+    animation:moverFondo 20s linear infinite;
+}
+
+@keyframes moverFondo{
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(40px);
+    }
+}
+
+
+/* =========================
+HEADER
+========================= */
+
+.hero{
+    min-height:60vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:60px 10px;
+}
+
+.hero h1{
+    font-size:4rem;
+    font-weight:800;
+    margin-bottom:10px;
+    background:linear-gradient(90deg,#fff,#ffd700,#fff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-size:200%;
+    animation:brillo 5s linear infinite;
+    text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes brillo{
+    from{
+        background-position:0%;
+    }
+
+    to{
+        background-position:200%;
+    }
+}
+
+.hero p{
+    max-width:800px;
+    opacity:0.85;
+    line-height:1.8;
+    font-size:18px;
+}
+
+
+/* =========================
+BOTONES
+========================= */
+
+.botones{
+    margin-top:35px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.btn{
+    padding:15px 30px;
+    border-radius:15px;
+    text-decoration:none;
+    font-weight:700;
+    transition:0.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.btn::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.15);
+    transition:0.5s;
+}
+
+.btn:hover::before{
+    left:100%;
+}
+
+.btn-inicio{
+    background:white;
+    color:#111;
+}
+
+.btn-musica{
+    background:linear-gradient(135deg,#ffd700,#ffb700);
+    color:#111;
+}
+
+.btn:hover{
+    transform:translateY(-5px) scale(1.04);
+}
+
+
+/* =========================
+LIBRO
+========================= */
+
+.book-container{
+    width:100%;
+    max-width:1400px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:40px;
+    padding:40px 20px 100px;
+}
+
+
+/* =========================
+CARD
+========================= */
+
+.book-card{
+    position:relative;
+    border-radius:25px;
+    overflow:hidden;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.1);
+    transition:0.5s;
+    box-shadow:0 15px 40px rgba(0,0,0,0.4);
+}
+
+.book-card:hover{
+    transform:
+    translateY(-15px)
+    rotateX(4deg)
+    rotateY(-4deg)
+    scale(1.02);
+
+    box-shadow:0 30px 70px rgba(0,0,0,0.55);
+}
+
+
+/* =========================
+IMAGEN
+========================= */
+
+.book-card img{
+    width:100%;
+    height:420px;
+    object-fit:cover;
+    transition:0.6s;
+}
+
+.book-card:hover img{
+    transform:scale(1.08);
+}
+
+
+/* =========================
+INFO
+========================= */
+
+.book-info{
+    padding:30px;
+}
+
+.book-info h2{
+    font-size:2rem;
+    margin-bottom:15px;
+}
+
+.frase{
+    font-style:italic;
+    opacity:0.85;
+    line-height:1.8;
+    margin-bottom:25px;
+}
+
+.datos p{
+    margin:10px 0;
+    opacity:0.9;
+}
+
+
+/* =========================
+EFECTO BRILLO
+========================= */
+
+.book-card::before{
+    content:'';
+    position:absolute;
+    top:-150%;
+    left:-150%;
+    width:300%;
+    height:300%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.08),
+        transparent
+    );
+    transform:rotate(25deg);
+    transition:1s;
+}
+
+.book-card:hover::before{
+    top:100%;
+    left:100%;
+}
+
+
+/* =========================
+FOOTER
+========================= */
+
+footer{
+    text-align:center;
+    padding:40px 20px;
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(8px);
+}
+
+footer h2{
+    font-size:28px;
+    margin-bottom:10px;
+    color:#ffd700;
+}
+
+footer p{
+    opacity:0.7;
+}
+
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .hero h1{
+        font-size:2.5rem;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .book-card img{
+        height:320px;
+    }
+
+}
+/* CONTEXTO Y ESPACIADO DE LA PRESENTACIÓN */
+.presentacion-grupal-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 20px 30px 20px; 
+    perspective: 1000px;
+}
+
+/* EL MARCO ELEGANTE Y LLAMATIVO */
+.marco-llamativo {
+    position: relative;
+    max-width: 950px;
+    width: 100%;
+    border: 5px solid #D4AF37; /* Borde dorado base */
+    background: #020617;
+    border-radius: 12px;
+    padding: 12px; /* Espacio entre el marco dorado y la foto */
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.7), 
+        0 0 25px rgba(212, 175, 55, 0.2); /* Sutil resplandor dorado inicial */
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+}
+
+/* LA FOTO DENTRO DEL MARCO */
+.foto-grupal-img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+/* EFECTO DE DESTELLO LUMINOSO (GLOW) */
+.brillo-efecto {
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg); /* Inclinación del destello */
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ETIQUETA DORADA INFERIOR */
+.etiqueta-dorada {
+    position: absolute;
+    bottom: 100px; /* Ajusta la posición para que no interfiera con el título */
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #D4AF37;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 24px;
+    border: 1px solid #D4AF37;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    pointer-events: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ==========================================
+   EFECTOS DINÁMICOS AL PASAR EL CURSOR (HOVER)
+   ========================================== */
+
+.marco-llamativo:hover {
+    transform: translateY(-5px) scale(1.01); /* Pequeño relieve tridimensional */
+    border-color: #f3e5ab; /* El dorado se vuelve más brillante */
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.8), 
+        0 0 35px rgba(212, 175, 55, 0.5); /* Resplandor dorado más intenso */
+}
+
+/* Dispara el destello de luz al pasar el mouse por el cuadro */
+.marco-llamativo:hover .brillo-efecto {
+    animation: pasarBrillo 1.2s ease-in-out;
+}
+
+/* Zoom muy suave en la foto sin salirse del marco */
+.marco-llamativo:hover .foto-grupal-img {
+    transform: scale(1.02);
+}
+
+/* ANIMACIÓN DEL FLASH LUMINOSO */
+@keyframes pasarBrillo {
+    0% {
+        left: -150%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+
+/* Ajustes para Pantallas de Celulares */
+@media (max-width: 768px) {
+    .presentacion-grupal-container {
+        padding: 40px 15px 20px 15px;
+    }
+    .marco-llamativo {
+        border-width: 3px;
+        padding: 6px;
+    }
+    .etiqueta-dorada {
+        font-size: 11px;
+        padding: 6px 16px;
+        bottom: 15px;
+        width: 85%;
+        text-align: center;
+    }
+}
+</style>
+</head>
+
+<body>
+    <a href="index.html" class="btn btn-inicio">
+            ← Volver al Inicio
+        </a>
+<section class="presentacion-grupal-container">
+    <div class="marco-llamativo">
+        <div class="brillo-efecto"></div>
+        <img src="grupo1.jpeg" alt="Foto Grupal Generación 2026" class="foto-grupal-img">
+        <div class="etiqueta-dorada">Nuestra Generación 2023 - 2026</div>        
+        <h2 class="titulo-bajo-foto">PREPARATORIA SAN ANDRES</h2>
+    </div>
+</section>
+<section class="hero">
+    <h1>Libro Digital Generación 2026</h1>
+    <p>
+        Cada fotografía guarda una historia.
+        Cada sonrisa repres enta años de esfuerzo, amistad y sueños compartidos.
+        Bienvenidos al recuerdo eterno de esta generación.
+    </p>
+    <div class="botones">
+        
+        <button class="btn btn-musica" onclick="toggleMusica()">
+            🎵 Activar Música
+        </button>
+    </div>
+</section>
+
+<!-- =========================
+MÚSICA
+========================= -->
+
+<audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+
+
+
+<!-- =========================
+LIBRO DIGITAL
+========================= -->
+
+<section class="book-container">
+
+<!-- ALUMNO ROBERTO MICHEL ARCE HERNANDEZ-->
+
+<div class="book-card">
+
+< <img src="grupo1.jpeg">
+
+<div class="book-info">
+
+<h2>María Fernanda</h2>
+
+<p class="frase">
+“No fue solo una escuela… fue el lugar donde crecimos.”
+</p>
+
+<div class="datos">
+<p><strong>Carrera:</strong> Informática</p>
+<p><strong>Generación:</strong> 2023 - 2026</p>
+<p><strong>Sueño:</strong> Ingeniería en Software</p>
+</div>
+
+</div>
+</div>
+
+
+<!-- ALUMNO -->
+
+<div class="book-card">
+
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop">
+
+<div class="book-info">
+
+<h2>Carlos Eduardo</h2>
+
+<p class="frase">
+“Las amistades creadas aquí durarán toda la vida.”
+</p>
+
+<div class="datos">
+<p><strong>Carrera:</strong> Administración</p>
+<p><strong>Generación:</strong> 2023 - 2026</p>
+<p><strong>Sueño:</strong> Empresario</p>
+</div>
+
+</div>
+</div>
+
+
+<!-- ALUMNO -->
+
+<div class="book-card">
+
+<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop">
+
+<div class="book-info">
+
+<h2>Ana Sofía</h2>
+
+<p class="frase">
+“La graduación es el inicio de nuevos caminos.”
+</p>
+
+<div class="datos">
+<p><strong>Carrera:</strong> Contabilidad</p>
+<p><strong>Generación:</strong> 2023 - 2026</p>
+<p><strong>Sueño:</strong> Contadora Pública</p>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+
+<!-- =========================
+FOOTER
+========================= -->
+
+<footer>
+
+<h2>Generación 2026</h2>
+
+<p>
+Un recuerdo digital creado para permanecer por siempre.
+</p>
+
+</footer>
+
+
+
+<!-- =========================
+SCRIPT
+========================= -->
+
+<script>
+
+const musica = document.getElementById("musica");
+
+function toggleMusica(){
+
+    if(musica.paused){
+        musica.play();
+
+        document.querySelector(".btn-musica").innerHTML =
+        "⏸️ Pausar Música";
+
+    }else{
+
+        musica.pause();
+
+        document.querySelector(".btn-musica").innerHTML =
+        "🎵 Activar Música";
+    }
+}
+
+</script>
+
+</body>
+</html>

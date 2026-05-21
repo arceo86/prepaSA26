@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Preparatoria San Andrés | Clausura 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* BOTÓN EVENTO */
+.event-btn{
+    margin-top:20px;
+    padding:12px 24px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg, #06b6d4, #7c3aed);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 8px 25px rgba(6,182,212,0.4);
+    position:relative;
+    overflow:hidden;
+}
+
+.event-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    transition:0.5s;
+}
+
+.event-btn:hover::before{
+    left:100%;
+}
+
+.event-btn:hover{
+    transform:scale(1.08);
+    box-shadow:
+        0 12px 35px rgba(6,182,212,0.7),
+        0 0 20px rgba(124,58,237,0.5);
+}
+
+/* CARD EVENTO */
+.event-card{
+    cursor:pointer;
+}
+
+.event-card:hover{
+    border-color:#06b6d4;
+}
+    /* BOTÓN UBICACIÓN */
+.location-btn{
+    margin-top:20px;
+    padding:12px 24px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg, var(--purple), var(--pink));
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 8px 25px rgba(124,58,237,0.4);
+    position:relative;
+    overflow:hidden;
+}
+
+.location-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    transition:0.5s;
+}
+
+.location-btn:hover::before{
+    left:100%;
+}
+
+.location-btn:hover{
+    transform:scale(1.08);
+    box-shadow:
+        0 12px 35px rgba(124,58,237,0.7),
+        0 0 20px rgba(236,72,153,0.5);
+}
+
+/* EFECTO CARD UBICACIÓN */
+.location-card{
+    cursor:pointer;
+}
+
+.location-card:hover{
+    border-color:#ec4899;
+}
+:root{
+    --gold:#d4af37;
+    --gold-light:#f5d27a;
+    --purple:#7c3aed;
+    --pink:#ec4899;
+    --cyan:#06b6d4;
+    --dark:#0a0e27;
+}
+
+*{box-sizing:border-box;}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background:linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0a0e27 100%);
+    color:white;
+    overflow-x:hidden;
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes glowNumber{
+    from{
+        text-shadow:
+            0 0 10px rgba(124,58,237,0.8),
+            0 0 20px rgba(124,58,237,0.6);
+    }
+    to{
+        text-shadow:
+            0 0 20px rgba(245,210,122,1),
+            0 0 40px rgba(124,58,237,0.8),
+            0 0 60px rgba(124,58,237,0.6);
+    }
+}
+
+@keyframes titleGlow{
+    0%,100%{
+        text-shadow:
+            0 0 30px rgba(124,58,237,0.8),
+            0 0 60px rgba(124,58,237,0.6),
+            0 0 90px rgba(124,58,237,0.4),
+            0 4px 20px rgba(0,0,0,0.5);
+    }
+    50%{
+        text-shadow:
+            0 0 50px rgba(236,72,153,1),
+            0 0 80px rgba(124,58,237,0.8),
+            0 0 120px rgba(124,58,237,0.6),
+            0 4px 25px rgba(0,0,0,0.7);
+    }
+}
+
+@keyframes float{
+    0%,100%{ transform:translateY(-50%); }
+    50%{ transform:translateY(-65%); }
+}
+
+@keyframes bounce{
+    0%,100%{ transform:scale(1) translateY(0); }
+    50%{ transform:scale(1.2) translateY(-5px); }
+}
+
+@keyframes zoomIn{
+    from{transform:scale(0.7); opacity:0;}
+    to{transform:scale(1); opacity:1;}
+}
+
+/* ===== NAV ===== */
+.nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:rgba(10,14,39,0.85);
+    backdrop-filter:blur(20px);
+    z-index:100;
+    border-bottom:1px solid rgba(124,58,237,0.3);
+}
+
+.nav h1{
+    cursor:pointer;
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, var(--gold), var(--pink));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(16px,4vw,24px);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:0;
+    transition:0.3s;
+}
+
+.nav h1:hover{
+    transform:scale(1.05);
+}
+
+.nav h1 img{
+    height:clamp(45px,8vw,65px);
+    border-radius:10px;
+    background:rgba(255,255,255,0.05);
+    padding:5px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 0 20px rgba(124,58,237,0.4);
+    transition:0.3s;
+}
+
+.nav h1 img:hover{
+    box-shadow:0 0 30px rgba(236,72,153,0.6);
+}
+
+.nav-links{
+    display:flex;
+    gap:clamp(15px,3vw,35px);
+    align-items:center;
+}
+
+.nav a{
+    color:#f5d27a;
+    text-decoration:none;
+    position:relative;
+    font-size:clamp(12px,2vw,15px);
+    font-weight:600;
+    transition:0.3s;
+}
+
+.nav a::after{
+    content:"";
+    position:absolute;
+    width:0;
+    height:2px;
+    background:linear-gradient(90deg, var(--purple), var(--pink));
+    bottom:-5px;
+    left:0;
+    transition:.3s;
+}
+
+.nav a:hover{
+    color:#ec4899;
+}
+
+.nav a:hover::after{
+    width:100%;
+}
+
+.hamburger{
+    display:none;
+    flex-direction:column;
+    cursor:pointer;
+    gap:6px;
+}
+
+.hamburger span{
+    width:25px;
+    height:3px;
+    background:linear-gradient(90deg, var(--gold), var(--pink));
+    border-radius:3px;
+    transition:0.3s;
+}
+
+.hamburger.active span:nth-child(1){
+    transform:rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.active span:nth-child(2){
+    opacity:0;
+}
+
+.hamburger.active span:nth-child(3){
+    transform:rotate(-45deg) translate(7px, -7px);
+}
+
+@media(max-width:768px){
+    .nav{
+        padding:12px 20px;
+    }
+    
+    .hamburger{
+        display:flex;
+    }
+    
+    .nav-links{
+        position:fixed;
+        top:70px;
+        left:-100%;
+        flex-direction:column;
+        background:rgba(10,14,39,0.98);
+        backdrop-filter:blur(20px);
+        width:100%;
+        text-align:center;
+        transition:0.3s;
+        padding:40px 0;
+        gap:20px;
+        border-bottom:1px solid rgba(124,58,237,0.3);
+    }
+    
+    .nav-links.active{
+        left:0;
+    }
+    
+    .nav-links a{
+        font-size:18px;
+        display:block;
+        padding:10px 0;
+    }
+}
+
+/* ===== MÚSICA ===== */
+.music-toggle{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    width:clamp(55px,12vw,70px);
+    height:clamp(55px,12vw,70px);
+    border-radius:50%;
+    background:linear-gradient(135deg, rgba(124,58,237,0.5) 0%, rgba(236,72,153,0.3) 100%);
+    border:2px solid #7c3aed;
+    color:#f5d27a;
+    font-size:clamp(28px,6vw,36px);
+    cursor:pointer;
+    transition:0.3s all;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:101;
+    box-shadow:0 8px 32px rgba(124,58,237,0.5);
+    backdrop-filter:blur(10px);
+}
+
+.music-toggle:hover{
+    transform:scale(1.15) rotate(10deg);
+    background:linear-gradient(135deg, rgba(124,58,237,0.7) 0%, rgba(236,72,153,0.5) 100%);
+    box-shadow:0 12px 40px rgba(124,58,237,0.7), 0 0 20px rgba(236,72,153,0.4);
+}
+
+.music-toggle.muted{
+    background:linear-gradient(135deg, rgba(100,100,100,0.3) 0%, rgba(100,100,100,0.1) 100%);
+    border-color:#808080;
+    color:#808080;
+}
+
+.music-toggle.muted:hover{
+    background:linear-gradient(135deg, rgba(100,100,100,0.5) 0%, rgba(100,100,100,0.2) 100%);
+    box-shadow:0 8px 25px rgba(100,100,100,0.3);
+}
+
+.music-icon{
+    display:block;
+    transition:transform 0.3s;
+}
+
+.music-toggle:hover .music-icon{
+    animation:bounce 0.6s ease;
+}
+
+@media(max-width:600px){
+    .music-toggle{
+        bottom:20px;
+        right:20px;
+    }
+}
+
+/* ===== HERO ===== */
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+    linear-gradient(135deg, rgba(10,14,39,0.8) 0%, rgba(124,58,237,0.3) 50%, rgba(10,14,39,0.8) 100%),
+    url('FONDO1.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    padding:120px 20px 60px;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:radial-gradient(circle at 50% 50%, rgba(124,58,237,0.1), transparent 70%);
+    pointer-events:none;
+}
+
+.hero > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(20px,5vw,40px);
+    position:relative;
+    z-index:1;
+}
+
+.hero h2{
+    font-family:'Cinzel';
+    font-size:clamp(28px,6vw,55px);
+    animation:fadeUp 1.2s ease;
+    color:#f5d27a;
+    margin:0;
+}
+
+.hero p{
+    color:var(--gold-light);
+    animation:fadeUp 1.5s ease;
+    font-size:clamp(14px,3vw,18px);
+    margin:0;
+}
+
+.ceremonia-title{
+    font-family:'Cinzel';
+    font-size:clamp(36px,8vw,75px);
+    color:#f5d27a;
+    font-weight:800;
+    letter-spacing:clamp(1px,2vw,3px);
+    text-transform:uppercase;
+    margin:20px 0;
+    text-shadow:
+        0 0 30px rgba(124,58,237,0.8),
+        0 0 60px rgba(124,58,237,0.6),
+        0 0 90px rgba(124,58,237,0.4);
+    animation:titleGlow 2s ease-in-out infinite, fadeUp 1.5s ease;
+    position:relative;
+    display:inline-block;
+}
+
+.ceremonia-title::before{
+    content:"✦";
+    position:absolute;
+    left:clamp(-30px,-8vw,-50px);
+    top:50%;
+    transform:translateY(-50%);
+    color:#ec4899;
+    font-size:clamp(20px,3vw,30px);
+    animation:float 3s ease-in-out infinite;
+}
+
+.ceremonia-title::after{
+    content:"✦";
+    position:absolute;
+    right:clamp(-30px,-8vw,-50px);
+    top:50%;
+    transform:translateY(-50%);
+    color:#06b6d4;
+    font-size:clamp(20px,3vw,30px);
+    animation:float 3s ease-in-out infinite 0.5s;
+}
+
+.btn{
+    margin-top:10px;
+    padding:clamp(14px,3vw,18px) clamp(30px,6vw,50px);
+    font-size:clamp(14px,2.5vw,18px);
+    font-weight:700;
+    border-radius:50px;
+    border:none;
+    background:linear-gradient(135deg, var(--purple), var(--pink));
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    box-shadow:0 8px 32px rgba(124,58,237,0.5);
+    position:relative;
+    overflow:hidden;
+}
+
+.btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition:0.5s;
+}
+
+.btn:hover::before{
+    left:100%;
+}
+
+.btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 12px 40px rgba(124,58,237,0.7), 0 0 20px rgba(236,72,153,0.5);
+}
+
+.countdown-pro{
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+    gap:clamp(15px,3vw,25px);
+    flex-wrap:wrap;
+}
+
+.time-box{
+    background:rgba(124,58,237,0.1);
+    backdrop-filter:blur(12px);
+    border:2px solid rgba(124,58,237,0.4);
+    padding:clamp(15px,3vw,25px);
+    border-radius:16px;
+    min-width:clamp(70px,15vw,100px);
+    text-align:center;
+    box-shadow:0 0 20px rgba(124,58,237,0.2);
+    transition:.4s;
+}
+
+.time-box:hover{
+    transform:scale(1.1) translateY(-5px);
+    box-shadow:0 10px 40px rgba(124,58,237,0.6), 0 0 30px rgba(236,72,153,0.3);
+    border-color:rgba(236,72,153,0.6);
+}
+
+.time-box span{
+    font-size:clamp(28px,6vw,48px);
+    font-weight:800;
+    font-family:'Cinzel';
+    color:#f5d27a;
+    text-shadow:
+        0 0 10px rgba(124,58,237,0.8),
+        0 0 20px rgba(124,58,237,0.6),
+        0 0 30px rgba(124,58,237,0.4);
+    animation:glowNumber 2s infinite alternate;
+    display:block;
+}
+
+.time-box p{
+    margin:8px 0 0;
+    font-size:clamp(12px,2vw,14px);
+    color:#ec4899;
+    letter-spacing:1px;
+    font-weight:600;
+}
+
+/* ===== SECCIONES ===== */
+.section{
+    padding:clamp(60px,8vw,100px) 20px;
+    text-align:center;
+    position:relative;
+}
+
+.section h3{
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(28px,6vw,45px);
+    margin:0 0 30px 0;
+    animation:fadeUp 0.8s ease;
+}
+
+#evento{
+    position:relative;
+    background:
+    linear-gradient(135deg, rgba(10,14,39,0.8) 0%, rgba(124,58,237,0.3) 50%, rgba(10,14,39,0.8) 100%),
+    url('HISTORIA/11.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    border-top:2px solid rgba(124,58,237,0.5);
+    border-bottom:2px solid rgba(124,58,237,0.5);
+    box-shadow:
+        inset 0 0 40px rgba(124,58,237,0.1),
+        0 8px 32px rgba(0,0,0,0.5);
+}
+
+#evento::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:radial-gradient(circle at 30% 70%, rgba(124,58,237,0.05), transparent 50%);
+    pointer-events:none;
+}
+
+#evento h3{
+    position:relative;
+    z-index:1;
+    text-shadow:0 0 20px rgba(124,58,237,0.6);
+}
+
+/* ===== CARDS ===== */
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(20px,3vw,30px);
+    margin-top:40px;
+    position:relative;
+    z-index:1;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(124,58,237,0.3);
+    padding:clamp(20px,4vw,30px);
+    border-radius:20px;
+    width:100%;
+    max-width:280px;
+    min-height:200px;
+    transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    right:-50%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.1));
+    opacity:0;
+    transition:0.4s;
+}
+
+.card:hover::before{
+    opacity:1;
+}
+
+.card h4{
+    font-family:'Cinzel';
+    font-size:clamp(18px,3.5vw,24px);
+    color:#f5d27a;
+    margin:0 0 15px 0;
+    text-shadow:0 2px 10px rgba(124,58,237,0.4);
+    letter-spacing:1px;
+    transition:0.3s;
+    position:relative;
+    z-index:2;
+}
+
+.card p{
+    font-size:clamp(14px,2vw,17px);
+    color:#e0e0e0;
+    margin:0;
+    font-weight:300;
+    line-height:1.6;
+    transition:0.3s;
+    position:relative;
+    z-index:2;
+}
+
+.card:hover{
+    transform:translateY(-15px) scale(1.05);
+    box-shadow:0 15px 40px rgba(124,58,237,0.4), 0 0 30px rgba(124,58,237,0.2);
+    border-color:rgba(124,58,237,0.6);
+}
+
+.card:hover h4{
+    color:#f5d27a;
+    text-shadow:0 0 20px rgba(236,72,153,0.8), 0 2px 10px rgba(124,58,237,0.6);
+    transform:scale(1.08);
+}
+
+.card:hover p{
+    color:#f5d27a;
+}
+
+/* ===== GALERÍA ===== */
+.gallery-section{
+    padding:clamp(60px,8vw,100px) 20px;
+    background:linear-gradient(180deg, transparent 0%, rgba(124,58,237,0.05) 50%, transparent 100%);
+    text-align:center;
+}
+
+.gallery-title{
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(28px,6vw,45px);
+    margin:0 0 40px 0;
+    animation:fadeUp 0.8s ease;
+}
+
+.filter-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(10px,2vw,15px);
+    margin-bottom:40px;
+    animation:fadeUp 1s ease;
+}
+
+.filter-btn{
+    padding:clamp(10px,2vw,14px) clamp(18px,3vw,28px);
+    background:rgba(124,58,237,0.1);
+    color:#f5d27a;
+    border:2px solid #7c3aed;
+    border-radius:30px;
+    cursor:pointer;
+    font-family:'Montserrat';
+    font-size:clamp(12px,1.8vw,15px);
+    font-weight:600;
+    transition:0.3s;
+}
+
+.filter-btn:hover{
+    background:rgba(124,58,237,0.2);
+    transform:scale(1.08);
+    box-shadow:0 0 20px rgba(124,58,237,0.4);
+}
+
+.filter-btn.active{
+    background:linear-gradient(135deg, var(--purple), var(--pink));
+    color:white;
+    box-shadow:0 0 30px rgba(124,58,237,0.6), 0 0 15px rgba(236,72,153,0.4);
+}
+
+.gallery-wrapper{
+    display:flex;
+    gap:clamp(15px,3vw,30px);
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding:20px;
+    cursor:grab;
+    scroll-behavior:smooth;
+    position:relative;
+}
+
+.gallery-wrapper::-webkit-scrollbar{
+    height:8px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-track{
+    background:rgba(255,255,255,0.05);
+    border-radius:10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb{
+    background:linear-gradient(180deg, var(--purple), var(--pink));
+    border-radius:10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb:hover{
+    background:var(--gold);
+}
+
+.gallery-item{
+    min-width:clamp(200px,50vw,350px);
+    height:clamp(280px,50vw,400px);
+    border-radius:20px;
+    overflow:hidden;
+    scroll-snap-align:center;
+    transition:0.5s;
+    flex-shrink:0;
+    position:relative;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.gallery-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.gallery-item:hover{
+    transform:scale(1.08);
+    box-shadow:0 20px 50px rgba(124,58,237,0.5), 0 0 30px rgba(236,72,153,0.3);
+}
+
+.scroll-progress{
+    height:4px;
+    background:rgba(124,58,237,0.2);
+    margin-top:20px;
+    border-radius:2px;
+    overflow:hidden;
+}
+
+.scroll-progress-bar{
+    height:100%;
+    background:linear-gradient(90deg, var(--purple), var(--pink));
+    width:0%;
+    transition:width 0.1s ease;
+}
+
+.scroll-info{
+    text-align:center;
+    color:#ec4899;
+    margin-top:15px;
+    font-size:clamp(12px,2vw,15px);
+    font-family:'Montserrat';
+    font-weight:600;
+}
+
+/* ===== EGRESADOS ===== */
+.img-box{
+    max-width:100%;
+    width:100%;
+    max-width:1000px;
+    margin:40px auto;
+    border-radius:20px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 15px 50px rgba(124,58,237,0.4);
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.img-box img{
+    width:100%;
+    height:auto;
+    transition:0.5s;
+    display:block;
+}
+
+#egressImage:hover{
+    filter:brightness(1.15) drop-shadow(0 0 30px rgba(124,58,237,0.6));
+    transform:scale(1.05);
+}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    pointer-events:none;
+    transition:0.4s;
+    z-index:999;
+}
+
+.lightbox.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.lightbox img{
+    max-width:90%;
+    max-height:85%;
+    border-radius:15px;
+    animation:zoomIn 0.4s ease;
+    box-shadow:0 0 50px rgba(124,58,237,0.6);
+}
+
+.close{
+    position:absolute;
+    top:clamp(20px,5vw,40px);
+    right:clamp(20px,5vw,40px);
+    font-size:clamp(32px,6vw,48px);
+    color:#f5d27a;
+    cursor:pointer;
+    transition:0.3s;
+    background:rgba(0,0,0,0.5);
+    width:clamp(50px,10vw,70px);
+    height:clamp(50px,10vw,70px);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(10px);
+}
+
+.close:hover{
+    background:rgba(0,0,0,0.8);
+    transform:rotate(90deg);
+    color:#ec4899;
+}
+
+/* ===== REVEAL ===== */
+.reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s;
+}
+
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(10px);
+    padding:clamp(30px,5vw,50px) 20px;
+    text-align:center;
+    color:#aaa;
+    border-top:1px solid rgba(124,58,237,0.3);
+    font-size:clamp(12px,2vw,15px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .section{
+        padding:60px 15px;
+    }
+    
+    .card{
+        max-width:100%;
+    }
+    
+    .gallery-item{
+        min-width:clamp(180px,70vw,280px);
+    }
+}
+
+@media(max-width:480px){
+    .ceremonia-title::before,
+    .ceremonia-title::after{
+        display:none;
+    }
+    
+    .hero{
+        min-height:auto;
+        padding:100px 15px 40px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO DE FONDO -->
+<audio id="backgroundMusic" preload="auto" crossorigin="anonymous">
+    <source src="MUSICA/Gladiator - Now We Are Free.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+</audio>
+
+<!-- BOTÓN CONTROL DE MÚSICA -->
+<button id="musicToggle" class="music-toggle" title="Silenciar/Activar música">
+    <span class="music-icon">🔊</span>
+</button>
+
+<!-- NAV -->
+<div class="nav">
+    <h1>
+        <img src="logo1.png" alt="Logo" id="logoClickable">
+        <span>Preparatoria San Andrés</span>
+    </h1>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+        <a href="#inicio">Inicio</a>
+        <a href="#evento">Evento</a>
+        <a href="#egresados">Egresados</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+    <div>
+        <h2>Generación 2023 - 2026</h2>
+        <p class="ceremonia-title">Ceremonia de Clausura</p>
+        <button class="btn">10 de Julio | 10:00 AM</button>
+         <p class="ceremonia-title">Faltan...</p>
+        <div class="countdown-pro">
+            <div class="time-box">
+                <span id="dias">00</span>
+                <p>Días</p>
+            </div>
+            <div class="time-box">
+                <span id="horas">00</span>
+                <p>Horas</p>
+            </div>
+            <div class="time-box">
+                <span id="minutos">00</span>
+                <p>Min</p>
+            </div>
+            <div class="time-box">
+                <span id="segundos">00</span>
+                <p>Seg</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EVENTO -->
+<section class="section reveal" id="evento">
+    <h3>La Ceremonia</h3>
+    <div class="cards">
+        <div class="card location-card" onclick="abrirLightbox('HISTORIA/ENTRADA1.jpg')">
+    <h4>📍 Ubicación</h4>
+    <p>Auditorio principal</p>
+    <button class="location-btn">
+        Ver ubicación
+    </button>
+</div>
+        <div class="card">
+            <h4>🕙 Hora</h4>
+            <p>10:00 AM</p>
+        </div>
+       <div class="card event-card" onclick="abrirLightbox('cara1.jpg')">
+    <h4>🎓 Evento</h4>
+    <p>Entrega de certificados</p>
+
+    <button class="event-btn">
+        Ver programa
+    </button>
+</div>
+    </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="gallery-section">
+    <h2 class="gallery-title">Recuerdos de nuestra aventura</h2>
+    
+    <div class="filter-buttons" id="filterButtons"></div>
+    
+    <div class="gallery-wrapper" id="gallery"></div>
+    
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar" id="progressBar"></div>
+    </div>
+    <div class="scroll-info" id="scrollInfo"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+    <span class="close" onclick="cerrarLightbox()">×</span>
+    <img id="lightbox-img" alt="Imagen ampliada">
+</div>
+
+<!-- EGRESADOS -->
+<section class="section reveal" id="egresados">
+    <h3>Egresados 2026</h3>
+    <div class="img-box">
+        <img id="egressImage" src="CARA INTERIOR.png" alt="Egresados">
+    </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Preparatoria San Andrés | Sitio Oficial
+</div>
+
+<script>
+// ===== MENU HAMBURGUESA =====
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+    });
+});
+
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const logo = document.getElementById("logoClickable");
+
+if(logo){
+    logo.addEventListener("click", () => {
+        abrirLightbox(logo.src);
+    });
+}
+
+function abrirLightbox(src) {
+    lightbox.classList.add("active");
+    lightboxImg.src = src;
+}
+
+function cerrarLightbox() {
+    lightbox.classList.remove("active");
+}
+
+lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) {
+        cerrarLightbox();
+    }
+});
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+        cerrarLightbox();
+    }
+});
+
+// ===== GALERÍA =====
+document.addEventListener("DOMContentLoaded", () => {
+    const gallery = document.getElementById("gallery");
+    const filterButtons = document.getElementById("filterButtons");
+    const progressBar = document.getElementById("progressBar");
+    const scrollInfo = document.getElementById("scrollInfo");
+    const ruta = "HISTORIA/";
+
+    function actualizarProgreso() {
+        const scrollLeft = gallery.scrollLeft;
+        const scrollWidth = gallery.scrollWidth - gallery.clientWidth;
+        const progress = scrollWidth === 0 ? 0 : (scrollLeft / scrollWidth) * 100;
+        progressBar.style.width = progress + "%";
+        
+        const totalFotos = gallery.querySelectorAll(".gallery-item").length;
+        scrollInfo.textContent = `Desliza para ver más • ${totalFotos} fotos`;
+    }
+
+    gallery.addEventListener("scroll", actualizarProgreso);
+
+    fetch("HISTORIA/lista.json")
+    .then(res => {
+        if (!res.ok) throw new Error("No se pudo cargar lista.json");
+        return res.json();
+    })
+    .then(data => {
+        const categorias = data.categorias;
+
+        const btnTodos = document.createElement("button");
+        btnTodos.className = "filter-btn active";
+        btnTodos.textContent = "Todos";
+        btnTodos.addEventListener("click", () => {
+            mostrarFotos(getAllFotos());
+            actualizarBotones(btnTodos);
+        });
+        filterButtons.appendChild(btnTodos);
+
+        Object.keys(categorias).forEach(categoria => {
+            const btn = document.createElement("button");
+            btn.className = "filter-btn";
+            btn.textContent = categoria;
+            btn.addEventListener("click", () => {
+                mostrarFotos(categorias[categoria]);
+                actualizarBotones(btn);
+                gallery.scrollLeft = 0;
+            });
+            filterButtons.appendChild(btn);
+        });
+
+        function getAllFotos() {
+            let todas = [];
+            Object.values(categorias).forEach(fotos => todas = todas.concat(fotos));
+            return todas;
+        }
+
+        function mostrarFotos(fotos) {
+            gallery.innerHTML = "";
+            fotos.forEach(img => {
+                const div = document.createElement("div");
+                div.className = "gallery-item";
+
+                const image = document.createElement("img");
+                image.src = ruta + img;
+                image.alt = "Foto de la galería";
+
+                image.addEventListener("click", () => {
+                    abrirLightbox(image.src);
+                });
+
+                div.appendChild(image);
+                gallery.appendChild(div);
+            });
+            
+            setTimeout(() => actualizarProgreso(), 100);
+        }
+
+        function actualizarBotones(btnActivo) {
+            document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+            btnActivo.classList.add("active");
+        }
+
+        mostrarFotos(getAllFotos());
+    })
+    .catch(err => console.error("Error cargando galería:", err));
+});
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal');
+
+function checkReveal() {
+    reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            el.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', checkReveal);
+window.addEventListener('load', checkReveal);
+
+// ===== EGRESADOS LIGHTBOX =====
+const egressImage = document.getElementById('egressImage');
+if(egressImage){
+    egressImage.addEventListener('click', () => {
+        abrirLightbox(egressImage.src);
+    });
+}
+
+// ===== MÚSICA =====
+const backgroundMusic = document.getElementById('backgroundMusic');
+const musicToggle = document.getElementById('musicToggle');
+
+backgroundMusic.volume = 0.15;
+backgroundMusic.loop = true;
+
+function playMusic() {
+    const playPromise = backgroundMusic.play();
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => console.log("🎵 Música reproduciendo"))
+            .catch(err => console.log("⚠️ Autoplay bloqueado. Haz clic para reproducir música"));
+    }
+}
+
+window.addEventListener('load', () => {
+    playMusic();
+});
+
+let firstClick = false;
+document.addEventListener('click', () => {
+    if(!firstClick && backgroundMusic.paused){
+        firstClick = true;
+        playMusic();
+    }
+});
+
+let isMuted = false;
+
+musicToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    isMuted = !isMuted;
+    
+    if(isMuted){
+        backgroundMusic.volume = 0;
+        musicToggle.classList.add('muted');
+        musicToggle.querySelector('.music-icon').textContent = '🔇';
+        musicToggle.title = 'Activar música';
+    } else {
+        backgroundMusic.volume = 0.15;
+        musicToggle.classList.remove('muted');
+        musicToggle.querySelector('.music-icon').textContent = '🔊';
+        musicToggle.title = 'Silenciar música';
+        
+        if(backgroundMusic.paused){
+            playMusic();
+        }
+    }
+});
+
+// ===== COUNTDOWN =====
+const fechaEvento = new Date("July 10, 2026 10:00:00").getTime();
+
+setInterval(() => {
+    const ahora = new Date().getTime();
+    const diferencia = fechaEvento - ahora;
+
+    const dias = Math.floor(diferencia / (1000*60*60*24));
+    const horas = Math.floor((diferencia % (1000*60*60*24)) / (1000*60*60));
+    const minutos = Math.floor((diferencia % (1000*60*60)) / (1000*60));
+    const segundos = Math.floor((diferencia % (1000*60)) / 1000);
+
+    document.getElementById("dias").textContent = dias;
+    document.getElementById("horas").textContent = horas;
+    document.getElementById("minutos").textContent = minutos;
+    document.getElementById("segundos").textContent = segundos;
+}, 1000);
+</script>
+
+</body>
+</html>

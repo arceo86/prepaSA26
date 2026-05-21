@@ -1,0 +1,67 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "autor": "Juan García",
+      "avatar": "👨‍🎓",
+      "contenido": "¡Qué honor haber compartido estos 3 años con ustedes! Generación 2023-2026, ¡los vamos a extrañar!",
+      "imagen": null,
+      "tipo": "mensaje",
+      "timestamp": "2026-05-10T20:30:00Z",
+      "reacciones": {
+        "❤️": ["María López", "Carlos Ruiz"],
+        "🎓": ["Ana García"],
+        "🔥": ["Diego Martín"]
+      },
+      "comentarios": [
+        {
+          "autor": "María López",
+          "avatar": "👩‍🎓",
+          "texto": "¡Así es! Fue una experiencia increíble juntos.",
+          "timestamp": "2026-05-10T21:15:00Z"
+        },
+        {
+          "autor": "Carlos Ruiz",
+          "avatar": "👨‍🎓",
+          "texto": "¡A por nuevas aventuras en la universidad!",
+          "timestamp": "2026-05-10T21:45:00Z"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "autor": "Laura Fernández",
+      "avatar": "👩‍🎓",
+      "contenido": "Agradezco a todos mis maestros por la dedicación y los conocimientos compartidos. ¡Gracias por creer en nosotros!",
+      "imagen": null,
+      "tipo": "dedicatoria",
+      "timestamp": "2026-05-09T18:20:00Z",
+      "reacciones": {
+        "❤️": ["Profesor López", "Juan García"],
+        "🎓": ["Ana García", "María López"]
+      },
+      "comentarios": []
+    },
+    {
+      "id": 3,
+      "autor": "Pedro Sánchez",
+      "avatar": "👨‍🎓",
+      "contenido": "Estos son los amigos que llevaré de por vida. ¡Qué aventura fue!",
+      "imagen": "AMIX1.jpg",
+      "tipo": "recuerdo",
+      "timestamp": "2026-05-08T15:45:00Z",
+      "reacciones": {
+        "❤️": ["María López", "Laura Fernández", "Ana García"],
+        "🔥": ["Carlos Ruiz", "Diego Martín"]
+      },
+      "comentarios": [
+        {
+          "autor": "Ana García",
+          "avatar": "👩‍🎓",
+          "texto": "¡Foto hermosa! Atesoro estos momentos.",
+          "timestamp": "2026-05-08T16:20:00Z"
+        }
+      ]
+    }
+  ]
+}
