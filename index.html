@@ -13,6 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
     /* BOTÓN EVENTO */
@@ -1815,6 +1816,9 @@ body{
 <!-- GALERÍA -->
 <section class="gallery-section">
     <h2 class="gallery-title">Recuerdos de nuestra aventura</h2>
+    <h3 class="gallery-title" data-aos="fade-up">Galería de Recuerdos</h3>
+    </div>
+    
     
     <div class="filter-buttons" id="filterButtons"></div>
     
@@ -3451,5 +3455,34 @@ footer h2{
 }
 
 </style>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000, // Cuánto dura la animación (1 segundo)
+        once: true,     // Se anima una sola vez cuando el usuario baja
+        offset: 100     // Empieza a animarse 100px antes de que el elemento aparezca del todo
+    });
+</script>
+
+</body> ```
+
+### 2. Darle "vida" a tus elementos HTML
+¡Ahora viene la parte divertida! Ya que AOS está instalado, solo necesitas agregar el atributo `data-aos` a las etiquetas que quieras animar. 
+
+Ve a la parte donde tienes la sección de tu evento y tus tarjetas (`<div class="cards">`). Modifica los `div` de cada tarjeta así:
+
+```html
+<div class="cards">
+    <div class="card event-card" onclick="scrollToLocation()" data-aos="zoom-in" data-aos-delay="100">
+        <h4>Ubicación</h4>
+        <p>Terraza...</p>
+    </div>
+
+    <div class="card location-card" data-aos="zoom-in" data-aos-delay="300">
+        <h4>Código de Vestimenta</h4>
+        <p>Formal...</p>
+    </div>
+</div>
+    
 </body>
 </html>
