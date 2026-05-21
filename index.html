@@ -8,7 +8,7 @@
 <meta property="og:image" content="https://arceo86.github.io/prepaSA26/logo1.png"> 
 <meta property="og:url" content="https://arceo86.github.io/prepaSA26/">
 <meta property="og:type" content="website">
-
+    
 <title>Preparatoria San Andrés | Clausura 2026</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -16,6 +16,87 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
+    /* PRELOADER */
+    .hat{
+    position:absolute;
+    top:-80px;
+    font-size:30px;
+    animation-name:fall;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    pointer-events:none;
+    will-change:transform;
+}
+
+@keyframes fall{
+
+      0%{
+        transform:
+        translate3d(0,-100px,0)
+        rotate(0deg);
+
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    100%{
+        transform:
+        translate3d(var(--drift),120vh,0)
+        rotate(720deg);
+
+        opacity:0;
+    }
+
+}
+@keyframes pulseLogo{
+
+   0%{
+        transform:scale(0.95);
+        opacity:.08;
+    }
+
+    25%{
+        transform:scale(1);
+        opacity:.14;
+    }
+
+    50%{
+        transform:scale(1.08);
+        opacity:.20;
+    }
+
+    75%{
+        transform:scale(1);
+        opacity:.14;
+    }
+
+    100%{
+        transform:scale(0.95);
+        opacity:.08;
+    }
+
+}
+
+@keyframes rotateLogo{
+
+    from{
+        rotate:0deg;
+    }
+
+    to{
+        rotate:360deg;
+    }
+
+}
+.graduation-rain{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+}
     /* BOTÓN EVENTO */
 .event-btn{
     margin-top:20px;
@@ -1595,19 +1676,111 @@ body{
 }
     /* ===== PRELOADER ELEGANTE ===== */
 #preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0B0B0B 0%, #1a1a2e 50%, #5A0F1C 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999; /* Por encima de absolutamente todo */
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    background:
+    radial-gradient(circle at center,
+    #16213e 0%,
+    #0b1026 45%,
+    #050816 100%);
+
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    transition:opacity 1s ease;
+}
+/* =========================
+LOGO
+========================= */
+
+.logo-loader{
+
+    position:absolute;
+
+    width:280px;
+
+    opacity:.12;
+
+    animation:
+    pulseLogo 4s ease-in-out infinite,
+     glowLogo 2s ease-in-out infinite;
+
+    filter:
+    drop-shadow(0 0 25px rgba(255,255,255,.2));
+
+}
+/* =========================
+TEXTOS
+========================= */
+
+.loader-content{
+    position:relative;
+    z-index:100;
+    text-align:center;
+    color:gold;
+}
+/* TÍTULO */
+
+.titulo-loader{
+
+    animation:
+    pulseText 2s ease-in-out infinite;
+
+    text-shadow:
+    0 0 8px rgba(255,215,0,.4),
+    0 0 20px rgba(255,215,0,.25);
+
 }
 
+/* SUBTEXTO */
+
+.texto-loader{
+
+    animation:
+    pulseText 2.5s ease-in-out infinite;
+
+    opacity:.85;
+
+}
+
+/* PALPITACIÓN */
+
+@keyframes pulseText{
+
+    0%{
+        transform:scale(1);
+        opacity:.85;
+    }
+
+    50%{
+        transform:scale(1.08);
+        opacity:1;
+
+        text-shadow:
+        0 0 12px rgba(255,215,0,.8),
+        0 0 35px rgba(255,215,0,.45);
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:.85;
+    }
+
+}
+.loader-content h1{
+    font-size:3rem;
+    margin-bottom:350px;
+    letter-spacing:2px;
+}
+
+.loader-content p{
+    font-size:1.1rem;
+    opacity:.8;
+}
 .preloader-content {
     display: flex;
     flex-direction: column;
@@ -1623,7 +1796,7 @@ body{
     padding: 8px;
     box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
     animation: pulsoLogo 2.5s infinite ease-in-out;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .preloader-spinner {
@@ -1719,11 +1892,20 @@ body{
 
 <body>
     <div id="preloader">
-    <div class="preloader-content">
-        <img src="logo1.png" alt="Logo Prepa San Andrés" class="preloader-logo">
-        <div class="preloader-spinner"></div>
-        <p class="preloader-texto">Cargando Recuerdos...</p>
-    </div>
+        <img src="logo1.png" class="logo-loader">
+     <div class="graduation-rain"></div>
+
+   <div class="loader-content">
+
+    <h1 class="titulo-loader">
+        Generación 2026
+    </h1>
+
+    <p class="texto-loader">
+        Cargando recuerdos...
+    </p>
+
+</div>
     </div>
     
 <!-- AUDIO DE FONDO -->
@@ -3120,14 +3302,19 @@ window.addEventListener('load', () => {
     checkReveal(); // Asegura que las animaciones de scroll se activen al cargar
 
     // Ocultar la pantalla de carga suavemente
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
-            preloader.classList.add('fade-out');
-        }, 1200); // Mantiene el preloader 1.2 segundos para asegurar el impacto visual
-    }
+   setTimeout(()=>{
+
+        document.getElementById("preloader").style.opacity = "0";
+
+        setTimeout(()=>{
+
+            document.getElementById("preloader").style.display = "none";
+
+        },1200);
+
+    },10000);
+
 });
-    
 
 let firstClick = false;
 document.addEventListener('click', () => {
@@ -3177,7 +3364,46 @@ setInterval(() => {
     document.getElementById("minutos").textContent = minutos;
     document.getElementById("segundos").textContent = segundos;
 }, 1000);
+
+/* =========================
+LLUVIA PREMIUM
+========================= */
+
+const rain = document.querySelector(".graduation-rain");
+
+for(let i = 0; i < 70; i++){
+
+    const hat = document.createElement("div");
+
+    hat.className = "hat";
+
+    hat.innerHTML = "🎓";
+
+    hat.style.left =
+    Math.random() * 100 + "vw";
+
+    hat.style.fontSize =
+    (20 + Math.random() * 25) + "px";
+
+    hat.style.animationDuration =
+    (6 + Math.random() * 8) + "s";
+
+    hat.style.animationDelay =
+    Math.random() * 8 + "s";
+
+    hat.style.setProperty(
+        "--drift",
+        ((Math.random() * 300) - 150) + "px"
+    );
+
+    hat.style.opacity =
+    0.3 + Math.random() * 0.7;
+
+    rain.appendChild(hat);
+
+}
 </script>
+
 <!-- =========================
 BOTÓN AVISO PRIVACIDAD
 ========================= -->
