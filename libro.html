@@ -365,11 +365,7 @@ EFECTO BRILLO
     left:100%;
 }
 
-<div id="visor-modal" class="visor-oculto">
-    <span class="cerrar-visor" onclick="cerrarVisor()">&times;</span>
-    <img class="visor-contenido" id="img-visor">
-</div>
-    
+
 /* =========================
 FOOTER
 ========================= */
@@ -536,97 +532,69 @@ RESPONSIVE
         text-align: center;
     }
 }
-    /* =========================
-ESTILOS DEL VISOR (LIGHTBOX)
+/* =========================
+POPUP IMAGEN GRANDE
 ========================= */
-.visor-oculto {
-    display: none !important;
-}
 
-.visor-activo {
-    display: flex !important;
-}
-
-#visor-modal {
+.modal-img {
+    display: none;
     position: fixed;
-    z-index: 999999; /* Por encima del botón flotante y todo lo demás */
+    z-index: 99999;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro casi sólido */
-    backdrop-filter: blur(8px); /* Desenfoque elegante de fondo */
-    align-items: center;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(8px);
     justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
 }
 
-.visor-contenido {
-    max-width: 90%;
-    max-height: 85vh; /* Se ajusta a la pantalla del celular sin desbordar */
-    border-radius: 8px;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); /* Brillo dorado suave */
+.modal-img img {
+    max-width: 95%;
+    max-height: 95%;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(255,255,255,0.15);
     animation: zoomIn 0.3s ease;
 }
 
-.cerrar-visor {
+.modal-cerrar {
     position: absolute;
-    top: 15px;
-    right: 25px;
-    color: #ffffff;
+    top: 25px;
+    right: 35px;
     font-size: 45px;
+    color: white;
+    cursor: pointer;
     font-weight: bold;
-    cursor: pointer;
     transition: 0.3s;
-    line-height: 1;
 }
 
-.cerrar-visor:hover {
-    color: #e5b324; /* Dorado al pasar el mouse */
-    transform: scale(1.1);
+.modal-cerrar:hover {
+    transform: scale(1.2);
+    color: #ffd700;
 }
 
-/* Animación de entrada de la foto */
+.clickable-img {
+    cursor: zoom-in;
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
 @keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.8);
+        opacity:0;
+    }
+    to {
+        transform: scale(1);
+        opacity:1;
+    }
 }
-
-/* El cursor cambia a la manita indicando que la foto se puede clickear */
-.galeria img {
-    cursor: pointer;
-}
-    /* =========================
-ESTILOS DEL VISOR (LIGHTBOX)
-========================= */
-.visor-oculto { display: none !important; }
-.visor-activo { display: flex !important; }
-
-#visor-modal {
-    position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px);
-    align-items: center; justify-content: center;
-}
-
-.visor-contenido { 
-    max-width: 90%; max-height: 85vh; border-radius: 8px; 
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); animation: zoomIn 0.3s ease; 
-}
-
-.cerrar-visor {
-    position: absolute; top: 15px; right: 25px; color: #ffffff; 
-    font-size: 45px; font-weight: bold; cursor: pointer; transition: 0.3s; line-height: 1;
-}
-
-.cerrar-visor:hover { color: #e5b324; transform: scale(1.1); }
-
-@keyframes zoomIn { 
-    from { transform: scale(0.8); opacity: 0; } 
-    to { transform: scale(1); opacity: 1; } 
-}
-
-/* El cursor cambia a manita indicando que TODAS las fotos se pueden clickear */
-.book-card img, .foto-grupal-img { cursor: pointer; }
-    
 </style>
 </head>
 
@@ -637,7 +605,7 @@ ESTILOS DEL VISOR (LIGHTBOX)
 <section class="presentacion-grupal-container">
     <div class="marco-llamativo">
         <div class="brillo-efecto"></div>
-        <img src="grupo1.jpeg" alt="Foto Grupal Generación 2026" class="foto-grupal-img">
+        <img src="grupo1.jpeg" alt="Foto Grupal Generación 2026" class="foto-grupal-img clickable-img" >
         <div class="etiqueta-dorada">Nuestra Generación 2023 - 2026</div>        
         <h2 class="titulo-bajo-foto">PREPARATORIA SAN ANDRES</h2>
     </div>
@@ -662,7 +630,7 @@ MÚSICA
 ========================= -->
 
 <audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
+    <source src="/MUSICA/L'Amour Est Bleu - Paul Mauriat.mp3" type="audio/mpeg">
 </audio>
 
 
@@ -678,11 +646,11 @@ LIBRO DIGITAL
 
 <div class="book-card">
 
-<img src="alumnos/ROBERTOMICHEL.jpeg">
+<img src="/alumnos/ROBERTOMICHEL.JPEG" class="clickable-img">
 
 <div class="book-info">
 
-<h2>ROBERTO MICHEL ARCE HERNANDEZ</h2>
+<h2>ROBERTO MICEHEL ARCE HERNANDEZ</h2>
 
 <p class="frase">
 “No fue solo una escuela… fue el lugar donde crecimos.”
@@ -700,7 +668,7 @@ LIBRO DIGITAL
 
 <div class="book-card">
 
-<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop">
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop" class="clickable-img">
 
 <div class="book-info">
 
@@ -722,11 +690,29 @@ LIBRO DIGITAL
 
 <!-- ALUMNO -->
 
-<div id="visor-modal" class="visor-oculto">
-    <span class="cerrar-visor" onclick="cerrarVisor()">&times;</span>
-    <img class="visor-contenido" id="img-visor">
+<div class="book-card">
+
+<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" class="clickable-img">
+
+<div class="book-info">
+
+<h2>Ana Sofía</h2>
+
+<p class="frase">
+“La graduación es el inicio de nuevos caminos.”
+</p>
+
+<div class="datos">
+<p><strong>Carrera:</strong> Contabilidad</p>
+<p><strong>Generación:</strong> 2023 - 2026</p>
+<p><strong>Sueño:</strong> Contadora Pública</p>
 </div>
-    
+
+</div>
+</div>
+
+</section>
+
 
 
 <!-- =========================
@@ -742,36 +728,21 @@ Un recuerdo digital creado para permanecer por siempre.
 </p>
 
 </footer>
-<script>
 
-const musica = document.getElementById("musica");
-
-function toggleMusica(){
-
-    if(musica.paused){
-        musica.play();
-
-        document.querySelector(".btn-musica").innerHTML =
-        "⏸️ Pausar Música";
-
-    }else{
-
-        musica.pause();
-
-        document.querySelector(".btn-musica").innerHTML =
-        "🎵 Activar Música";
-    }
-}
-
-</script>
 
 
 <!-- =========================
 SCRIPT
 ========================= -->
+<!-- POPUP IMAGEN -->
+<div class="modal-img" id="modalImg">
+    <span class="modal-cerrar" onclick="cerrarModal()">&times;</span>
+    <img id="imagenGrande">
+</div>
 <script>
 
 const musica = document.getElementById("musica");
+
 
 function toggleMusica(){
 
@@ -789,70 +760,43 @@ function toggleMusica(){
         "🎵 Activar Música";
     }
 }
-
-</script>
-    
-<script>
 // =========================
-// SCRIPT DEL VISOR DE IMÁGENES
+// POPUP IMAGEN
 // =========================
 
-const modal = document.getElementById("visor-modal");
-const imgModal = document.getElementById("img-visor");
-const imagenesGaleria = document.querySelectorAll(".galeria img");
+const modal = document.getElementById("modalImg");
+const modalImg = document.getElementById("imagenGrande");
+const cerrar = document.querySelector(".modal-cerrar");
 
-// A cada imagen de la galería le damos la instrucción de abrirse
-imagenesGaleria.forEach(img => {
-    img.addEventListener("click", function() {
-        modal.classList.add("visor-activo");
-        modal.classList.remove("visor-oculto");
-        imgModal.src = this.src; // Copia la ruta de la imagen clickeada al visor
+document.querySelectorAll(".clickable-img").forEach(imagen=>{
+
+    imagen.addEventListener("click", ()=>{
+
+        modal.style.display = "flex";
+        modalImg.src = imagen.src;
+
     });
+
 });
 
-// Función para cerrar el visor con la 'X'
-function cerrarVisor() {
-    modal.classList.remove("visor-activo");
-    modal.classList.add("visor-oculto");
-}
+cerrar.addEventListener("click", ()=>{
 
-// También cierra el visor si haces clic en cualquier parte del fondo negro
-modal.addEventListener("click", function(evento) {
-    if (evento.target === modal) {
-        cerrarVisor();
+    modal.style.display = "none";
+
+});
+
+modal.addEventListener("click",(e)=>{
+
+    if(e.target === modal){
+
+        modal.style.display = "none";
+
     }
+
 });
+
 </script>
-    
-<script>
-// =========================
-// SCRIPT DEL VISOR DE IMÁGENES
-// =========================
-const modal = document.getElementById("visor-modal");
-const imgModal = document.getElementById("img-visor");
 
-// AQUÍ ESTÁ EL CAMBIO: Seleccionamos las fotos de las tarjetas y la foto grupal
-const imagenesLibro = document.querySelectorAll(".book-card img, .foto-grupal-img");
 
-imagenesLibro.forEach(img => {
-    img.addEventListener("click", function() {
-        modal.classList.add("visor-activo");
-        modal.classList.remove("visor-oculto");
-        imgModal.src = this.src; 
-    });
-});
-
-function cerrarVisor() {
-    modal.classList.remove("visor-activo");
-    modal.classList.add("visor-oculto");
-}
-
-modal.addEventListener("click", function(evento) {
-    if (evento.target === modal) {
-        cerrarVisor();
-    }
-});
-</script>
-    
 </body>
 </html>
