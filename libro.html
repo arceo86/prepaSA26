@@ -365,7 +365,11 @@ EFECTO BRILLO
     left:100%;
 }
 
-
+<div id="visor-modal" class="visor-oculto">
+    <span class="cerrar-visor" onclick="cerrarVisor()">&times;</span>
+    <img class="visor-contenido" id="img-visor">
+</div>
+    
 /* =========================
 FOOTER
 ========================= */
@@ -532,6 +536,66 @@ RESPONSIVE
         text-align: center;
     }
 }
+    /* =========================
+ESTILOS DEL VISOR (LIGHTBOX)
+========================= */
+.visor-oculto {
+    display: none !important;
+}
+
+.visor-activo {
+    display: flex !important;
+}
+
+#visor-modal {
+    position: fixed;
+    z-index: 999999; /* Por encima del botón flotante y todo lo demás */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro casi sólido */
+    backdrop-filter: blur(8px); /* Desenfoque elegante de fondo */
+    align-items: center;
+    justify-content: center;
+}
+
+.visor-contenido {
+    max-width: 90%;
+    max-height: 85vh; /* Se ajusta a la pantalla del celular sin desbordar */
+    border-radius: 8px;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); /* Brillo dorado suave */
+    animation: zoomIn 0.3s ease;
+}
+
+.cerrar-visor {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #ffffff;
+    font-size: 45px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    line-height: 1;
+}
+
+.cerrar-visor:hover {
+    color: #e5b324; /* Dorado al pasar el mouse */
+    transform: scale(1.1);
+}
+
+/* Animación de entrada de la foto */
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* El cursor cambia a la manita indicando que la foto se puede clickear */
+.galeria img {
+    cursor: pointer;
+}
+    
 </style>
 </head>
 
@@ -724,7 +788,38 @@ function toggleMusica(){
         }
     }
 </script>
+<script>
+// =========================
+// SCRIPT DEL VISOR DE IMÁGENES
+// =========================
 
+const modal = document.getElementById("visor-modal");
+const imgModal = document.getElementById("img-visor");
+const imagenesGaleria = document.querySelectorAll(".galeria img");
+
+// A cada imagen de la galería le damos la instrucción de abrirse
+imagenesGaleria.forEach(img => {
+    img.addEventListener("click", function() {
+        modal.classList.add("visor-activo");
+        modal.classList.remove("visor-oculto");
+        imgModal.src = this.src; // Copia la ruta de la imagen clickeada al visor
+    });
+});
+
+// Función para cerrar el visor con la 'X'
+function cerrarVisor() {
+    modal.classList.remove("visor-activo");
+    modal.classList.add("visor-oculto");
+}
+
+// También cierra el visor si haces clic en cualquier parte del fondo negro
+modal.addEventListener("click", function(evento) {
+    if (evento.target === modal) {
+        cerrarVisor();
+    }
+});
+</script>
+    
 
 </body>
 </html>
