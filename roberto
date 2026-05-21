@@ -583,7 +583,7 @@ LIBRO DIGITAL
 
 <div class="book-card">
 
-url('alumnos/ROBERTOMICHEL.jpeg');
+<img src="alumnos/ROBERTOMICHEL.jpeg">
 
 <div class="book-info">
 
