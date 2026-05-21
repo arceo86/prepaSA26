@@ -595,6 +595,37 @@ ESTILOS DEL VISOR (LIGHTBOX)
 .galeria img {
     cursor: pointer;
 }
+    /* =========================
+ESTILOS DEL VISOR (LIGHTBOX)
+========================= */
+.visor-oculto { display: none !important; }
+.visor-activo { display: flex !important; }
+
+#visor-modal {
+    position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+}
+
+.visor-contenido { 
+    max-width: 90%; max-height: 85vh; border-radius: 8px; 
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); animation: zoomIn 0.3s ease; 
+}
+
+.cerrar-visor {
+    position: absolute; top: 15px; right: 25px; color: #ffffff; 
+    font-size: 45px; font-weight: bold; cursor: pointer; transition: 0.3s; line-height: 1;
+}
+
+.cerrar-visor:hover { color: #e5b324; transform: scale(1.1); }
+
+@keyframes zoomIn { 
+    from { transform: scale(0.8); opacity: 0; } 
+    to { transform: scale(1); opacity: 1; } 
+}
+
+/* El cursor cambia a manita indicando que TODAS las fotos se pueden clickear */
+.book-card img, .foto-grupal-img { cursor: pointer; }
     
 </style>
 </head>
@@ -691,29 +722,11 @@ LIBRO DIGITAL
 
 <!-- ALUMNO -->
 
-<div class="book-card">
-
-<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop">
-
-<div class="book-info">
-
-<h2>Ana Sofía</h2>
-
-<p class="frase">
-“La graduación es el inicio de nuevos caminos.”
-</p>
-
-<div class="datos">
-<p><strong>Carrera:</strong> Contabilidad</p>
-<p><strong>Generación:</strong> 2023 - 2026</p>
-<p><strong>Sueño:</strong> Contadora Pública</p>
+<div id="visor-modal" class="visor-oculto">
+    <span class="cerrar-visor" onclick="cerrarVisor()">&times;</span>
+    <img class="visor-contenido" id="img-visor">
 </div>
-
-</div>
-</div>
-
-</section>
-
+    
 
 
 <!-- =========================
@@ -740,39 +753,6 @@ SCRIPT
 
 const musica = document.getElementById("musica");
 
-function toggleMusica(){
-
-    if(musica.paused){
-        musica.play();
-
-        document.querySelector(".btn-musica").innerHTML =
-        "⏸️ Pausar Música";
-
-    }else{
-
-        musica.pause();
-
-        document.querySelector(".btn-musica").innerHTML =
-        "🎵 Activar Música";
-    }
-}
-
-</script>
-<script>
-    function toggleMusica() {
-        var audio = document.getElementById("musica");
-        // Seleccionamos el botón para poder cambiarle el texto
-        var boton = document.querySelector(".btn-musica"); 
-
-        if (audio.paused) {
-            audio.play();
-            boton.innerHTML = "⏸️ Pausar Música";
-        } else {
-            audio.pause();
-            boton.innerHTML = "🎵 Activar Música";
-        }
-    }
-</script>
 <script>
     function toggleMusica() {
         var audio = document.getElementById("musica");
@@ -820,6 +800,35 @@ modal.addEventListener("click", function(evento) {
 });
 </script>
     
+<script>
+// =========================
+// SCRIPT DEL VISOR DE IMÁGENES
+// =========================
+const modal = document.getElementById("visor-modal");
+const imgModal = document.getElementById("img-visor");
 
+// AQUÍ ESTÁ EL CAMBIO: Seleccionamos las fotos de las tarjetas y la foto grupal
+const imagenesLibro = document.querySelectorAll(".book-card img, .foto-grupal-img");
+
+imagenesLibro.forEach(img => {
+    img.addEventListener("click", function() {
+        modal.classList.add("visor-activo");
+        modal.classList.remove("visor-oculto");
+        imgModal.src = this.src; 
+    });
+});
+
+function cerrarVisor() {
+    modal.classList.remove("visor-activo");
+    modal.classList.add("visor-oculto");
+}
+
+modal.addEventListener("click", function(evento) {
+    if (evento.target === modal) {
+        cerrarVisor();
+    }
+});
+</script>
+    
 </body>
 </html>
