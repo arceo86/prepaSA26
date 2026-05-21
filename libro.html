@@ -748,12 +748,30 @@ Un recuerdo digital creado para permanecer por siempre.
 <!-- =========================
 SCRIPT
 ========================= -->
-
 <script>
 
 const musica = document.getElementById("musica");
 
-<script>
+function toggleMusica(){
+
+    if(musica.paused){
+        musica.play();
+
+        document.querySelector(".btn-musica").innerHTML =
+        "⏸️ Pausar Música";
+
+    }else{
+
+        musica.pause();
+
+        document.querySelector(".btn-musica").innerHTML =
+        "🎵 Activar Música";
+    }
+}
+
+</script>
+    <script>
+
     function toggleMusica() {
         var audio = document.getElementById("musica");
         // Seleccionamos el botón para poder cambiarle el texto
