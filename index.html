@@ -2642,7 +2642,39 @@ window.eliminarPost = async function(postId){
 }
 
 function agregarPost() {
+
     const contenido = formContenido.value.trim();
+    const palabrasProhibidas = [
+
+    "puta",
+    "pendejo",
+    "mierda",
+    "culo",
+    "verga",
+    "chingar",
+    "chingada",
+    "idiota"
+
+];
+    let contenidoFiltrado = contenido;
+if(contenido.length > 500){
+
+    alert(
+        "Máximo 500 caracteres"
+    );
+
+    return;
+
+}
+palabrasProhibidas.forEach(palabra => {
+
+    const regex =
+    new RegExp(palabra, "gi");
+
+    contenidoFiltrado =
+    contenidoFiltrado.replace(regex, "****");
+
+});
        
     if(!usuarioActual){
         alert("Debes iniciar sesión con Google");
@@ -2662,7 +2694,7 @@ function agregarPost() {
         avatar: usuarioActual.photoURL,
         uid: usuarioActual.uid,
         email: usuarioActual.email,
-        contenido: contenido,
+        contenido: contenidoFiltrado,
         imagen: null,
         tipo: "mensaje",
         timestamp: window.serverTimestamp(),
