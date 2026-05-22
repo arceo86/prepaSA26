@@ -2810,8 +2810,6 @@ RESPONSIVE
 // ===== MENU HAMBURGUESA =====
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-let usuarioActual = null;
-let unsubscribe = null;
 
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
@@ -2898,11 +2896,6 @@ logoutBtn.addEventListener("click", async () => {
 
 window.onAuthStateChanged(window.auth, (user) => {
 
-    
-    usuarioActual = user;
-    console.log("Usuario actual:", usuarioActual);
-
-
     if(user){
     usuarioActual = user;
     console.log("Usuario actual detectado:", usuarioActual.displayName);
@@ -2978,25 +2971,27 @@ window.onAuthStateChanged(window.auth, (user) => {
   function renderizarPosts(posts) {
     console.log("POSTS RECIBIDOS:", posts.length);
     
-    // ==========================================
-    // CORRECCIÓN 1: LIMPIAR EL MURO ANTES DE AGREGAR
-    // ==========================================
+    const muroFeed = document.getElementById("muroFeed");
     if (muroFeed) {
-        muroFeed.innerHTML = "";
+        muroFeed.innerHTML = ""; // Limpia el muro
     } else {
-        console.error("No se encontró el contenedor muroFeed");
+        console.error("No se encontró el muroFeed");
         return;
     }
 
+    // Ordenar posts por fecha
     posts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)).forEach(post => {
         const postEl = document.createElement("div");
         postEl.className = "post";
+        postEl.id = `post-${post.id}`;
 
+        // 1. IMAGEN DEL POST
         let imagenHTML = "";
         if(post.imagen) {
             imagenHTML = `<img src="HISTORIA/${post.imagen}" alt="Post image" class="post-imagen" onclick="abrirLightbox(this.src)">`;
         }
 
+        // 2. REACCIONES
         let reaccionesHTML = "";
         const reacciones = post.reacciones || {};
         if(Object.keys(reacciones).length > 0) {
@@ -3013,6 +3008,7 @@ window.onAuthStateChanged(window.auth, (user) => {
             reaccionesHTML += `</div>`;
         }
 
+        // 3. COMENTARIOS (AQUÍ ESTÁ LA CORRECCIÓN)
         let comentariosHTML = "";
         const comentarios = post.comentarios || [];
         if(comentarios.length > 0) {
@@ -3020,56 +3016,66 @@ window.onAuthStateChanged(window.auth, (user) => {
                 <div class="comentarios-section">
                     <div class="comentarios-titulo">💬 ${comentarios.length} comentario(s)</div>
                     <div class="comentarios-lista">
-                        ${comentarios.map(comentario => `
+                        ${comentarios.map((comentario) => {
+                            
+                            // A. Transformar el enlace en una Imagen Redonda
+                            let avatarIMG = comentario.avatar && comentario.avatar.startsWith("http") 
+                                ? `<img src="${comentario.avatar}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">` 
+                                : `<span style="font-size:18px;">👤</span>`;
+                            
+                            // B. Reparar la Fecha (Quitar el Invalid Date)
+                            let fechaComentario = "Hace un momento";
+                            if (comentario.timestamp && comentario.timestamp.seconds) {
+                                let fecha = new Date(comentario.timestamp.seconds * 1000);
+                                // Lo formateamos a un estilo como: "10/7/2026 14:30"
+                                fechaComentario = fecha.toLocaleDateString() + " " + fecha.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                            }
+
+                            return `
                             <div class="comentario">
-                                <div class="comentario-header">
-                                    <span class="comentario-avatar">${comentario.avatar || '👤'}</span>
+                                <div class="comentario-header" style="display:flex; align-items:center; gap:8px;">
+                                    ${avatarIMG}
                                     <span class="comentario-autor">${comentario.autor}</span>
-                                    <span class="comentario-tiempo">${formatearTiempo(comentario.timestamp)}</span>
+                                    <span class="comentario-tiempo" style="font-size:11px; color:#a1a1aa; margin-left:auto;">${fechaComentario}</span>
                                 </div>
-                                <div class="comentario-texto">${comentario.texto}</div>
+                                <div class="comentario-texto" style="margin-top:4px;">${comentario.texto}</div>
+                                
+                                <div class="comentario-acciones" style="margin-top: 8px; text-align: left;">
+                                    <button onclick="abrirFormularioComentario('${post.id}', '${comentario.autor}')" style="background:none; border:none; color:#D4AF37; cursor:pointer; font-size:12px; font-weight:bold; font-family:'Montserrat', sans-serif;">
+                                        ↪ Responder a ${comentario.autor}
+                                    </button>
+                                </div>
                             </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
                 </div>
             `;
         }
 
+        // 4. VERIFICAR SI EL USUARIO YA LE DIO LIKE
+        const usuariosLike = post.reacciones && post.reacciones['❤️'] ? post.reacciones['❤️'] : [];
+        const usuariosArray = Array.isArray(usuariosLike) ? usuariosLike : Object.values(usuariosLike);
+        const haReaccionado = typeof usuarioActual !== 'undefined' && usuarioActual ? usuariosArray.includes(usuarioActual.displayName) : false;
+
+        // 5. ARMAR EL HTML COMPLETO DEL POST
         postEl.innerHTML = `
             <div class="post-header">
-           <div class="post-avatar">
-    ${
-        post.avatar && post.avatar.startsWith("http")
-        ? `<img src="${post.avatar}" class="avatar-img" alt="Avatar">`
-        : `<span style="font-size: 22px;">👤</span>` /* Controla el tamaño del emoji */
-    }
-</div>
+                <div class="post-avatar">
+                    ${post.avatar && post.avatar.startsWith("http") ? `<img src="${post.avatar}" class="avatar-img" alt="Avatar">` : `<span style="font-size:22px;">👤</span>`}
+                </div>
                 <div class="post-info">
                     <p class="post-autor">${post.autor}</p>
-                    <span class="post-tipo">
-                        ${
-                            post.tipo === 'mensaje'
-                            ? '💬 Mensaje'
-                            : post.tipo === 'dedicatoria'
-                            ? '💌 Dedicatoria'
-                            : '📸 Recuerdo'
-                        }
-                    </span>
+                    <span class="post-tipo">${post.tipo === 'mensaje' ? '💬 Mensaje' : post.tipo === 'dedicatoria' ? '💌 Dedicatoria' : '📸 Recuerdo'}</span>
                 </div>
                 <div class="post-right">
-                    <div class="post-tiempo">
-                        ${formatearTiempo(post.timestamp)}
-                    </div>
-                   ${
-                    usuarioActual && usuarioActual.uid === post.uid
-                        ? `
+                    <div class="post-tiempo">${formatearTiempo(post.timestamp)}</div>
+                    
+                    ${typeof usuarioActual !== 'undefined' && usuarioActual && usuarioActual.uid === post.uid ? `
                         <button class="btn-eliminar" onclick="eliminarPost('${post.id}')" title="Eliminar publicación">
-                        <span class="btn-eliminar-icon">🗑️</span>
-                        <span class="btn-eliminar-texto">Eliminar</span>
-                    </button>
-                         `
-                             : ""
-                    }
+                            <span class="btn-eliminar-icon">🗑️</span><span class="btn-eliminar-texto">Eliminar</span>
+                        </button>
+                    ` : ""}
                 </div>
             </div>
 
@@ -3080,15 +3086,23 @@ window.onAuthStateChanged(window.auth, (user) => {
             ${imagenHTML}
 
             <div class="post-acciones">
-                <button class="accion-btn" onclick="agregarReaccion('${post.id}', '❤️')">❤️ Me encanta</button>
-                <button class="accion-btn" onclick="abrirFormularioComentario('${post.id}')">💬 Comentar</button>
-                <button class="accion-btn" onclick="compartirPost('${post.autor}')">↗️ Compartir</button>
+                <button class="accion-btn btn-me-encanta ${haReaccionado ? 'liked' : ''}" onclick="agregarReaccion('${post.id}', '❤️')">
+                    <span>❤️</span> ${haReaccionado ? 'Te encanta' : 'Me encanta'}
+                </button>
+                
+                <button class="accion-btn" onclick="abrirFormularioComentario('${post.id}')">
+                    💬 Comentar
+                </button>
+                
+                <button class="accion-btn" onclick="compartirPost('${post.autor}')">
+                    ↗️ Compartir
+                </button>
             </div>
+            
             ${reaccionesHTML}
             ${comentariosHTML}
         `;
 
-        console.log("AGREGANDO AL DOM:", post.id);
         muroFeed.appendChild(postEl);
     });
 }
@@ -3169,7 +3183,53 @@ window.eliminarPost = async function(postId){
         alert("Error eliminando post");
     }
 }
+// ==========================================
+// FUNCIÓN PARA AGREGAR/QUITAR "ME ENCANTA"
+// ==========================================
+window.agregarReaccion = async function(postId, emoji) {
+    if (!usuarioActual) {
+        alert("Debes iniciar sesión con Google para poder reaccionar.");
+        return;
+    }
 
+    try {
+        const postRef = window.doc(window.db, "posts", postId);
+        const postSnap = await window.getDoc(postRef);
+        
+        if (postSnap.exists()) {
+            const post = postSnap.data();
+            let reacciones = post.reacciones || {};
+            let usuarios = reacciones[emoji] || [];
+            
+            // Asegurar que la lista de usuarios sea un arreglo
+            if (!Array.isArray(usuarios)) {
+                usuarios = Object.values(usuarios);
+            }
+
+            // Buscar si el usuario actual ya le dio "Me encanta"
+            const index = usuarios.indexOf(usuarioActual.displayName);
+            
+            if (index === -1) {
+                // Si no está, lo agregamos
+                usuarios.push(usuarioActual.displayName);
+            } else {
+                // Si ya está, se lo quitamos (Toggle)
+                usuarios.splice(index, 1);
+            }
+            
+            reacciones[emoji] = usuarios;
+
+            // Actualizar la base de datos
+            await window.updateDoc(postRef, {
+                reacciones: reacciones
+            });
+            
+            console.log("Reacción actualizada con éxito");
+        }
+    } catch (error) {
+        console.error("Error al actualizar la reacción:", error);
+    }
+};
 function agregarPost() {
 
     const contenido = formContenido.value.trim();
@@ -3280,50 +3340,127 @@ palabrasProhibidas.forEach(palabra => {
 });
 
 // Función global para agregar reacciones
-function agregarReaccion(postId, emoji) {
-    const nombre = prompt("¿Cómo te llamas?");
-    if(!nombre) return;
+/* =========================
+ME ENCANTA
+========================= */
+window.agregarReaccion = async function(postId, emoji){
 
-    db.collection("posts").doc(postId).get().then(doc => {
-        if(doc.exists) {
-            const reacciones = doc.data().reacciones || {};
-            if(!reacciones[emoji]) {
-                reacciones[emoji] = [];
-            }
-            if(!reacciones[emoji].includes(nombre)) {
-                reacciones[emoji].push(nombre);
-            }
-            
-            db.collection("posts").doc(postId).update({ reacciones: reacciones });
+    try{
+
+        if(!usuarioActual){
+
+            alert("Inicia sesión");
+
+            return;
         }
-    }).catch(error => console.error("Error:", error));
-}
 
-// Función global para comentarios
-function abrirFormularioComentario(postId) {
-    const nombre = prompt("¿Cómo te llamas?");
-    if(!nombre) return;
+        const postRef =
+        doc(db, "posts", postId);
+
+        const postSnap =
+        await getDoc(postRef);
+
+        if(!postSnap.exists()) return;
+
+        const data =
+        postSnap.data();
+
+        let reacciones =
+        data.reacciones || {};
+
+        if(!reacciones[emoji]){
+
+            reacciones[emoji] = [];
+
+        }
+
+        const nombreUsuario =
+
+        usuarioActual.displayName
+        || usuarioActual.email;
+
+        // evitar duplicado
+        if(
+            !reacciones[emoji]
+            .includes(nombreUsuario)
+        ){
+
+            reacciones[emoji]
+            .push(nombreUsuario);
+
+        }
+
+        await updateDoc(postRef,{
+
+            reacciones: reacciones
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+// ==========================================
+// FUNCIÓN PARA COMENTAR Y RESPONDER (COMPATIBLE SIN ARRAYUNION)
+// ==========================================
+window.abrirFormularioComentario = async function(postId, autorMencionado = null) {
     
-    const texto = prompt("Escribe tu comentario:");
-    if(!texto) return;
+    // 1. Verificar sesión de usuario
+    const usuarioValido = (typeof usuarioActual !== 'undefined' && usuarioActual) 
+                          ? usuarioActual 
+                          : (window.auth && window.auth.currentUser);
 
-    db.collection("posts").doc(postId).get().then(doc => {
-        if(doc.exists) {
-            const comentarios = doc.data().comentarios || [];
-            comentarios.push({
-                autor: usuarioActual.displayName,
-                avatar: usuarioActual.photoURL,
-                uid: usuarioActual.uid,
-                email: usuarioActual.email,
-                texto: texto,
-                timestamp: new Date()
-            });
+    if (!usuarioValido) {
+        alert("Debes iniciar sesión con Google para poder comentar.");
+        return;
+    }
+
+    // 2. Texto automático si es una respuesta
+    let textoInicial = autorMencionado ? `@${autorMencionado} ` : "";
+    let comentarioTexto = prompt("Escribe tu comentario:", textoInicial);
+
+    // 3. Si el usuario escribió algo y le dio aceptar
+    if (comentarioTexto && comentarioTexto.trim() !== "") {
+        try {
+            const postRef = window.doc(window.db, "posts", postId);
             
-            db.collection("posts").doc(postId).update({ comentarios: comentarios });
-        }
-    }).catch(error => console.error("Error:", error));
-}
+            // PASO CLAVE: Leer el post actual primero (esto ya te funciona perfecto)
+            const postSnap = await window.getDoc(postRef);
+            
+            if (postSnap.exists()) {
+                const post = postSnap.data();
+                
+                // Obtener los comentarios que ya existen, o crear una lista vacía si es el primero
+                let comentariosActuales = post.comentarios || [];
 
+                // Armar tu nuevo comentario
+                const nuevoComentario = {
+                    autor: usuarioValido.displayName,
+                    avatar: usuarioValido.photoURL || "👤",
+                    texto: comentarioTexto.trim(),
+                    timestamp: { seconds: Math.floor(Date.now() / 1000) } 
+                };
+
+                // Agregar tu comentario a la lista
+                comentariosActuales.push(nuevoComentario);
+
+                // Subir la lista completa actualizada a Firebase
+                await window.updateDoc(postRef, {
+                    comentarios: comentariosActuales
+                });
+
+                console.log("✅ Comentario guardado con éxito en Firebase");
+            }
+
+        } catch (error) {
+            console.error("❌ Error al guardar el comentario:", error);
+            alert("Hubo un error al publicar tu comentario. Revisa tu conexión.");
+        }
+    }
+};
 // Función para compartir posts
 function compartirPost(autor) {
     const texto = `¡Mira este post en el Muro Social de la Generación 2026! 🎓`;
@@ -3882,6 +4019,69 @@ ANIMACIÓN
 ========================= -->
 
 <style>
+    /* ESTILO DEL BOTÓN RESPONDER DENTRO DE LOS COMENTARIOS */
+.comentario-acciones {
+    margin-top: 6px;
+    text-align: left;
+}
+
+.btn-responder {
+    background: transparent;
+    border: none;
+    color: #D4AF37; /* Tono dorado elegante */
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+.btn-responder:hover {
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+    transform: translateX(3px); /* Pequeño desplazamiento a la derecha */
+}
+    /* =========================================
+   ESTILOS PARA EL BOTÓN "ME ENCANTA"
+   ========================================= */
+.btn-me-encanta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05); /* Fondo base muy sutil */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Estado cuando el usuario YA le dio like */
+.btn-me-encanta.liked {
+    background: rgba(255, 68, 68, 0.15); /* Fondo rojizo premium */
+    color: #ff4444; /* Texto rojo brillante */
+    border-color: rgba(255, 68, 68, 0.4);
+}
+
+/* Dispara la animación del latido solo en el corazón cuando está "liked" */
+.btn-me-encanta.liked span {
+    animation: latidoCorazon 0.5s ease-in-out;
+}
+
+/* Efecto al pasar el cursor (Hover) */
+.btn-me-encanta:hover {
+    background: rgba(255, 68, 68, 0.25);
+    border-color: #ff4444;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ANIMACIÓN DE LATIDO */
+@keyframes latidoCorazon {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.4); }
+    50% { transform: scale(0.95); }
+    75% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
 .btn-libro{
     display:inline-block;
     padding:16px 35px;
