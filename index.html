@@ -717,9 +717,6 @@ body{
     border:1px solid rgba(90,15,28,0.3);
     padding:clamp(20px,4vw,30px);
     border-radius:20px;
-    width:100%;
-    max-width:280px;
-    min-height:200px;
     transition:.4s;
     position:relative;
     overflow:hidden;
@@ -1363,82 +1360,184 @@ body{
 }
 
 /* ===== PREMIOS Y RANKINGS ===== */
+/* ===== PREMIOS ===== */
+/* CONTENIDO FLEX */
+
+.premio-contenido{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+}
+
+/* BOTON ABAJO */
+
+.btn-compartir{
+
+    margin-top:auto;
+}
+
 .premios-section{
-    padding:clamp(60px,8vw,100px) 20px;
-    background:linear-gradient(135deg, rgba(11,11,11,0.9) 0%, rgba(212,175,55,0.05) 50%, rgba(11,11,11,0.9) 100%);
+
+    padding:90px 20px;
+
+    background:
+    radial-gradient(circle at top,#111827,#020617);
+
     text-align:center;
 }
 
+/* HEADER */
+
 .premios-header{
+
     margin-bottom:60px;
-    animation:fadeUp 0.8s ease;
 }
 
 .premios-title{
-    font-family:'Cinzel';
-    background:linear-gradient(135deg, #FFD700, #D4AF37, #FFD700);
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
-    font-size:clamp(32px,7vw,50px);
-    margin:0 0 10px 0;
+
+    font-size:3rem;
+
     font-weight:800;
-    letter-spacing:2px;
+
+    color:#ffd700;
+
+    margin-bottom:15px;
 }
 
 .premios-subtitle{
-    color:#D4AF37;
-    font-size:clamp(14px,2vw,18px);
-    margin:0;
-    opacity:0.9;
+
+    color:rgba(255,255,255,.75);
+
+    font-size:18px;
 }
 
-.premios-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
-    gap:clamp(20px,4vw,35px);
-    max-width:1200px;
-    margin:0 auto 40px;
-    animation:fadeUp 1s ease;
+/* GRID */
+/* GRID - AHORA TOTALMENTE HORIZONTAL */
+/* GRID - AHORA TOTALMENTE HORIZONTAL Y CENTRADO */
+.premios-grid {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    justify-content: center; /* <--- CLAVE: Centra las 4 tarjetas en computadoras */
+    flex-wrap: nowrap; 
+    gap: 35px;
+    overflow-x: auto; 
+    padding: 20px 10px 40px 10px; /* Da espacio arriba y abajo para que la sombra (hover) no se corte */
+    scroll-snap-type: x mandatory; 
+    
+    /* Diseño elegante para la barra de scroll */
+    scrollbar-width: thin; 
+    scrollbar-color: #D4AF37 transparent; 
+}
+
+/* Ocultar barra de scroll en Chrome/Safari pero mantener la funcionalidad */
+.premios-grid::-webkit-scrollbar {
+    height: 8px;
+}
+.premios-grid::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 10px;
+}
+
+/* =========================================
+   AJUSTE PARA CELULARES Y PANTALLAS CHICAS
+   ========================================= */
+@media (max-width: 1250px) {
+    .premios-grid {
+        justify-content: flex-start; /* Alinea a la izquierda para que el scroll funcione correctamente */
+        padding-left: 20px; /* Da un margen para que no choquen con la orilla del teléfono */
+        padding-right: 20px;
+    }
+    .premio-card {
+        scroll-snap-align: center; /* Hace que la tarjeta se centre automáticamente al deslizar con el dedo */
+    }
 }
 
 .premio-card{
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(15px);
-    border:2px solid rgba(212,175,55,0.3);
-    border-radius:25px;
-    padding:40px 25px;
-    position:relative;
-    overflow:hidden;
-    transition:0.4s;
-    cursor:pointer;
-    transform:translateY(0);
-}
 
-.premio-card::before{
-    content:'';
-    position:absolute;
-    top:-50%;
-    right:-50%;
-    width:200%;
-    height:200%;
-    background:radial-gradient(circle, rgba(212,175,55,0.2), transparent);
-    opacity:0;
-    transition:0.6s;
+    width:280px;
+
+    padding:28px 22px;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(35,40,60,.95),
+    rgba(20,25,45,.92)
+    );
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    transition:.3s ease;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.25);
+
+    text-align:center;
+
+    flex-shrink:0;
+
+    /* IMPORTANTE */
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
 }
+/* HOVER */
 
 .premio-card:hover{
-    transform:translateY(-20px) scale(1.08);
-    border-color:rgba(212,175,55,0.8);
+
+    transform:
+    translateY(-10px)
+    scale(1.02);
+
     box-shadow:
-        0 20px 60px rgba(212,175,55,0.4),
-        0 0 40px rgba(212,175,55,0.2);
+    0 25px 70px rgba(0,0,0,.5);
+}
+
+/* BRILLO */
+
+.premio-card::before{
+
+    content:'';
+
+    position:absolute;
+
+    top:-120%;
+    left:-120%;
+
+    width:250%;
+    height:250%;
+
+    background:
+    linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+    );
+
+    transform:rotate(25deg);
+
+    transition:1s;
 }
 
 .premio-card:hover::before{
-    opacity:1;
-    top:0;
-    right:0;
+
+    top:100%;
+    left:100%;
 }
 
 .puntual-card{
@@ -1533,16 +1632,6 @@ body{
     margin-top:40px;
     animation:fadeUp 1.2s ease;
     font-weight:600;
-}
-
-@media(max-width:768px){
-    .premios-grid{
-        grid-template-columns:1fr;
-    }
-
-    .premio-card{
-        margin:0 auto;
-    }
 }
 
 /* ===== EGRESADOS ===== */
@@ -2078,23 +2167,40 @@ TEXTOS
 </section>
 
 <!-- PREMIOS Y RANKINGS -->
+
 <section class="premios-section" id="premios">
     <div class="premios-header">
         <h2 class="premios-title">🏆 Ranking de Premios</h2>
-        <p class="premios-subtitle">Los superlativospara recordar</p>
+        <p class="premios-subtitle">Los superlativos para recordar</p>
     </div>
+<div class="premios-grid">
 
-    <div class="premios-grid">
-        <!-- Más Puntual -->
-        <div class="premio-card puntual-card">
-            <div class="premio-emoji">⏰</div>
-            <h3 class="premio-nombre">Más Puntual</h3>
-            <p class="premio-descripcion">Siempre llegaba a tiempo (o casi)</p>
-            <div class="premio-badge">🏅</div>
-            <button class="btn-compartir" onclick="compartirPremio('Más Puntual ⏰')">Compartir</button>
-        </div>
+    <!-- CARD -->
+    <div class="premio-card puntual-card"
+         data-img="alumnos/ROBERTOMICHEL.jpeg"
+         data-nombre="Robert Michel"
+         onclick="abrirAlumno(this)">
 
-        <!-- Más Divertido -->
+        <div class="premio-emoji">⏰</div>
+
+        <h3 class="premio-nombre">
+            Más Puntual
+        </h3>
+
+        <p class="premio-descripcion">
+            Siempre llegaba a tiempo (o casi)
+        </p>
+
+        <div class="premio-badge">🏅</div>
+
+        <button class="btn-compartir"
+        onclick="event.stopPropagation();
+        compartirPremio('Más Puntual ⏰')">
+            Compartir
+        </button>
+
+    </div>
+    <!-- Más Divertido -->
         <div class="premio-card divertido-card">
             <div class="premio-emoji">🤣</div>
             <h3 class="premio-nombre">Más Divertido</h3>
@@ -2123,8 +2229,12 @@ TEXTOS
     </div>
 
     <div class="premios-footer">
-        <p>¿Quién merece cada premio? ¡Vota en el muro social! 👇</p>
+        <p>¿Quién merece cada premio? ¡Vota en el muro social! 👆</p>
     </div>
+
+</div>
+
+        
 </section>
 
 <!-- EGRESADOS -->
@@ -2521,6 +2631,113 @@ COLORES DIFERENTES
 
 
 /* =========================
+POPUP PEQUEÑO
+========================= */
+
+.modal-alumno{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.45);
+
+    z-index:99999;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    backdrop-filter:blur(4px);
+
+    animation:fadeModal .25s ease;
+}
+
+/* CARD */
+
+.popup-alumno{
+
+    position:relative;
+
+    width:320px;
+
+    background:
+    rgba(15,15,25,.95);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    text-align:center;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.4);
+
+    animation:popupShow .3s ease;
+}
+
+/* FOTO */
+
+.popup-alumno img{
+
+    width:180px;
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+    margin-bottom:15px;
+
+    border:
+    3px solid rgba(255,215,0,.7);
+
+    box-shadow:
+    0 0 25px rgba(255,215,0,.25);
+}
+
+/* NOMBRE */
+
+#nombreAlumno{
+
+    color:white;
+
+    font-size:1.5rem;
+
+    margin-top:10px;
+}
+
+.cerrar-alumno{
+
+    position:absolute;
+
+    top:12px;
+    right:18px;
+
+    z-index:999999;
+
+    color:white;
+
+    font-size:35px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.cerrar-alumno:hover{
+
+    transform:scale(1.2);
+
+    color:gold;
+}
+
+/* =========================
 RESPONSIVE
 ========================= */
 
@@ -2588,6 +2805,7 @@ document.addEventListener("keydown", e => {
         cerrarLightbox();
     }
 });
+
 
 // ===== MURO SOCIAL CON FIREBASE =====
 document.addEventListener("DOMContentLoaded", () => {
@@ -3296,6 +3514,7 @@ function playMusic() {
             .catch(err => console.log("⚠️ Autoplay bloqueado. Haz clic para reproducir música"));
     }
 }
+
     // MODIFICACIÓN DEL EVENTO LOAD PARA EL PRELOADER
 window.addEventListener('load', () => {
     playMusic();
@@ -3402,6 +3621,64 @@ for(let i = 0; i < 70; i++){
     rain.appendChild(hat);
 
 }
+/* =========================
+ABRIR ALUMNO
+========================= */
+
+function abrirAlumno(card){
+
+    const modal =
+    document.getElementById("modalAlumno");
+
+    const img =
+    document.getElementById("imgAlumno");
+
+    const nombre =
+    document.getElementById("nombreAlumno");
+
+    img.src =
+    card.dataset.img;
+
+    nombre.innerHTML =
+    card.dataset.nombre;
+
+    modal.style.display =
+    "flex";
+}
+
+/* =========================
+ESPERAR HTML
+========================= */
+
+window.addEventListener("DOMContentLoaded", ()=>{
+
+    const cerrar =
+    document.querySelector(".cerrar-alumno");
+
+    const modal =
+    document.getElementById("modalAlumno");
+
+    /* BOTON X */
+
+    cerrar.addEventListener("click", ()=>{
+
+        modal.style.display = "none";
+
+    });
+
+    /* CLICK AFUERA */
+
+    modal.addEventListener("click",(e)=>{
+
+        if(e.target === modal){
+
+            modal.style.display = "none";
+
+        }
+
+    });
+
+});
 </script>
 
 <!-- =========================
@@ -3690,6 +3967,25 @@ footer h2{
     });
 </script>
 
+<!-- POPUP ALUMNO -->
+
+<div class="modal-alumno" id="modalAlumno">
+
+    <div class="popup-alumno">
+
+        <span class="cerrar-alumno">
+            &times;
+        </span>
+
+        <img id="imgAlumno">
+
+        <h2 id="nombreAlumno"></h2>
+
+    </div>
+
+</div>
+
+</div>
 </body>
     
 </body>
