@@ -1380,7 +1380,55 @@ body{
 
     margin-top:auto;
 }
+/* =========================================
+   INDICADOR DE SWIPE (DESLIZAR EN CELULARES)
+   ========================================= */
+.swipe-indicador {
+    display: none; /* Oculto por defecto en computadoras */
+    margin-top: 20px;
+    color: #D4AF37; /* Color dorado para combinar */
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 
+.swipe-indicador span {
+    display: inline-block;
+    animation: deslizarPulso 2s infinite ease-in-out;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Animación que llama la atención moviéndose ligeramente */
+@keyframes deslizarPulso {
+    0%, 100% { 
+        transform: translateX(0); 
+        opacity: 0.7; 
+    }
+    50% { 
+        transform: translateX(5px); /* Se mueve un poco a la derecha */
+        opacity: 1; 
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+}
+
+/* Mostrar solo en pantallas donde se activa el scroll (1250px o menos) */
+@media (max-width: 1250px) {
+    .swipe-indicador {
+        display: block;
+    }
+}
+
+/* Ajuste un poco más pequeño para celulares muy chicos */
+@media (max-width: 768px) {
+    .swipe-indicador {
+        font-size: 12px;
+        margin-top: 15px;
+    }
+}
 .premios-section{
 
     padding:90px 20px;
@@ -2172,6 +2220,9 @@ TEXTOS
     <div class="premios-header">
         <h2 class="premios-title">🏆 Ranking de Premios</h2>
         <p class="premios-subtitle">Los superlativos para recordar</p>
+        <div class="swipe-indicador">
+        <span>👈 Desliza para ver más 👉</span>
+    </div>
     </div>
 <div class="premios-grid">
 
