@@ -16,6 +16,81 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
+    /* =========================================
+   ESTILOS DEL MODAL DE VOTACIÓN
+   ========================================= */
+.modal-votacion-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-votacion-box {
+    background: linear-gradient(145deg, #111827, #0f172a);
+    border: 2px solid #D4AF37;
+    border-radius: 20px;
+    padding: 35px 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.2);
+    animation: zoomIn 0.3s ease-out;
+}
+
+.select-elegante {
+    width: 100%;
+    padding: 12px 15px;
+    background: #020617;
+    color: #ffffff;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+
+.select-elegante:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.btn-cancelar-voto, .btn-confirmar-voto {
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-cancelar-voto {
+    background: transparent;
+    color: #a1a1aa;
+    border: 1px solid #3f3f46;
+}
+
+.btn-cancelar-voto:hover { background: #3f3f46; color: white; }
+
+.btn-confirmar-voto {
+    background: linear-gradient(135deg, #FFD700, #D4AF37);
+    color: #020617;
+}
+
+.btn-confirmar-voto:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
     /* PRELOADER */
     .hat{
     position:absolute;
@@ -1983,7 +2058,7 @@ TEXTOS
  
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, updateDoc, doc, getDoc, deleteDoc, serverTimestamp  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, updateDoc, doc, getDoc, deleteDoc, setDoc, serverTimestamp  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import {getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     // Firebase Configuration
@@ -2021,6 +2096,7 @@ TEXTOS
     window.doc = doc;
     window.getDoc = getDoc;
     window.deleteDoc = deleteDoc;
+    window.setDoc = setDoc;
     window.serverTimestamp = serverTimestamp;
 
     console.log("✅ Firebase inicializado correctamente");
@@ -2220,69 +2296,50 @@ TEXTOS
     <div class="premios-header">
         <h2 class="premios-title">🏆 Ranking de Premios</h2>
         <p class="premios-subtitle">Los superlativos para recordar</p>
+         <h1 class="premios-footer">Quien merece cada premio? ¡Vota en las tarjetas 👇</h1>
         <div class="swipe-indicador">
         <span>👈 Desliza para ver más 👉</span>
     </div>
     </div>
 <div class="premios-grid">
 
-    <!-- CARD -->
-    <div class="premio-card puntual-card"
-         data-img="alumnos/ROBERTOMICHEL.jpeg"
+    <!-- CARD 
+     >  data-img="alumnos/ROBERTOMICHEL.jpeg"
          data-nombre="Robert Michel"
-         onclick="abrirAlumno(this)">
+         onclick="abrirAlumno(this)">-->
+   <div class="premio-card puntual-card" onclick="votarPremio('puntual', 'El Más Puntual')">
+    <div class="premio-emoji">⏰</div>
+    <h3 class="premio-nombre">El Más Puntual</h3>
+    <p class="premio-descripcion">Siempre llega antes de que abran el salón.</p>
+    <div class="premio-badge">🏅</div>
+    <div id="resultados-puntual" class="resultados-votos"></div>
+</div>
 
-        <div class="premio-emoji">⏰</div>
+<div class="premio-card divertido-card" onclick="votarPremio('divertido', 'El Más Divertido')">
+    <div class="premio-emoji">🤡</div>
+    <h3 class="premio-nombre">El Más Divertido</h3>
+    <p class="premio-descripcion">El alma de la fiesta y los mejores chistes.</p>
+     <div class="premio-badge">🎭</div>
+    <div id="resultados-divertido" class="resultados-votos"></div>
+</div>
 
-        <h3 class="premio-nombre">
-            Más Puntual
-        </h3>
+<div class="premio-card dormilon-card" onclick="votarPremio('dormilon', 'El Más Dormilón')">
+    <div class="premio-emoji">😴</div>
+    <h3 class="premio-nombre">El Más Dormilón</h3>
+    <p class="premio-descripcion">Sobrevive a las clases a base de siestas.</p>
+    <div class="premio-badge">💤</div>
+    <div id="resultados-dormilon" class="resultados-votos"></div>
+</div>
 
-        <p class="premio-descripcion">
-            Siempre llegaba a tiempo (o casi)
-        </p>
-
-        <div class="premio-badge">🏅</div>
-
-        <button class="btn-compartir"
-        onclick="event.stopPropagation();
-        compartirPremio('Más Puntual ⏰')">
-            Compartir
-        </button>
-
-    </div>
-    <!-- Más Divertido -->
-        <div class="premio-card divertido-card">
-            <div class="premio-emoji">🤣</div>
-            <h3 class="premio-nombre">Más Divertido</h3>
-            <p class="premio-descripcion">Nos hacía reír en cada clase</p>
-            <div class="premio-badge">🎭</div>
-            <button class="btn-compartir" onclick="compartirPremio('Más Divertido 🤣')">Compartir</button>
-        </div>
-
-        <!-- Más Dormilón -->
-        <div class="premio-card dormillon-card">
-            <div class="premio-emoji">😴</div>
-            <h3 class="premio-nombre">Más Dormilón</h3>
-            <p class="premio-descripcion">Sus mejores momentos en clase</p>
-            <div class="premio-badge">💤</div>
-            <button class="btn-compartir" onclick="compartirPremio('Más Dormilón 😴')">Compartir</button>
-        </div>
-
-        <!-- Más Sociable -->
-        <div class="premio-card sociable-card">
-            <div class="premio-emoji">🦋</div>
-            <h3 class="premio-nombre">Más Sociable</h3>
-            <p class="premio-descripcion">Amigo de todos en la generación</p>
-            <div class="premio-badge">👥</div>
-            <button class="btn-compartir" onclick="compartirPremio('Más Sociable 🦋')">Compartir</button>
-        </div>
-    </div>
-
+<div class="premio-card sociable-card" onclick="votarPremio('sociable', 'El Más Sociable')">
+    <div class="premio-emoji">🤝</div>
+    <h3 class="premio-nombre">El Más Sociable</h3>
+    <p class="premio-descripcion">Conoce a todos en la escuela, literalmente.</p>
+    <div class="premio-badge">👥</div>
+    <div id="resultados-sociable" class="resultados-votos"></div>
+</div>
     <div class="premios-footer">
-        <p>¿Quién merece cada premio? ¡Vota en el muro social! 👆</p>
-    </div>
-
+</div>
 </div>
 
         
@@ -2427,7 +2484,50 @@ ESTILOS
 ========================================= -->
 
 <style>
+/* =========================================
+   MARCADOR EN VIVO DE PREMIOS
+   ========================================= */
+.resultados-votos {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    font-size: 13px;
+    text-align: left;
+    min-height: 80px; /* Evita que la tarjeta brinque cuando cargan los datos */
+}
 
+.resultado-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.resultado-nombre {
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 75%;
+}
+
+.resultado-votos {
+    color: #FFD700;
+    font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.sin-votos {
+    text-align: center;
+    color: #a1a1aa;
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 15px;
+}
 /* =========================
 SECCIÓN
 ========================= */
@@ -2934,6 +3034,210 @@ window.onAuthStateChanged(window.auth, (user) => {
     }
 
 });
+// ==========================================
+// SISTEMA DE VOTACIÓN CON LISTA PREDEFINIDA
+// ==========================================
+
+// 1. AQUÍ METES TU LISTA REAL DE ALUMNOS (SEPARADOS POR COMAS Y ENTRE COMILLAS)
+const LISTA_ALUMNOS_2026 = [
+    "ARCE HERNANDEZ ROBERTO MICHEL",
+    "CARRILLO CORONEL EDGAR",
+    "CARRILLO GARCIA RICARDO EMILIANO",
+    "CARRILLO RUIZ KAROLY HARUMY",
+    "CORONEL RAMOS ALEJANDRO",
+    "CORONEL RUBIO JOSE MANUEL",
+    "DIAZ ESCOBEDO RENATA",
+    "GARCIA CARRILLO CRISTHOFER",
+    "GARCIA RODRIGUEZ DAFNE MARIELA",
+    "GARCIA SANTIAGO SEBASTIAN",
+    "GARCIA SANTIAGO YURIDIA GUADALUPE",
+    "GOMEZ CARRILLO HECTOR FRANCISCO",
+    "HERNANDEZ FIGUEROA DANNA PAOLA",
+    "HERNANDEZ GONZALEZ ESBEHIDY",
+    "HERNANDEZ HERNANDEZ RUBEN ARON",
+    "HERNANDEZ OSUNA ROGELIO",
+    "HERNANDEZ SANCHEZ GERARDO ANTONIO",
+    "HERNANDEZ SANCHEZ LUIS DANIEL",
+    "HERRERA CARRILLO CHRISTIAN ALEXANDER",
+    "LEAL JR . JUAN JOSE",
+    "MARTINEZ BAUTISTA LUIS FERNANDO",
+    "MARTINEZ CARRILLO JOSE EMILIANO",
+    "MORENO ARCE ESPERANZA NAZARET",
+    "RAMIREZ CORONEL KARLA CITLALI",
+    "RODRIGUEZ CARRILLO ROMAN",
+    "RODRIGUEZ MARTINEZ JOSE ANGEL",
+    "RUBIO CARRILLO ENEDINA YAMILETH",
+    "RUBIO GARCIA DANIEL",
+    "RUBIO MERCADO ANGEL",
+    "SANTIAGO BECERRA ADAN",
+    "SANTIAGO CARRILLO ELIZABETH",
+    "SANTIAGO HERNANDEZ CARELY ANAY",
+    "TAPIA ROMERO ERYX ELIEL",
+    "TORRES BERNAL KEIVIN ZAVIT",
+    "VILLEGAS RUIZ JUAN PABLO"
+];
+
+// Variables temporales para saber qué está votando el usuario
+let categoriaSeleccionada = "";
+let nombrePremioSeleccionado = "";
+
+// 2. FUNCIÓN PARA ABRIR EL MODAL
+window.votarPremio = function(categoriaId, nombrePremio) {
+    const usuarioValido = (typeof usuarioActual !== 'undefined' && usuarioActual) ? usuarioActual : (window.auth && window.auth.currentUser);
+
+    if (!usuarioValido) {
+        alert("Debes iniciar sesión con Google para poder votar en los premios.");
+        return;
+    }
+
+    categoriaSeleccionada = categoriaId;
+    nombrePremioSeleccionado = nombrePremio;
+
+    // Llenar el título del modal
+    document.getElementById("modalVotacionTitulo").innerText = `Nominar para ${nombrePremio}`;
+
+    // Llenar la lista desplegable con tus alumnos
+    const select = document.getElementById("selectAlumnoVoto");
+    select.innerHTML = '<option value="" disabled selected>Elige un alumno...</option>'; // Limpiar opciones anteriores
+    
+    // Ordenar alfabéticamente para que sea más fácil buscar
+    LISTA_ALUMNOS_2026.sort().forEach(alumno => {
+        let opcion = document.createElement("option");
+        opcion.value = alumno;
+        opcion.text = alumno;
+        select.appendChild(opcion);
+    });
+// ==========================================
+// MOTOR DE CONTEO EN TIEMPO REAL (TOP 3)
+// ==========================================
+window.iniciarConteoPremios = function() {
+    const votosRef = window.collection(window.db, "votos_premios");
+    
+    // onSnapshot escucha los cambios en tiempo real
+    window.onSnapshot(votosRef, (snapshot) => {
+        
+        // 1. Preparamos nuestras calculadoras
+        let conteos = {
+            puntual: {},
+            divertido: {},
+            dormilon: {},
+            sociable: {}
+        };
+        
+        // 2. Revisamos cada voto en la base de datos
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            
+            // Sumamos los votos para cada categoría
+            ['puntual', 'divertido', 'dormilon', 'sociable'].forEach(cat => {
+                if (data[cat]) { // Si votaron en esta categoría...
+                    conteos[cat][data[cat]] = (conteos[cat][data[cat]] || 0) + 1;
+                }
+            });
+        });
+        
+        // 3. Función para dibujar el Top 3 en el HTML
+        const renderTop3 = (categoriaId) => {
+            const contenedor = document.getElementById(`resultados-${categoriaId}`);
+            if (!contenedor) return;
+            
+            // Convertimos los conteos en una lista y los ordenamos de mayor a menor
+            let topVotados = Object.entries(conteos[categoriaId])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3); // Cortamos la lista para mostrar solo los 3 primeros
+            
+            // Si nadie ha votado todavía
+            if (topVotados.length === 0) {
+                contenedor.innerHTML = '<div class="sin-votos">Aún no hay votos registrados</div>';
+                return;
+            }
+            
+            // Si ya hay votos, armamos las medallas
+            let html = '<div style="color:#D4AF37; margin-bottom:10px; text-align:center; font-weight:800; font-size:11px; letter-spacing:1px;">🏆 TOP 3 ACTUAL</div>';
+            
+           topVotados.forEach((item, index) => {
+                let medalla = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
+                let nombreAlumno = item[0];
+                let cantidadVotos = item[1];
+                
+                // Formateamos el nombre para la foto: 
+                let nombreArchivoFoto = nombreAlumno.replace(/\s+/g, '').toUpperCase();
+                
+                html += `
+                    <div class="resultado-item" 
+                         style="cursor: pointer; transition: all 0.3s;"
+                         
+                         onmouseenter="this.style.background='rgba(212, 175, 55, 0.2)'; this.style.transform='scale(1.02)'; document.getElementById('modalAlumno').style.pointerEvents='none'; abrirAlumno(this);" 
+                         
+                         onmouseleave="this.style.background='rgba(0, 0, 0, 0.2)'; this.style.transform='scale(1)'; document.getElementById('modalAlumno').style.pointerEvents='auto'; cerrarAlumno();"
+                         
+                         onclick="document.getElementById('modalAlumno').style.pointerEvents='auto'; abrirAlumno(this);"
+                         
+                         data-img="alumnos/${nombreArchivoFoto}.jpeg" 
+                         data-nombre="${nombreAlumno}">
+                         
+                        <span class="resultado-nombre" title="${nombreAlumno}">${medalla} ${nombreAlumno}</span>
+                        <span class="resultado-votos">${cantidadVotos}</span>
+                    </div>
+                `;
+            });
+            contenedor.innerHTML = html;
+        };
+        
+        // 4. Mandamos a dibujar las 4 tarjetas
+        renderTop3('puntual');
+        renderTop3('divertido');
+        renderTop3('dormilon');
+        renderTop3('sociable');
+    });
+};
+
+// Arrancamos el motor de conteo 2 segundos después de que cargue la página
+// para darle tiempo a Firebase de conectar bien
+setTimeout(() => {
+    if (window.db && window.collection && window.onSnapshot) {
+        window.iniciarConteoPremios();
+    }
+}, 2000);
+    // Mostrar el modal
+    document.getElementById("modalVotacion").style.display = "flex";
+};
+
+// 3. FUNCIÓN PARA CERRAR EL MODAL
+window.cerrarModalVotacion = function() {
+    document.getElementById("modalVotacion").style.display = "none";
+};
+
+// 4. FUNCIÓN PARA ENVIAR EL VOTO A FIREBASE
+window.confirmarVotoFirebase = async function() {
+    const select = document.getElementById("selectAlumnoVoto");
+    const alumnoElegido = select.value;
+
+    if (!alumnoElegido) {
+        alert("Por favor, selecciona a un compañero de la lista.");
+        return;
+    }
+
+    const usuarioValido = window.auth.currentUser || usuarioActual;
+
+    try {
+        const votoRef = window.doc(window.db, "votos_premios", usuarioValido.uid);
+
+        await window.setDoc(votoRef, {
+            votanteNombre: usuarioValido.displayName,
+            [categoriaSeleccionada]: alumnoElegido, // Guarda al alumno en la categoría correspondiente
+            ultimaActualizacion: new Date()
+        }, { merge: true });
+
+        // Cerrar modal y avisar que fue un éxito
+        cerrarModalVotacion();
+        alert(`¡Voto registrado con éxito!\nHas nominado a ${alumnoElegido} para ${nombrePremioSeleccionado}.`);
+        
+    } catch (error) {
+        console.error("❌ Error al guardar el voto:", error);
+        alert("Hubo un error al registrar tu voto. Revisa tu conexión.");
+    }
+};
 
     function formatearTiempo(timestamp) {
 
@@ -3867,6 +4171,15 @@ window.addEventListener("DOMContentLoaded", ()=>{
     });
 
 });
+/* =========================
+   CERRAR FOTO AUTOMÁTICAMENTE
+========================= */
+window.cerrarAlumno = function() {
+    const modal = document.getElementById("modalAlumno");
+    if (modal) {
+        modal.style.display = "none";
+    }
+};
 </script>
 
 <!-- =========================
@@ -4236,6 +4549,21 @@ footer h2{
 
 </div>
 
+</div>
+<div id="modalVotacion" class="modal-votacion-overlay" style="display: none;">
+    <div class="modal-votacion-box">
+        <h3 id="modalVotacionTitulo" style="color: #D4AF37; font-family: 'Cinzel', serif; margin-bottom: 10px;">Nominar Premio</h3>
+        <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 20px;">Selecciona a tu compañero de la lista:</p>
+        
+        <select id="selectAlumnoVoto" class="select-elegante">
+            <option value="" disabled selected>Elige un alumno...</option>
+            </select>
+        
+        <div class="modal-botones" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center;">
+            <button onclick="cerrarModalVotacion()" class="btn-cancelar-voto">Cancelar</button>
+            <button onclick="confirmarVotoFirebase()" class="btn-confirmar-voto">Enviar Voto</button>
+        </div>
+    </div>
 </div>
 </body>
     
