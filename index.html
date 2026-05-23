@@ -3110,87 +3110,6 @@ window.votarPremio = function(categoriaId, nombrePremio) {
 // ==========================================
 // MOTOR DE CONTEO EN TIEMPO REAL (TOP 3)
 // ==========================================
-window.iniciarConteoPremios = function() {
-    const votosRef = window.collection(window.db, "votos_premios");
-    
-    // onSnapshot escucha los cambios en tiempo real
-    window.onSnapshot(votosRef, (snapshot) => {
-        
-        // 1. Preparamos nuestras calculadoras
-        let conteos = {
-            puntual: {},
-            divertido: {},
-            dormilon: {},
-            sociable: {}
-        };
-        
-        // 2. Revisamos cada voto en la base de datos
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            
-            // Sumamos los votos para cada categoría
-            ['puntual', 'divertido', 'dormilon', 'sociable'].forEach(cat => {
-                if (data[cat]) { // Si votaron en esta categoría...
-                    conteos[cat][data[cat]] = (conteos[cat][data[cat]] || 0) + 1;
-                }
-            });
-        });
-        
-        // 3. Función para dibujar el Top 3 en el HTML
-        const renderTop3 = (categoriaId) => {
-            const contenedor = document.getElementById(`resultados-${categoriaId}`);
-            if (!contenedor) return;
-            
-            // Convertimos los conteos en una lista y los ordenamos de mayor a menor
-            let topVotados = Object.entries(conteos[categoriaId])
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3); // Cortamos la lista para mostrar solo los 3 primeros
-            
-            // Si nadie ha votado todavía
-            if (topVotados.length === 0) {
-                contenedor.innerHTML = '<div class="sin-votos">Aún no hay votos registrados</div>';
-                return;
-            }
-            
-            // Si ya hay votos, armamos las medallas
-            let html = '<div style="color:#D4AF37; margin-bottom:10px; text-align:center; font-weight:800; font-size:11px; letter-spacing:1px;">🏆 TOP 3 ACTUAL</div>';
-            
-           topVotados.forEach((item, index) => {
-                let medalla = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
-                let nombreAlumno = item[0];
-                let cantidadVotos = item[1];
-                
-                // Formateamos el nombre para la foto: 
-                let nombreArchivoFoto = nombreAlumno.replace(/\s+/g, '').toUpperCase();
-                
-                html += `
-                    <div class="resultado-item" 
-                         style="cursor: pointer; transition: all 0.3s;"
-                         
-                         onmouseenter="this.style.background='rgba(212, 175, 55, 0.2)'; this.style.transform='scale(1.02)'; document.getElementById('modalAlumno').style.pointerEvents='none'; abrirAlumno(this);" 
-                         
-                         onmouseleave="this.style.background='rgba(0, 0, 0, 0.2)'; this.style.transform='scale(1)'; document.getElementById('modalAlumno').style.pointerEvents='auto'; cerrarAlumno();"
-                         
-                         onclick="document.getElementById('modalAlumno').style.pointerEvents='auto'; abrirAlumno(this);"
-                         
-                         data-img="alumnos/${nombreArchivoFoto}.jpeg" 
-                         data-nombre="${nombreAlumno}">
-                         
-                        <span class="resultado-nombre" title="${nombreAlumno}">${medalla} ${nombreAlumno}</span>
-                        <span class="resultado-votos">${cantidadVotos}</span>
-                    </div>
-                `;
-            });
-            contenedor.innerHTML = html;
-        };
-        
-        // 4. Mandamos a dibujar las 4 tarjetas
-        renderTop3('puntual');
-        renderTop3('divertido');
-        renderTop3('dormilon');
-        renderTop3('sociable');
-    });
-};
 
 // Arrancamos el motor de conteo 2 segundos después de que cargue la página
 // para darle tiempo a Firebase de conectar bien
@@ -4117,60 +4036,40 @@ for(let i = 0; i < 70; i++){
 ABRIR ALUMNO
 ========================= */
 
-function abrirAlumno(card){
+window.abrirAlumno = function(card){
+    const modal = document.getElementById("modalAlumno");
+    const img = document.getElementById("imgAlumno");
+    const nombre = document.getElementById("nombreAlumno");
 
-    const modal =
-    document.getElementById("modalAlumno");
+    // 1. Ponemos el nombre y abrimos la ventana
+    nombre.innerHTML = card.dataset.nombre;
+    modal.style.display = "flex";
 
-    const img =
-    document.getElementById("imgAlumno");
+    // 2. EL ADIVINADOR DE IMÁGENES
+    const extensiones = [".jpg", ".jpeg", ".png", ".webp", ".JPG", ".PNG", ".JPEG"];
+    let intento = 0;
+    const rutaBase = card.dataset.img; // Ej: "alumnos/ROBERTOMICHEL" (sin extensión)
 
-    const nombre =
-    document.getElementById("nombreAlumno");
-
-    img.src =
-    card.dataset.img;
-
-    nombre.innerHTML =
-    card.dataset.nombre;
-
-    modal.style.display =
-    "flex";
-}
-
-/* =========================
-ESPERAR HTML
-========================= */
-
-window.addEventListener("DOMContentLoaded", ()=>{
-
-    const cerrar =
-    document.querySelector(".cerrar-alumno");
-
-    const modal =
-    document.getElementById("modalAlumno");
-
-    /* BOTON X */
-
-    cerrar.addEventListener("click", ()=>{
-
-        modal.style.display = "none";
-
-    });
-
-    /* CLICK AFUERA */
-
-    modal.addEventListener("click",(e)=>{
-
-        if(e.target === modal){
-
-            modal.style.display = "none";
-
+    // Si la imagen da error (porque no existe en ese formato), dispara esta función:
+    img.onerror = function() {
+        intento++;
+        
+        // Si aún nos quedan extensiones por probar...
+        if(intento < extensiones.length) {
+            img.src = rutaBase + extensiones[intento]; // Prueba la siguiente
+        } 
+        // Si ya probó todas y no encontró ninguna foto del alumno...
+        else {
+            // Genera un Avatar Premium con sus iniciales en color dorado
+            const nombreUrl = encodeURIComponent(card.dataset.nombre);
+            img.src = `https://ui-avatars.com/api/?name=${nombreUrl}&background=D4AF37&color=000&size=250&bold=true`;
+            img.onerror = null; // Apaga el adivinador para evitar bucles
         }
+    };
 
-    });
-
-});
+    // 3. Arranca el motor haciendo el primer intento con .jpg
+    img.src = rutaBase + extensiones[0];
+}
 /* =========================
    CERRAR FOTO AUTOMÁTICAMENTE
 ========================= */
@@ -4179,7 +4078,19 @@ window.cerrarAlumno = function() {
     if (modal) {
         modal.style.display = "none";
     }
-};
+};/* =========================================
+   ARRANQUE FORZADO DEL MARCADOR EN VIVO
+========================================= */
+let intentarArrancar = setInterval(() => {
+    // Si Firebase y las herramientas ya cargaron...
+    if (window.db && window.collection && window.onSnapshot && typeof window.iniciarConteoPremios === "function") {
+        
+        window.iniciarConteoPremios(); // Arrancamos las medallas
+        console.log("🏆 Marcador público arrancado con éxito!");
+        
+        clearInterval(intentarArrancar); // Apagamos el motor de arranque
+    }
+}, 500); // Revisa cada medio segundo
 </script>
 
 <!-- =========================
@@ -4305,7 +4216,77 @@ text-align:center;
 <!-- =========================
 SCRIPT
 ========================= -->
+<script type="module">
+    // Aquí se quedan tus imports y la lógica de Firebase
+</script>
 
+<script>
+   window.iniciarConteoPremios = function() {
+    const votosRef = window.collection(window.db, "votos_premios");
+    
+    window.onSnapshot(votosRef, (snapshot) => {
+        let conteos = { puntual: {}, divertido: {}, dormilon: {}, sociable: {} };
+        
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            // Revisamos cada categoría posible
+            Object.keys(conteos).forEach(cat => {
+                if (data[cat]) {
+                    conteos[cat][data[cat]] = (conteos[cat][data[cat]] || 0) + 1;
+                }
+            });
+        });
+
+        // Función para renderizar que usamos dentro
+        const renderTop3 = (catId) => {
+            const contenedor = document.getElementById(`resultados-${catId}`);
+            if (!contenedor) return;
+            
+            const votosCat = conteos[catId];
+            const top = Object.entries(votosCat).sort((a, b) => b[1] - a[1]).slice(0, 3);
+            
+            if (top.length === 0) {
+                contenedor.innerHTML = '<div class="sin-votos">Sin votos aún</div>';
+                return;
+            }
+            
+            let html = '<div style="color:#D4AF37; margin-bottom:10px; text-align:center; font-weight:800; font-size:11px;">🏆 TOP 3</div>';
+            
+            top.forEach((item, index) => {
+                let medalla = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
+                let nombreArchivoFoto = item[0].replace(/\s+/g, '').toUpperCase();
+                
+                html += `
+                    <div class="resultado-item" 
+                         style="cursor: pointer; padding:5px; background:rgba(0,0,0,0.2); margin:3px; border-radius:5px;"
+                         onmouseenter="this.style.background='rgba(212, 175, 55, 0.2)'; document.getElementById('modalAlumno').style.pointerEvents='none'; abrirAlumno(this);" 
+                         onmouseleave="this.style.background='rgba(0,0,0,0.2)'; document.getElementById('modalAlumno').style.pointerEvents='auto'; cerrarAlumno();"
+                         data-img="alumnos/${nombreArchivoFoto}" 
+                         data-nombre="${item[0]}">
+                        <span>${medalla} ${item[0]}</span>
+                        <span style="float:right; color:#FFD700;">${item[1]}</span>
+                    </div>
+                `;
+            });
+            contenedor.innerHTML = html;
+        };
+
+        // Pintamos todo
+        renderTop3('puntual');
+        renderTop3('divertido');
+        renderTop3('dormilon');
+        renderTop3('sociable');
+    });
+    // Y el motor de arranque que también debe ir aquí afuera
+    let intentarArrancar = setInterval(() => {
+        if (typeof window.iniciarConteoPremios === "function") {
+            window.iniciarConteoPremios();
+            console.log("🏆 Marcador público arrancado con éxito!");
+            clearInterval(intentarArrancar);
+        }
+    }, 500);
+    };
+</script>
 <script>
 
 function abrirPrivacidad() {
