@@ -1085,7 +1085,98 @@ body{
     gap:20px;
     animation:fadeUp 1.2s ease;
 }     
+/* =========================================
+   DISEÑO PREMIUM DEL FORMULARIO DE SUBIDA
+   ========================================= */
+.formulario-premium {
+    background: rgba(20, 20, 20, 0.8); /* Fondo oscuro transparente */
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Borde dorado sutil */
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
 
+.titulo-subida {
+    color: #D4AF37;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* LA CAJA DE TEXTO */
+.input-texto {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+.input-texto:focus {
+    outline: none;
+    border-color: #D4AF37; /* Brilla dorado al escribir */
+}
+
+/* CONTENEDOR DE LOS BOTONES */
+.acciones-subida {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+/* BOTÓN DE ELEGIR FOTO (Borde dorado) */
+.btn-secundario {
+    flex: 1;
+    background: transparent;
+    border: 1px solid #D4AF37;
+    color: #D4AF37;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-secundario:hover {
+    background: rgba(212, 175, 55, 0.15);
+    transform: translateY(-2px);
+}
+
+/* BOTÓN DE PUBLICAR (Dorado sólido) */
+.btn-principal {
+    flex: 1;
+    background: linear-gradient(135deg, #D4AF37 0%, #AA8529 100%);
+    border: none;
+    color: #000;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
+
+.btn-principal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
+}
 /* ===== MURO SOCIAL ===== */
 .muro-section{
     padding:clamp(60px,8vw,100px) 20px;
@@ -2060,8 +2151,9 @@ TEXTOS
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, updateDoc, doc, getDoc, deleteDoc, setDoc, serverTimestamp  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import {getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    // Firebase Configuration
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+ 
+  // Firebase Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyBvDDwvOq-p2L2dItuUmgkh8Y7xQxOQEjw",
         authDomain: "grad2026-9547a.firebaseapp.com",
@@ -2071,8 +2163,7 @@ TEXTOS
         appId: "1:541940488857:web:d709879a78e94654127608",
         measurementId: "G-1YDFNE8QH2"
     };
-
-    // Initialize Firebase
+     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -2098,8 +2189,75 @@ TEXTOS
     window.deleteDoc = deleteDoc;
     window.setDoc = setDoc;
     window.serverTimestamp = serverTimestamp;
+    window.storage = getStorage();
+    window.ref = ref;
+    window.uploadBytes = uploadBytes;
+    window.getDownloadURL = getDownloadURL;
 
     console.log("✅ Firebase inicializado correctamente");
+// Inicializa storage
+const storage = getStorage();
+window.subirRecuerdo = async function() {
+    // 1. EL GUARDIA DE SEGURIDAD (Reciclando el login de tu muro social)
+    // Asumimos que tu variable de autenticación global se llama 'window.auth'
+    const usuarioActual = window.auth ? window.auth.currentUser : null; 
+    
+    if (!usuarioActual) {
+        alert("🔒 ¡Inicia sesión en el Muro Social primero para poder subir fotos a la Galería!");
+        return; // Detiene la función, no los deja pasar
+    }
+
+    // 2. RECOPILACIÓN DE DATOS
+    const input = document.getElementById("archivoImagen");
+    const texto = document.getElementById("textoRecuerdo").value;
+    
+    if (input.files.length === 0) return alert("Selecciona una foto primero");
+
+    const archivo = input.files[0];
+    const formData = new FormData();
+    formData.append("image", archivo);
+    
+    const IMGBB_KEY = "TU_API_KEY_AQUI"; // Tu llave gratuita de ImgBB
+
+    try {
+        alert("Subiendo foto a la galería... espera un momento.");
+        
+        // 3. SUBIDA A IMGBB
+        const respuesta = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+            method: "POST",
+            body: formData
+        });
+        
+        const datosImg = await respuesta.json();
+        if (!datosImg.success) throw new Error("Error en ImgBB");
+        
+        const urlImagen = datosImg.data.url;
+        
+        // 4. GUARDADO EN FIREBASE CON EL NOMBRE DEL ALUMNO
+        await window.addDoc(window.collection(window.db, "galeria"), {
+            imagen: urlImagen,
+            descripcion: texto,
+            autor: usuarioActual.displayName || "Alumno", // <-- ¡Aquí atrapamos su nombre de Google!
+            timestamp: new Date()
+        });
+        
+        alert("¡Foto añadida a la galería de recuerdos!");
+        
+        // Limpiamos el formulario para que quede como nuevo
+        if(document.getElementById("textoRecuerdo")) document.getElementById("textoRecuerdo").value = "";
+        document.getElementById("nombreArchivo").innerText = "Ninguna foto seleccionada";
+        input.value = "";
+        
+    } catch (error) {
+        console.error("Error al subir:", error);
+        alert("No se pudo subir la foto.");
+    }
+};
+
+   
+   
+
+   
 </script>
 </head>
 
@@ -2207,7 +2365,25 @@ TEXTOS
 </div>
     </div>
 </section>
-
+<div class="formulario-premium">
+    <h3 class="titulo-subida">📸 QUIERES SUBIR ALGUN RECUERDO, HAZLO AQUI!</h3>
+    
+    <textarea id="textoRecuerdo" class="input-texto" placeholder="Escribe algo sobre este momento..."></textarea>
+    
+    <div class="acciones-subida">
+        <input type="file" id="archivoImagen" accept="image/*" style="display: none;" onchange="document.getElementById('nombreArchivo').innerText = this.files[0].name">
+        
+        <label for="archivoImagen" class="btn-secundario">
+            📁 Elegir Foto
+        </label>
+        
+        <button onclick="subirRecuerdo()" class="btn-principal">
+            🚀 Publicar
+        </button>
+    </div>
+    
+    <div id="nombreArchivo" style="color: #a1a1aa; font-size: 11px; margin-top: 8px; text-align: center;">Ninguna foto seleccionada</div>
+</div>
 <!-- GALERÍA -->
 <section class="gallery-section">
     <h2 class="gallery-title">Recuerdos de nuestra aventura</h2>
@@ -3722,6 +3898,7 @@ function compartirPremio(premio) {
 }
 
 // ===== GALERÍA =====
+// ===== GALERÍA HÍBRIDA EN TIEMPO REAL =====
 document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.getElementById("gallery");
     const filterButtons = document.getElementById("filterButtons");
@@ -3734,15 +3911,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let autoplayInterval = null;
     let isAutoplayActive = false;
+    let categoriasLocales = {}; // Guardará las fotos del JSON
+    let fotosFirebase = [];     // Guardará las fotos en tiempo real de Firebase
 
     function actualizarProgreso() {
         const scrollLeft = gallery.scrollLeft;
         const scrollWidth = gallery.scrollWidth - gallery.clientWidth;
         const progress = scrollWidth === 0 ? 0 : (scrollLeft / scrollWidth) * 100;
-        progressBar.style.width = progress + "%";
+        if(progressBar) progressBar.style.width = progress + "%";
         
         const totalFotos = gallery.querySelectorAll(".gallery-item").length;
-        scrollInfo.textContent = `Desliza para ver más • ${totalFotos} fotos`;
+        if(scrollInfo) scrollInfo.textContent = `Desliza para ver más • ${totalFotos} fotos`;
         
         actualizarBotonesNavegacion();
     }
@@ -3750,9 +3929,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function actualizarBotonesNavegacion() {
         const scrollLeft = gallery.scrollLeft;
         const scrollWidth = gallery.scrollWidth - gallery.clientWidth;
-        
-        prevBtn.classList.toggle("disabled", scrollLeft <= 0);
-        nextBtn.classList.toggle("disabled", scrollLeft >= scrollWidth - 10);
+        if(prevBtn) prevBtn.classList.toggle("disabled", scrollLeft <= 0);
+        if(nextBtn) nextBtn.classList.toggle("disabled", scrollLeft >= scrollWidth - 10);
     }
 
     function navegar(direccion) {
@@ -3760,131 +3938,119 @@ document.addEventListener("DOMContentLoaded", () => {
         const gap = 15;
         const desplazamiento = (itemWidth + gap) * direccion;
         
-        gallery.scrollBy({
-            left: desplazamiento,
-            behavior: 'smooth'
-        });
+        gallery.scrollBy({ left: desplazamiento, behavior: 'smooth' });
     }
 
-    function iniciarAutoplay() {
-        if(isAutoplayActive) return;
-        
-        isAutoplayActive = true;
-        autoplayBtn.classList.add("active");
-        autoplayBtn.textContent = "⏸ Autoplay";
-        gallery.classList.add("autoplay-active");
-        
-        autoplayInterval = setInterval(() => {
-            const scrollLeft = gallery.scrollLeft;
-            const scrollWidth = gallery.scrollWidth - gallery.clientWidth;
-            
-            if(scrollLeft >= scrollWidth - 10) {
-                gallery.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-                navegar(1);
-            }
-        }, 1000);
-    }
-
-    function detenerAutoplay() {
-        if(!isAutoplayActive) return;
-        
-        isAutoplayActive = false;
-        autoplayBtn.classList.remove("active");
-        autoplayBtn.textContent = "▶ Autoplay";
-        gallery.classList.remove("autoplay-active");
-        clearInterval(autoplayInterval);
-    }
-
-    function toggleAutoplay() {
-        if(isAutoplayActive) {
-            detenerAutoplay();
-        } else {
-            iniciarAutoplay();
-        }
-    }
-
-    prevBtn.addEventListener("click", () => navegar(-1));
-    nextBtn.addEventListener("click", () => navegar(1));
-    autoplayBtn.addEventListener("click", toggleAutoplay);
-    
-    gallery.addEventListener("scroll", actualizarProgreso);
-    gallery.addEventListener("mouseenter", () => {
-        if(isAutoplayActive) detenerAutoplay();
-    });
-    gallery.addEventListener("mouseleave", () => {
-        if(!isAutoplayActive && autoplayBtn.classList.contains("active")) {
-            iniciarAutoplay();
-        }
-    });
-
+    // --- CARGA Y FUSIÓN DE DATOS ---
+    // 1. Traemos las fotos fijas del JSON local
     fetch("HISTORIA/lista.json")
     .then(res => {
         if (!res.ok) throw new Error("No se pudo cargar lista.json");
         return res.json();
     })
     .then(data => {
-        const categorias = data.categorias;
+        categoriasLocales = data.categorias;
+        
+        // 2. Nos conectamos a Firebase en tiempo real para traer los aportes de los alumnos
+        window.onSnapshot(window.collection(window.db, "galeria"), (snapshot) => {
+            fotosFirebase = [];
+            snapshot.forEach(doc => {
+                const dataDoc = doc.data();
+                if (dataDoc.imagen) fotosFirebase.push(dataDoc.imagen.trim());
+            });
 
+            // Cada vez que cambie Firebase, reconstruimos los botones y la vista
+            crearFiltrosYMostrar();
+        });
+    })
+    .catch(err => console.error("Error cargando galería:", err));
+
+    function crearFiltrosYMostrar() {
+        filterButtons.innerHTML = ""; // Limpiamos botones viejos
+
+        // Botón "Todos"
         const btnTodos = document.createElement("button");
         btnTodos.className = "filter-btn active";
         btnTodos.textContent = "Todos";
         btnTodos.addEventListener("click", () => {
-            mostrarFotos(getAllFotos());
+            let todas = [];
+            // Juntamos locales
+            Object.values(categoriasLocales).forEach(fotos => todas = todas.concat(fotos));
+            // Juntamos las de Firebase
+            todas = todas.concat(fotosFirebase);
+            
+            mostrarFotos(todas);
             actualizarBotones(btnTodos);
-            detenerAutoplay();
             gallery.scrollTo({ left: 0, behavior: 'smooth' });
         });
         filterButtons.appendChild(btnTodos);
 
-        Object.keys(categorias).forEach(categoria => {
+        // Botones del JSON original
+        Object.keys(categoriasLocales).forEach(categoria => {
             const btn = document.createElement("button");
             btn.className = "filter-btn";
             btn.textContent = categoria;
             btn.addEventListener("click", () => {
-                mostrarFotos(categorias[categoria]);
+                mostrarFotos(categoriasLocales[categoria]);
                 actualizarBotones(btn);
-                detenerAutoplay();
                 gallery.scrollTo({ left: 0, behavior: 'smooth' });
             });
             filterButtons.appendChild(btn);
         });
 
-        function getAllFotos() {
-            let todas = [];
-            Object.values(categorias).forEach(fotos => todas = todas.concat(fotos));
-            return todas;
-        }
-
-        function mostrarFotos(fotos) {
-            gallery.innerHTML = "";
-            fotos.forEach(img => {
-                const div = document.createElement("div");
-                div.className = "gallery-item";
-
-                const image = document.createElement("img");
-                image.src = ruta + img;
-                image.alt = "Foto de la galería";
-
-                image.addEventListener("click", () => {
-                    abrirLightbox(image.src);
-                });
-
-                div.appendChild(image);
-                gallery.appendChild(div);
+        // 🔥 NUEVO FILTRO AUTOMÁTICO: Solo lo creado por alumnos
+        if (fotosFirebase.length > 0) {
+            const btnAlumnos = document.createElement("button");
+            btnAlumnos.className = "filter-btn";
+            btnAlumnos.textContent = "Alumnos 📸";
+            btnAlumnos.addEventListener("click", () => {
+                mostrarFotos(fotosFirebase);
+                actualizarBotones(btnAlumnos);
+                gallery.scrollTo({ left: 0, behavior: 'smooth' });
             });
+            filterButtons.appendChild(btnAlumnos);
+        }
+
+        // Al cargar por primera vez, muestra "Todos" de golpe
+        btnTodos.click();
+    }
+
+    function mostrarFotos(fotos) {
+        gallery.innerHTML = "";
+        fotos.forEach(img => {
+            const div = document.createElement("div");
+            div.className = "gallery-item";
+
+            const image = document.createElement("img");
             
-            setTimeout(() => actualizarProgreso(), 100);
-        }
+            // FILTRO HÍBRIDO: Si es link de ImgBB (http) lo usa directo, si no le pone HISTORIA/
+            image.src = img.startsWith("http") ? img : (ruta + img);
+            image.alt = "Foto de la galería";
 
-        function actualizarBotones(btnActivo) {
-            document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-            btnActivo.classList.add("active");
-        }
+            image.onerror = function() {
+                this.parentElement.style.display = 'none';
+            };
 
-        mostrarFotos(getAllFotos());
-    })
-    .catch(err => console.error("Error cargando galería:", err));
+            image.addEventListener("click", () => {
+                if (typeof abrirLightbox === "function") abrirLightbox(image.src);
+            });
+
+            div.appendChild(image);
+            gallery.appendChild(div);
+        });
+        
+        setTimeout(() => actualizarProgreso(), 150);
+    }
+
+    function actualizarBotones(btnActivo) {
+        document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+        btnActivo.classList.add("active");
+    }
+
+    // Controles de navegación y autoplay heredados
+    if(prevBtn) prevBtn.addEventListener("click", () => navegar(-1));
+    if(nextBtn) nextBtn.addEventListener("click", () => navegar(1));
+    if(gallery) gallery.addEventListener("scroll", actualizarProgreso);
 });
 
 // ===== SCROLL REVEAL =====
@@ -4213,13 +4379,6 @@ text-align:center;
 </div>
 
 
-<!-- =========================
-SCRIPT
-========================= -->
-<script type="module">
-    // Aquí se quedan tus imports y la lógica de Firebase
-</script>
-
 <script>
    window.iniciarConteoPremios = function() {
     const votosRef = window.collection(window.db, "votos_premios");
@@ -4286,6 +4445,7 @@ SCRIPT
         }
     }, 500);
     };
+    
 </script>
 <script>
 
