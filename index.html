@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
     
 <title>Preparatoria San Andrés | Clausura 2026</title>
-
+    
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -3039,31 +3039,39 @@ POPUP PEQUEÑO
     margin-top:10px;
 }
 
-.cerrar-alumno{
-
-    position:absolute;
-
-    top:12px;
-    right:18px;
-
-    z-index:999999;
-
-    color:white;
-
-    font-size:35px;
-
-    cursor:pointer;
-
-    transition:.2s;
+.cerrar-alumno {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    width: 44px;  /* Área táctil recomendada para celulares */
+    height: 44px;
+    
+    /* Diseño premium */
+    background: rgba(0, 0, 0, 0.8);
+    color: #D4AF37;
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+    
+    /* Centramos la X perfectamente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    
+    /* Forzamos que esté por encima de la foto del alumno */
+    z-index: 999999; 
+    
+    /* Elimina el retraso táctil del celular */
+    touch-action: manipulation;
 }
 
-.cerrar-alumno:hover{
-
-    transform:scale(1.2);
-
-    color:gold;
+/* Efecto al pasar el mouse (para computadora) */
+.cerrar-alumno:hover {
+    background: #D4AF37;
+    color: #000;
 }
-
 /* =========================
 RESPONSIVE
 ========================= */
@@ -4675,19 +4683,17 @@ footer h2{
 <!-- POPUP ALUMNO -->
 
 <div class="modal-alumno" id="modalAlumno">
-
     <div class="popup-alumno">
-
-        <span class="cerrar-alumno">
+        
+        <span class="cerrar-alumno" onclick="document.getElementById('modalAlumno').style.display='none'">
             &times;
         </span>
 
-        <img id="imgAlumno">
+        <img id="imgAlumno" alt="Foto del nominado">
 
         <h2 id="nombreAlumno"></h2>
 
     </div>
-
 </div>
 
 </div>
@@ -4705,6 +4711,7 @@ footer h2{
             <button onclick="confirmarVotoFirebase()" class="btn-confirmar-voto">Enviar Voto</button>
         </div>
     </div>
+    
 </div>
 </body>
     
