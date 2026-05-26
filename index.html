@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
     
 <title>Preparatoria San Andrés | Clausura 2026</title>
-    
+
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -3065,6 +3065,7 @@ POPUP PEQUEÑO
     
     /* Elimina el retraso táctil del celular */
     touch-action: manipulation;
+    pointer-events: auto !important;
 }
 
 /* Efecto al pasar el mouse (para computadora) */
@@ -3217,6 +3218,25 @@ window.onAuthStateChanged(window.auth, (user) => {
     }
     }
 
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const botonCerrar = document.querySelector(".cerrar-alumno");
+    const modal = document.getElementById("modalAlumno");
+
+    if (botonCerrar && modal) {
+        // Función maestra para destruir cualquier evento y cerrar el modal
+        const forzarCierre = (e) => {
+            e.preventDefault();   // Detiene el comportamiento "fantasma" de los celulares
+            e.stopPropagation();  // Evita que el toque "atraviese" la X y le dé a la foto
+            modal.style.display = 'none';
+        };
+
+        // Escucha el clic normal (para computadora)
+        botonCerrar.addEventListener("click", forzarCierre);
+        
+        // Escucha el toque directo del dedo (Prioridad máxima en celulares)
+        botonCerrar.addEventListener("touchstart", forzarCierre, { passive: false });
+    }
 });
 // ==========================================
 // SISTEMA DE VOTACIÓN CON LISTA PREDEFINIDA
