@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="Preparatoria San Andrés | Generación 2026">
+<meta property="og:title" content="Preparatoria San Andrés | Generación 2026">
 <meta property="og:description" content="¡Acompáñanos a celebrar nuestra graduación! Entra para ver nuestro muro social, premios y galería de recuerdos.">
 <meta property="og:image" content="https://arceo86.github.io/prepaSA26/logo1.png"> 
 <meta property="og:url" content="https://arceo86.github.io/prepaSA26/">
@@ -2318,26 +2318,30 @@ window.subirRecuerdo = async function() {
         <h2>Generación 2023 - 2026</h2>
         <p class="ceremonia-title">Ceremonia de Clausura</p>
         <button class="btn">10 de Julio | 10:00 AM</button>
-         <p class="ceremonia-title">Faltan...</p>
-        <div class="countdown-pro">
-            <div class="time-box">
-                <span id="dias">00</span>
-                <p>Días</p>
-            </div>
-            <div class="time-box">
-                <span id="horas">00</span>
-                <p>Horas</p>
-            </div>
-            <div class="time-box">
-                <span id="minutos">00</span>
-                <p>Min</p>
-            </div>
-            <div class="time-box">
-                <span id="segundos">00</span>
-                <p>Seg</p>
+        
+        <div id="zona-reloj">
+            <p class="ceremonia-title">Faltan...</p>
+            <div class="countdown-pro">
+                <div class="time-box">
+                    <span id="dias">00</span>
+                    <p>Días</p>
+                </div>
+                <div class="time-box">
+                    <span id="horas">00</span>
+                    <p>Horas</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutos">00</span>
+                    <p>Min</p>
+                </div>
+                <div class="time-box">
+                    <span id="segundos">00</span>
+                    <p>Seg</p>
+                </div>
             </div>
         </div>
     </div>
+</section>
 </section>
 
 <!-- EVENTO -->
@@ -3090,7 +3094,7 @@ RESPONSIVE
 }
 
 </style>
-
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
 // ===== MENU HAMBURGUESA =====
 const hamburger = document.getElementById('hamburger');
@@ -4119,7 +4123,8 @@ function playMusic() {
             .catch(err => console.log("⚠️ Autoplay bloqueado. Haz clic para reproducir música"));
     }
 }
-// MODIFICACIÓN DEL EVENTO PARA EL PRELOADER (Versión Optimizada)
+
+   // MODIFICACIÓN DEL EVENTO PARA EL PRELOADER (Versión Optimizada)
 document.addEventListener('DOMContentLoaded', () => {
     
     // Tus funciones originales se ejecutan de inmediato
@@ -4187,13 +4192,110 @@ musicToggle.addEventListener('click', (e) => {
     }
 });
 
-// ===== COUNTDOWN =====
-const fechaEvento = new Date("July 10, 2026 10:00:00").getTime();
+// ===== COUNTDOWN DE GRADUACIÓN =====
+const fechaEvento = new Date("july  10, 2026 10:00:00  ").getTime();
 
-setInterval(() => {
+const relojInterval = setInterval(() => {
     const ahora = new Date().getTime();
     const diferencia = fechaEvento - ahora;
 
+    // 🔥 EXPLOSIÓN DE LA HORA CERO
+    if (diferencia <= 0) {
+        clearInterval(relojInterval);
+
+        // 1. Apuntamos al nuevo ID que agrupa todo el bloque
+        const contenedorReloj = document.getElementById("zona-reloj"); 
+        
+        if(contenedorReloj) {
+            // Reemplazamos los números y el "Faltan..." por el mensaje de victoria dorado
+           contenedorReloj.innerHTML = `
+    <style>
+        /* Animación del brillo dorado pasando por el texto */
+        @keyframes brillo-metalico {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        /* Efecto de explosión al aparecer */
+        @keyframes pop-entrada {
+            0% { transform: scale(0.5); opacity: 0; filter: blur(10px); }
+            70% { transform: scale(1.1); opacity: 1; filter: blur(0px); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Entrada elegante para el texto de abajo */
+        @keyframes fade-arriba {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .titulo-epico {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #AA771C, #D4AF37, #FCF6BA, #D4AF37, #AA771C);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0px 0px 20px rgba(212, 175, 55, 0.6));
+            animation: pop-entrada 1s ease-out both, brillo-metalico 3s linear infinite 1s;
+        }
+        
+        .subtitulo-epico {
+            color: #ffffff;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            /* 🔥 CAMBIAMOS 'forwards' por 'both' para que no desaparezca en celulares ni PC */
+            animation: fade-arriba 1s ease-out 0.8s both; 
+        }
+        
+        .detalle-generacion {
+            display: block;
+            font-size: 0.9rem;
+            color: #D4AF37;
+            letter-spacing: 5px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+    </style>
+
+    <h2 class="titulo-epico">¡LLEGÓ EL GRAN DÍA! 🎓</h2>
+    <p class="subtitulo-epico">
+        Bienvenidos a la Ceremonia de Clausura
+        <span class="detalle-generacion">Generación 2023 - 2026</span>
+    </p>
+`;
+        }
+
+        // 2. Lluvia de confeti elegante (Dorado y plateado)
+        const duration = 15 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999999 };
+
+        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+        const confetiInterval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(confetiInterval);
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                colors: ['#D4AF37', '#AA8529', '#FFFFFF'],
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } 
+            }));
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                colors: ['#D4AF37', '#AA8529', '#FFFFFF'],
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } 
+            }));
+        }, 250);
+
+        return; 
+    }
+
+    // --- FUNCIONAMIENTO NORMAL DEL RELOJ ---
     const dias = Math.floor(diferencia / (1000*60*60*24));
     const horas = Math.floor((diferencia % (1000*60*60*24)) / (1000*60*60));
     const minutos = Math.floor((diferencia % (1000*60*60)) / (1000*60));
@@ -4203,6 +4305,7 @@ setInterval(() => {
     document.getElementById("horas").textContent = horas;
     document.getElementById("minutos").textContent = minutos;
     document.getElementById("segundos").textContent = segundos;
+
 }, 1000);
 
 /* =========================
