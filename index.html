@@ -4119,26 +4119,42 @@ function playMusic() {
             .catch(err => console.log("⚠️ Autoplay bloqueado. Haz clic para reproducir música"));
     }
 }
+// MODIFICACIÓN DEL EVENTO PARA EL PRELOADER (Versión Optimizada)
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Tus funciones originales se ejecutan de inmediato
+    if (typeof playMusic === 'function') playMusic();
+    if (typeof checkReveal === 'function') checkReveal(); 
 
-    // MODIFICACIÓN DEL EVENTO LOAD PARA EL PRELOADER
-window.addEventListener('load', () => {
-    playMusic();
-    checkReveal(); // Asegura que las animaciones de scroll se activen al cargar
+    const preloader = document.getElementById("preloader");
+    
+    // Ocultar la pantalla de carga rápidamente
+    // Cambiamos los 6 segundos (6000) por solo medio segundo (500)
+    setTimeout(() => {
+        if (preloader) {
+            preloader.style.transition = "opacity 0.5s ease"; // Suaviza la salida
+            preloader.style.opacity = "0";
 
-    // Ocultar la pantalla de carga suavemente
-   setTimeout(()=>{
-
-        document.getElementById("preloader").style.opacity = "0";
-
-        setTimeout(()=>{
-
-            document.getElementById("preloader").style.display = "none";
-
-        },1200);
-
-    },6000);
-
+            // En lugar de esperar 1200ms, esperamos solo 500ms para quitarlo del camino
+            setTimeout(() => {
+                preloader.style.display = "none";
+            }, 500);
+        }
+    }, 500); 
 });
+
+// 🚨 EL BOTÓN DE PÁNICO (Seguro de vida)
+// Si algo se traba, a los 4 segundos forzamos que desaparezca sí o sí.
+setTimeout(() => {
+    const preloader = document.getElementById("preloader");
+    if (preloader && preloader.style.display !== "none") {
+        console.log("Preloader forzado a cerrar para no bloquear al usuario.");
+        preloader.style.opacity = "0";
+        setTimeout(() => {
+            preloader.style.display = "none";
+        }, 500);
+    }
+}, 4000);
 
 let firstClick = false;
 document.addEventListener('click', () => {
