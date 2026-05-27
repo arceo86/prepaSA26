@@ -8,7 +8,7 @@
 <meta property="og:image" content="https://arceo86.github.io/prepaSA26/logo1.png"> 
 <meta property="og:url" content="https://arceo86.github.io/prepaSA26/">
 <meta property="og:type" content="website">
-    
+
 <title>Preparatoria San Andrés | Clausura 2026</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -2197,28 +2197,80 @@ TEXTOS
     console.log("✅ Firebase inicializado correctamente");
 // Inicializa storage
 const storage = getStorage();
-
-// INTERCEPTOR DEL BOTÓN "ELEGIR FOTO"
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    const inputArchivo = document.getElementById("archivoImagen");
+// LÓGICA DE LA PUERTA DE BIENVENIDA
+// ==========================================
+
+// 1. Ocultar la puerta (para invitados o cuando alguien ya se logueó)
+window.cerrarPuerta = function(esInvitado = false) {
+    const modalBienvenida = document.getElementById("modal-bienvenida");
     
-    if (inputArchivo) {
-        inputArchivo.addEventListener("click", function(event) {
-            const usuarioActual = window.auth ? window.auth.currentUser : null; 
-            
-            if (!usuarioActual) {
-                // 1. Evitamos que se abra la galería de fotos del celular
-                event.preventDefault(); 
-                
-                // 2. Disparamos la ventana de Google INMEDIATAMENTE (Sin alerts de por medio)
-                if (typeof window.iniciarSesion === 'function') {
-                    window.iniciarSesion();
-                } else {
-                    console.error("La función iniciarSesion no está disponible.");
-                }
+    if (esInvitado) {
+        // Le damos un "ticket" digital al celular para que no vuelva a preguntar
+        localStorage.setItem("pasoLaPuerta", "true");
+    }
+
+    if (modalBienvenida) {
+        modalBienvenida.style.opacity = "0";
+        setTimeout(() => modalBienvenida.style.display = "none", 500);
+    }
+};
+
+// 2. Acción de entrar con Google desde la puerta
+window.iniciarDesdePuerta = function() {
+    // Aquí mandamos llamar la función real que ya tienes conectada a tu botón de Google
+    // (Asegúrate de que este ID sea el de tu botón real del muro social)
+    const botonLoginOculto = document.getElementById("loginGoogleBtn"); 
+    if (botonLoginOculto) {
+        botonLoginOculto.click();
+    } else {
+        // Si tienes una función directa, úsala aquí, ej: window.iniciarSesion();
+        console.error("No se encontró el botón de inicio de sesión");
+    }
+};
+
+// 3. El pase automático: Si Firebase detecta que ya hay un usuario guardado, quita la puerta sin preguntar
+// (Asegúrate de poner esto dentro de tu onAuthStateChanged)
+// EL VIGILANTE MAESTRO (onAuthStateChanged)
+onAuthStateChanged(auth, (user) => {
+    const zonaSubida = document.getElementById("seccion-subida");
+    const btnLogin = document.getElementById("btn-login");
+    const btnLogout = document.getElementById("btn-logout");
+    const mensajeUsuario = document.getElementById("mensaje-usuario");
+    const usuarioNav = document.getElementById("usuario-nav");
+    const modalBienvenida = document.getElementById("modal-bienvenida");
+
+    if (user) {
+        // === ESCENARIO 1: ES UN ALUMNO LOGUEADO ===
+        // 1. Ocultamos la puerta si estaba visible
+        window.cerrarPuerta(); 
+        
+        // 2. Mostramos el formulario de fotos y actualizamos su nombre
+        if(zonaSubida) zonaSubida.style.display = "block";
+        if(btnLogin) btnLogin.style.display = "none";
+        if(btnLogout) btnLogout.style.display = "inline-block";
+        if(mensajeUsuario) mensajeUsuario.innerHTML = `¡Hola, <strong style="color:#D4AF37;">${user.displayName}</strong>!`;
+        if(usuarioNav) usuarioNav.textContent = `✨ ${user.displayName}`;
+
+    } else {
+        // === ESCENARIO 2: NO HAY SESIÓN ===
+        // Ocultamos las funciones premium
+        if(zonaSubida) zonaSubida.style.display = "none";
+        if(btnLogin) btnLogin.style.display = "inline-block";
+        if(btnLogout) btnLogout.style.display = "none";
+        if(mensajeUsuario) mensajeUsuario.innerHTML = "Inicia sesión para compartir fotos.";
+        if(usuarioNav) usuarioNav.textContent = "✨ Invitado";
+
+        // Revisamos si ya le habíamos dado el "ticket" de invitado antes
+        const yaEsInvitado = localStorage.getItem("pasoLaPuerta");
+
+        if (!yaEsInvitado) {
+            // Si NO tiene ticket y NO está logueado, le mostramos la puerta VIP
+            if(modalBienvenida) {
+                modalBienvenida.style.display = "flex";
+                modalBienvenida.style.opacity = "1";
             }
-        });
+        }
     }
 });
 window.subirRecuerdo = async function() {
@@ -2227,8 +2279,8 @@ window.subirRecuerdo = async function() {
     const usuarioActual = window.auth ? window.auth.currentUser : null; 
     
     if (!usuarioActual) {
-        // alert("🔒 ¡Inicia sesión en el Muro Social primero para poder subir fotos a la Galería!");
-         if(typeof window.iniciarSesion === 'function') window.iniciarSesion();
+        loginGoogleBtn.click(); // Si no hay usuario, forzamos el inicio de sesión
+       // alert("🔒 ¡Inicia sesión en el Muro Social primero para poder subir fotos a la Galería!");
         return; // Detiene la función, no los deja pasar
     }
 
@@ -2303,6 +2355,23 @@ window.subirRecuerdo = async function() {
 
 </div>
     </div>
+    <div id="modal-bienvenida" style="display: none;">
+    <div class="caja-bienvenida">
+        <h2 style="font-family: 'Cinzel', serif; color: #D4AF37; margin-bottom: 10px; font-size: 28px;">Bienvenido</h2>
+        <p style="color: #cbd5e1; font-size: 15px; margin-bottom: 25px;">Para vivir la experiencia completa de la Generación y compartir tus recuerdos, identifícate.</p>
+        
+        <button onclick="iniciarDesdePuerta()" class="btn-puerta-google">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+            Soy Alumno (Google)
+        </button>
+        
+        <div style="margin: 15px 0; color: #64748b; font-size: 12px; letter-spacing: 2px;">O</div>
+        
+        <button onclick="cerrarPuerta()" class="btn-puerta-invitado">
+            Entrar como Invitado
+        </button>
+    </div>
+</div>
     
 <!-- AUDIO DE FONDO -->
 <audio id="backgroundMusic" preload="auto" crossorigin="anonymous">
@@ -2318,8 +2387,13 @@ window.subirRecuerdo = async function() {
 <!-- NAV -->
 <div class="nav">
     <h1>
-        <img src="logo1.png" alt="Logo" id="logoClickable">
-        <span>Preparatoria San Andrés</span>
+        <img src="logo1.png" alt="Logo" id="logoClickable" style="vertical-align: middle;">
+        
+        <div style="display: inline-block; vertical-align: middle; text-align: left; margin-left: 20px;">
+            <span style="display: block;">Preparatoria San Andrés</span>
+            
+            <span id="usuario-nav" style="display: block; font-size: 11px; color: #D4AF37; font-family: 'Montserrat', sans-serif; font-weight: 600; margin-top: 2px; letter-spacing: 1px; text-transform: uppercase;"></span>
+        </div>
     </h1>
     <div class="hamburger" id="hamburger">
         <span></span>
@@ -2689,6 +2763,76 @@ ESTILOS
 ========================================= -->
 
 <style>
+    /* =========================================
+   ESTILOS DE LA PUERTA DE BIENVENIDA
+   ========================================= */
+#modal-bienvenida {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.90); /* Fondo oscuro elegante */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999990; /* Justo debajo del preloader pero encima de todo lo demás */
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+}
+
+.caja-bienvenida {
+    background: linear-gradient(145deg, #111827, #0f172a);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.1);
+    animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-puerta-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: white;
+    color: #333;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+}
+
+.btn-puerta-google:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
+}
+
+.btn-puerta-google img {
+    width: 20px; height: 20px;
+}
+
+.btn-puerta-invitado {
+    background: transparent;
+    color: #a1a1aa;
+    border: 1px solid #3f3f46;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-puerta-invitado:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: #D4AF37;
+    border-color: #D4AF37;
+}
 /* =========================================
    MARCADOR EN VIVO DE PREMIOS
    ========================================= */
