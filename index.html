@@ -2197,7 +2197,7 @@ TEXTOS
     console.log("✅ Firebase inicializado correctamente");
 // Inicializa storage
 const storage = getStorage();
-    // ==========================================
+
 // INTERCEPTOR DEL BOTÓN "ELEGIR FOTO"
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
@@ -2205,19 +2205,18 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (inputArchivo) {
         inputArchivo.addEventListener("click", function(event) {
-            // El guardia revisa si hay sesión activa
             const usuarioActual = window.auth ? window.auth.currentUser : null; 
             
             if (!usuarioActual) {
-                // 1. Evitamos que se abra la ventana de archivos del celular/PC
+                // 1. Evitamos que se abra la galería de fotos del celular
                 event.preventDefault(); 
                 
-                // 2. Le avisamos por qué no lo dejamos pasar
-                alert("🔒 ¡Inicia sesión en el Muro Social primero para poder elegir fotos!");
-                
-                // 3. (OPCIONAL) Forzamos el click en tu botón de inicio de sesión
-                // Si quieres que el login de Google salte automáticamente, descomenta la línea de abajo:
-              if(typeof window.iniciarSesion === 'function') window.iniciarSesion();
+                // 2. Disparamos la ventana de Google INMEDIATAMENTE (Sin alerts de por medio)
+                if (typeof window.iniciarSesion === 'function') {
+                    window.iniciarSesion();
+                } else {
+                    console.error("La función iniciarSesion no está disponible.");
+                }
             }
         });
     }
@@ -2228,7 +2227,7 @@ window.subirRecuerdo = async function() {
     const usuarioActual = window.auth ? window.auth.currentUser : null; 
     
     if (!usuarioActual) {
-        alert("🔒 ¡Inicia sesión en el Muro Social primero para poder subir fotos a la Galería!");
+        // alert("🔒 ¡Inicia sesión en el Muro Social primero para poder subir fotos a la Galería!");
          if(typeof window.iniciarSesion === 'function') window.iniciarSesion();
         return; // Detiene la función, no los deja pasar
     }
