@@ -17,6 +17,22 @@
 
 <style>
     /* =========================================
+   ANIMACIÓN DEL CARGADOR DE GOOGLE
+   ========================================= */
+.spinner-dorado {
+    width: 45px;
+    height: 45px;
+    border: 4px solid rgba(212, 175, 55, 0.2); /* Fondo sutil */
+    border-top-color: #D4AF37; /* Borde brillante */
+    border-radius: 50%;
+    animation: girar-suave 1s linear infinite;
+}
+
+@keyframes girar-suave {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+    /* =========================================
    ESTILOS DEL MODAL DE VOTACIÓN
    ========================================= */
 .modal-votacion-overlay {
@@ -2197,6 +2213,20 @@ TEXTOS
     console.log("✅ Firebase inicializado correctamente");
 // Inicializa storage
 const storage = getStorage();
+
+// Función para mostrar el cargador
+window.mostrarCargaGoogle = function() {
+    const loader = document.getElementById("loader-google");
+    if (loader) {
+        loader.style.display = "flex";
+        
+        // Seguro de vida: Si el alumno cierra la ventana de Google sin loguearse,
+        // quitamos el cargador después de 6 segundos para que no se quede atrapado.
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 6000); 
+    }
+};
 // ==========================================
 // LÓGICA DE LA PUERTA DE BIENVENIDA
 // ==========================================
@@ -2240,8 +2270,15 @@ onAuthStateChanged(auth, (user) => {
     const usuarioNav = document.getElementById("usuario-nav");
     const modalBienvenida = document.getElementById("modal-bienvenida");
 
+    // 🔥 1. Capturamos el cargador de Google aquí arriba
+    const loaderGoogle = document.getElementById("loader-google");
+    
     if (user) {
         // === ESCENARIO 1: ES UN ALUMNO LOGUEADO ===
+        
+        // 🔥 2. APAGAMOS EL CARGADOR DE GOOGLE AL INSTANTE
+        if (loaderGoogle) loaderGoogle.style.display = "none";
+
         // 1. Ocultamos la puerta si estaba visible
         window.cerrarPuerta(); 
         
@@ -2254,6 +2291,10 @@ onAuthStateChanged(auth, (user) => {
 
     } else {
         // === ESCENARIO 2: NO HAY SESIÓN ===
+        
+        // 🔥 3. También lo apagamos aquí por si cancelan el login, para que no se quede estorbando
+        if (loaderGoogle) loaderGoogle.style.display = "none";
+
         // Ocultamos las funciones premium
         if(zonaSubida) zonaSubida.style.display = "none";
         if(btnLogin) btnLogin.style.display = "inline-block";
@@ -2354,6 +2395,12 @@ window.subirRecuerdo = async function() {
     </p>
 
 </div>
+<div id="loader-google" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px); z-index: 9999999; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="spinner-dorado"></div>
+    <p style="color: #D4AF37; font-family: 'Montserrat', sans-serif; font-size: 14px; margin-top: 15px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+        Conectando con Google...
+    </p>
+</div>
     </div>
     <div id="modal-bienvenida" style="display: none;">
     <div class="caja-bienvenida">
@@ -2367,9 +2414,9 @@ window.subirRecuerdo = async function() {
         
         <div style="margin: 15px 0; color: #64748b; font-size: 12px; letter-spacing: 2px;">O</div>
         
-        <button onclick="cerrarPuerta()" class="btn-puerta-invitado">
-            Entrar como Invitado
-        </button>
+        <button onclick="cerrarPuerta(true)" class="btn-puerta-invitado">
+    Entrar como Invitado
+</button>
     </div>
 </div>
     
@@ -2416,8 +2463,9 @@ window.subirRecuerdo = async function() {
     <div>
         <h2>Generación 2023 - 2026</h2>
         <p class="ceremonia-title">Ceremonia de Clausura</p>
-        <button class="btn">10 de Julio | 10:00 AM</button>
-        
+<button class="btn" style="font-size: 1.5rem; padding: 18px 45px; letter-spacing: 2px; font-weight: bold; border-radius: 50px;">
+    10 de Julio | 14:00 HRS
+</button>        
         <div id="zona-reloj">
             <p class="ceremonia-title">Faltan...</p>
             <div class="countdown-pro">
@@ -2763,6 +2811,7 @@ ESTILOS
 ========================================= -->
 
 <style>
+    
     /* =========================================
    ESTILOS DE LA PUERTA DE BIENVENIDA
    ========================================= */
@@ -3312,7 +3361,28 @@ document.addEventListener("keydown", e => {
         cerrarLightbox();
     }
 });
-
+document.addEventListener("DOMContentLoaded", () => {
+    const inputArchivo = document.getElementById("archivoImagen");
+    
+    if (inputArchivo) {
+        inputArchivo.addEventListener("click", function(event) {
+            const usuarioActual = window.auth ? window.auth.currentUser : null; 
+            
+            if (!usuarioActual) {
+                event.preventDefault(); // Bloquea la galería de fotos
+                
+                // 🔥 1. PRENDEMOS EL AVISO VISUAL DE INMEDIATO
+                window.mostrarCargaGoogle();
+                
+                // 2. Disparamos la ventana de Google
+                const botonLoginOculto = document.getElementById("loginGoogleBtn"); 
+                if (botonLoginOculto) {
+                    botonLoginOculto.click();
+                }
+            }
+        });
+    }
+});
 
 // ===== MURO SOCIAL CON FIREBASE =====
 document.addEventListener("DOMContentLoaded", () => {
@@ -4362,7 +4432,7 @@ musicToggle.addEventListener('click', (e) => {
 });
 
 // ===== COUNTDOWN DE GRADUACIÓN =====
-const fechaEvento = new Date("july  10, 2026 10:00:00  ").getTime();
+const fechaEvento = new Date("july  10, 2026 14:00:00  ").getTime();
 
 const relojInterval = setInterval(() => {
     const ahora = new Date().getTime();
