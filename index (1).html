@@ -1,0 +1,5255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Preparatoria San Andrés | Clausura 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+    /* =========================================
+   ANIMACIÓN DEL CARGADOR DE GOOGLE
+   ========================================= */
+.spinner-dorado {
+    width: 45px;
+    height: 45px;
+    border: 4px solid rgba(212, 175, 55, 0.2); /* Fondo sutil */
+    border-top-color: #D4AF37; /* Borde brillante */
+    border-radius: 50%;
+    animation: girar-suave 1s linear infinite;
+}
+
+@keyframes girar-suave {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+    /* =========================================
+   ESTILOS DEL MODAL DE VOTACIÓN
+   ========================================= */
+.modal-votacion-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-votacion-box {
+    background: linear-gradient(145deg, #111827, #0f172a);
+    border: 2px solid #D4AF37;
+    border-radius: 20px;
+    padding: 35px 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.2);
+    animation: zoomIn 0.3s ease-out;
+}
+
+.select-elegante {
+    width: 100%;
+    padding: 12px 15px;
+    background: #020617;
+    color: #ffffff;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+
+.select-elegante:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.btn-cancelar-voto, .btn-confirmar-voto {
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-cancelar-voto {
+    background: transparent;
+    color: #a1a1aa;
+    border: 1px solid #3f3f46;
+}
+
+.btn-cancelar-voto:hover { background: #3f3f46; color: white; }
+
+.btn-confirmar-voto {
+    background: linear-gradient(135deg, #FFD700, #D4AF37);
+    color: #020617;
+}
+
+.btn-confirmar-voto:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+    /* PRELOADER */
+    .hat{
+    position:absolute;
+    top:-80px;
+    font-size:30px;
+    animation-name:fall;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    pointer-events:none;
+    will-change:transform;
+}
+
+@keyframes fall{
+
+      0%{
+        transform:
+        translate3d(0,-100px,0)
+        rotate(0deg);
+
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    100%{
+        transform:
+        translate3d(var(--drift),120vh,0)
+        rotate(720deg);
+
+        opacity:0;
+    }
+
+}
+@keyframes pulseLogo{
+
+   0%{
+        transform:scale(0.95);
+        opacity:.08;
+    }
+
+    25%{
+        transform:scale(1);
+        opacity:.14;
+    }
+
+    50%{
+        transform:scale(1.08);
+        opacity:.20;
+    }
+
+    75%{
+        transform:scale(1);
+        opacity:.14;
+    }
+
+    100%{
+        transform:scale(0.95);
+        opacity:.08;
+    }
+
+}
+
+@keyframes rotateLogo{
+
+    from{
+        rotate:0deg;
+    }
+
+    to{
+        rotate:360deg;
+    }
+
+}
+.graduation-rain{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+}
+    /* BOTÓN EVENTO */
+.event-btn{
+    margin-top:20px;
+    padding:12px 24px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg, #D4AF37, #5A0F1C);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 8px 25px rgba(212,175,55,0.4);
+    position:relative;
+    overflow:hidden;
+}
+
+.event-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    transition:0.5s;
+}
+
+.event-btn:hover::before{
+    left:100%;
+}
+
+.event-btn:hover{
+    transform:scale(1.08);
+    box-shadow:
+        0 12px 35px rgba(212,175,55,0.7),
+        0 0 20px rgba(90,15,28,0.5);
+}
+
+/* CARD EVENTO */
+.event-card{
+    cursor:pointer;
+}
+
+.event-card:hover{
+    border-color:#D4AF37;
+}
+    /* BOTÓN UBICACIÓN */
+.location-btn{
+    margin-top:20px;
+    padding:12px 24px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 8px 25px rgba(90,15,28,0.4);
+    position:relative;
+    overflow:hidden;
+}
+
+.location-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    transition:0.5s;
+}
+
+.location-btn:hover::before{
+    left:100%;
+}
+
+.location-btn:hover{
+    transform:scale(1.08);
+    box-shadow:
+        0 12px 35px rgba(90,15,28,0.7),
+        0 0 20px rgba(212,175,55,0.5);
+}
+
+/* EFECTO CARD UBICACIÓN */
+.location-card{
+    cursor:pointer;
+}
+
+.location-card:hover{
+    border-color:#D4AF37;
+}
+:root{
+    --gold:#D4AF37;
+    --gold-light:#F5F5F5;
+    --purple:#5A0F1C;
+    --pink:#5A0F1C;
+    --cyan:#D4AF37;
+    --dark:#0B0B0B;
+}
+
+*{box-sizing:border-box;}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background:linear-gradient(135deg, #0B0B0B 0%, #1a1a2e 50%, #0B0B0B 100%);
+    color:white;
+    overflow-x:hidden;
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes glowNumber{
+    from{
+        text-shadow:
+            0 0 10px rgba(90,15,28,0.8),
+            0 0 20px rgba(212,175,55,0.6);
+    }
+    to{
+        text-shadow:
+            0 0 20px rgba(212,175,55,1),
+            0 0 40px rgba(90,15,28,0.8),
+            0 0 60px rgba(212,175,55,0.6);
+    }
+}
+
+@keyframes titleGlow{
+    0%,100%{
+        text-shadow:
+            0 0 30px rgba(90,15,28,0.8),
+            0 0 60px rgba(212,175,55,0.6),
+            0 0 90px rgba(90,15,28,0.4),
+            0 4px 20px rgba(0,0,0,0.5);
+    }
+    50%{
+        text-shadow:
+            0 0 50px rgba(212,175,55,1),
+            0 0 80px rgba(90,15,28,0.8),
+            0 0 120px rgba(212,175,55,0.6),
+            0 4px 25px rgba(0,0,0,0.7);
+    }
+}
+
+@keyframes float{
+    0%,100%{ transform:translateY(-50%); }
+    50%{ transform:translateY(-65%); }
+}
+
+@keyframes bounce{
+    0%,100%{ transform:scale(1) translateY(0); }
+    50%{ transform:scale(1.2) translateY(-5px); }
+}
+
+@keyframes zoomIn{
+    from{transform:scale(0.7); opacity:0;}
+    to{transform:scale(1); opacity:1;}
+}
+
+/* ===== NAV ===== */
+.nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:rgba(11,11,11,0.85);
+    backdrop-filter:blur(20px);
+    z-index:100;
+    border-bottom:1px solid rgba(90,15,28,0.3);
+}
+
+.nav h1{
+    cursor:pointer;
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, var(--gold), var(--pink));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(16px,4vw,24px);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:0;
+    transition:0.3s;
+}
+
+.nav h1:hover{
+    transform:scale(1.05);
+}
+
+.nav h1 img{
+    height:clamp(45px,8vw,65px);
+    border-radius:10px;
+    background:rgba(255,255,255,0.05);
+    padding:5px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 0 20px rgba(124,58,237,0.4);
+    transition:0.3s;
+}
+
+.nav h1 img:hover{
+    box-shadow:0 0 30px rgba(236,72,153,0.6);
+}
+
+.nav-links{
+    display:flex;
+    gap:clamp(15px,3vw,35px);
+    align-items:center;
+}
+
+.nav a{
+    color:#F5F5F5;
+    text-decoration:none;
+    position:relative;
+    font-size:clamp(12px,2vw,15px);
+    font-weight:600;
+    transition:0.3s;
+}
+
+.nav a::after{
+    content:"";
+    position:absolute;
+    width:0;
+    height:2px;
+    background:linear-gradient(90deg, #5A0F1C, #D4AF37);
+    bottom:-5px;
+    left:0;
+    transition:.3s;
+}
+
+.nav a:hover{
+    color:#D4AF37;
+}
+
+.nav a:hover::after{
+    width:100%;
+}
+
+.hamburger{
+    display:none;
+    flex-direction:column;
+    cursor:pointer;
+    gap:6px;
+}
+
+.hamburger span{
+    width:25px;
+    height:3px;
+    background:linear-gradient(90deg, var(--gold), var(--pink));
+    border-radius:3px;
+    transition:0.3s;
+}
+
+.hamburger.active span:nth-child(1){
+    transform:rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.active span:nth-child(2){
+    opacity:0;
+}
+
+.hamburger.active span:nth-child(3){
+    transform:rotate(-45deg) translate(7px, -7px);
+}
+
+@media(max-width:768px){
+    .nav{
+        padding:12px 20px;
+    }
+    
+    .hamburger{
+        display:flex;
+    }
+    
+    .nav-links{
+        position:fixed;
+        top:70px;
+        left:-100%;
+        flex-direction:column;
+        background:rgba(10,14,39,0.98);
+        backdrop-filter:blur(20px);
+        width:100%;
+        text-align:center;
+        transition:0.3s;
+        padding:40px 0;
+        gap:20px;
+        border-bottom:1px solid rgba(124,58,237,0.3);
+    }
+    
+    .nav-links.active{
+        left:0;
+    }
+    
+    .nav-links a{
+        font-size:18px;
+        display:block;
+        padding:10px 0;
+    }
+}
+
+/* ===== MÚSICA ===== */
+.music-toggle{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    width:clamp(55px,12vw,70px);
+    height:clamp(55px,12vw,70px);
+    border-radius:50%;
+    background:linear-gradient(135deg, rgba(90,15,28,0.5) 0%, rgba(212,175,55,0.3) 100%);
+    border:2px solid #5A0F1C;
+    color:#F5F5F5;
+    font-size:clamp(28px,6vw,36px);
+    cursor:pointer;
+    transition:0.3s all;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:101;
+    box-shadow:0 8px 32px rgba(90,15,28,0.5);
+    backdrop-filter:blur(10px);
+}
+
+.music-toggle:hover{
+    transform:scale(1.15) rotate(10deg);
+    background:linear-gradient(135deg, rgba(90,15,28,0.7) 0%, rgba(212,175,55,0.5) 100%);
+    box-shadow:0 12px 40px rgba(90,15,28,0.7), 0 0 20px rgba(212,175,55,0.4);
+}
+
+.music-toggle.muted{
+    background:linear-gradient(135deg, rgba(100,100,100,0.3) 0%, rgba(100,100,100,0.1) 100%);
+    border-color:#808080;
+    color:#808080;
+}
+
+.music-toggle.muted:hover{
+    background:linear-gradient(135deg, rgba(100,100,100,0.5) 0%, rgba(100,100,100,0.2) 100%);
+    box-shadow:0 8px 25px rgba(100,100,100,0.3);
+}
+
+.music-icon{
+    display:block;
+    transition:transform 0.3s;
+}
+
+.music-toggle:hover .music-icon{
+    animation:bounce 0.6s ease;
+}
+
+@media(max-width:600px){
+    .music-toggle{
+        bottom:20px;
+        right:20px;
+    }
+}
+
+/* ===== HERO ===== */
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+    linear-gradient(135deg, rgba(11,11,11,0.8) 0%, rgba(90,15,28,0.3) 50%, rgba(11,11,11,0.8) 100%),
+    url('FONDO1.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    padding:120px 20px 60px;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:radial-gradient(circle at 50% 50%, rgba(90,15,28,0.1), transparent 70%);
+    pointer-events:none;
+}
+
+.hero > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(20px,5vw,40px);
+    position:relative;
+    z-index:1;
+}
+
+.hero h2{
+    font-family:'Cinzel';
+    font-size:clamp(28px,6vw,55px);
+    animation:fadeUp 1.2s ease;
+    color:#D4AF37;
+    margin:0;
+}
+
+.hero p{
+    color:#F5F5F5;
+    animation:fadeUp 1.5s ease;
+    font-size:clamp(14px,3vw,18px);
+    margin:0;
+}
+
+.ceremonia-title{
+    font-family:'Cinzel';
+    font-size:clamp(36px,8vw,75px);
+    color:#D4AF37;
+    font-weight:800;
+    letter-spacing:clamp(1px,2vw,3px);
+    text-transform:uppercase;
+    margin:20px 0;
+    text-shadow:
+        0 0 30px rgba(90,15,28,0.8),
+        0 0 60px rgba(212,175,55,0.6),
+        0 0 90px rgba(90,15,28,0.4);
+    animation:titleGlow 2s ease-in-out infinite, fadeUp 1.5s ease;
+    position:relative;
+    display:inline-block;
+}
+
+.ceremonia-title::before{
+    content:"✦";
+    position:absolute;
+    left:clamp(-30px,-8vw,-50px);
+    top:50%;
+    transform:translateY(-50%);
+    color:#D4AF37;
+    font-size:clamp(20px,3vw,30px);
+    animation:float 3s ease-in-out infinite;
+}
+
+.ceremonia-title::after{
+    content:"✦";
+    position:absolute;
+    right:clamp(-30px,-8vw,-50px);
+    top:50%;
+    transform:translateY(-50%);
+    color:#5A0F1C;
+    font-size:clamp(20px,3vw,30px);
+    animation:float 3s ease-in-out infinite 0.5s;
+}
+
+.btn{
+    margin-top:10px;
+    padding:clamp(14px,3vw,18px) clamp(30px,6vw,50px);
+    font-size:clamp(14px,2.5vw,18px);
+    font-weight:700;
+    border-radius:50px;
+    border:none;
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    box-shadow:0 8px 32px rgba(90,15,28,0.5);
+    position:relative;
+    overflow:hidden;
+}
+
+.btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition:0.5s;
+}
+
+.btn:hover::before{
+    left:100%;
+}
+
+.btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 12px 40px rgba(90,15,28,0.7), 0 0 20px rgba(212,175,55,0.5);
+}
+
+.countdown-pro{
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+    gap:clamp(15px,3vw,25px);
+    flex-wrap:wrap;
+}
+
+.time-box{
+    background:rgba(90,15,28,0.1);
+    backdrop-filter:blur(12px);
+    border:2px solid rgba(90,15,28,0.4);
+    padding:clamp(15px,3vw,25px);
+    border-radius:16px;
+    min-width:clamp(70px,15vw,100px);
+    text-align:center;
+    box-shadow:0 0 20px rgba(90,15,28,0.2);
+    transition:.4s;
+}
+
+.time-box:hover{
+    transform:scale(1.1) translateY(-5px);
+    box-shadow:0 10px 40px rgba(90,15,28,0.6), 0 0 30px rgba(212,175,55,0.3);
+    border-color:rgba(212,175,55,0.6);
+}
+
+.time-box span{
+    font-size:clamp(28px,6vw,48px);
+    font-weight:800;
+    font-family:'Cinzel';
+    color:#D4AF37;
+    text-shadow:
+        0 0 10px rgba(90,15,28,0.8),
+        0 0 20px rgba(212,175,55,0.6),
+        0 0 30px rgba(90,15,28,0.4);
+    animation:glowNumber 2s infinite alternate;
+    display:block;
+}
+
+.time-box p{
+    margin:8px 0 0;
+    font-size:clamp(12px,2vw,14px);
+    color:#5A0F1C;
+    letter-spacing:1px;
+    font-weight:600;
+}
+/* =========================================
+   ESTILOS DEL HORARIO (TIMELINE)
+   ========================================= */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.90); backdrop-filter: blur(8px);
+    z-index: 999999; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.4s ease;
+}
+
+.modal-horario-box {
+    background: linear-gradient(145deg, #111827, #0f172a);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 15px; padding: 40px 25px;
+    width: 90%; max-width: 450px;
+    max-height: 85vh; overflow-y: auto; /* Permite scroll si hay muchos eventos */
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.15);
+    transform: translateY(30px); transition: transform 0.4s ease;
+}
+
+.cerrar-horario {
+    position: absolute; top: 15px; right: 20px;
+    color: #D4AF37; font-size: 28px; font-weight: bold;
+    cursor: pointer; transition: color 0.3s;
+}
+.cerrar-horario:hover { color: #fff; }
+
+.titulo-horario {
+    color: #D4AF37; font-family: 'Cinzel', serif; font-size: 24px;
+    text-align: center; margin-bottom: 5px;
+}
+.subtitulo-horario {
+    color: #cbd5e1; text-align: center; font-size: 14px; margin-bottom: 30px;
+}
+
+/* La Línea Vertical */
+.timeline {
+    position: relative; margin: 0 auto; padding-left: 20px;
+}
+.timeline::before {
+    content: ''; position: absolute; top: 0; left: 20px;
+    height: 100%; width: 2px;
+    background: linear-gradient(to bottom, #D4AF37, rgba(212,175,55,0.1));
+}
+
+/* Cada evento en la línea */
+.timeline-item {
+    position: relative; padding-left: 30px; margin-bottom: 25px;
+    opacity: 0; transform: translateX(-20px);
+    animation: deslizarDerecha 0.5s forwards ease-out;
+}
+/* Retraso escalonado para que aparezcan uno por uno */
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.3s; }
+.timeline-item:nth-child(3) { animation-delay: 0.5s; }
+.timeline-item:nth-child(4) { animation-delay: 0.7s; }
+
+/* El punto dorado en la línea */
+.timeline-item::before {
+    content: ''; position: absolute; left: -5px; top: 5px;
+    width: 12px; height: 12px;
+    background: #111827; border: 3px solid #D4AF37;
+    border-radius: 50%; box-shadow: 0 0 10px rgba(212,175,55,0.8);
+}
+
+.timeline-hora {
+    color: #D4AF37; font-weight: bold; font-size: 14px; letter-spacing: 1px;
+}
+.timeline-contenido h4 {
+    color: #fff; margin: 5px 0; font-size: 16px;
+}
+.timeline-contenido p {
+    color: #94a3b8; font-size: 13px; margin: 0;
+}
+
+/* Botón de descarga de imagen */
+.btn-descargar-img {
+    display: inline-block; background: transparent;
+    color: #D4AF37; border: 1px solid #D4AF37;
+    padding: 10px 20px; border-radius: 30px;
+    text-decoration: none; font-size: 14px; font-weight: bold;
+    transition: all 0.3s;
+}
+.btn-descargar-img:hover {
+    background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+@keyframes deslizarDerecha {
+    to { opacity: 1; transform: translateX(0); }
+}
+/* ===== SECCIONES ===== */
+.section{
+    padding:clamp(60px,8vw,100px) 20px;
+    text-align:center;
+    position:relative;
+}
+
+.section h3{
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(28px,6vw,45px);
+    margin:0 0 30px 0;
+    animation:fadeUp 0.8s ease;
+}
+
+#evento{
+    position:relative;
+    background:
+    linear-gradient(135deg, rgba(11,11,11,0.8) 0%, rgba(90,15,28,0.3) 50%, rgba(11,11,11,0.8) 100%),
+    url('HISTORIA/11.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    border-top:2px solid rgba(90,15,28,0.5);
+    border-bottom:2px solid rgba(90,15,28,0.5);
+    box-shadow:
+        inset 0 0 40px rgba(90,15,28,0.1),
+        0 8px 32px rgba(0,0,0,0.5);
+}
+
+#evento::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:radial-gradient(circle at 30% 70%, rgba(90,15,28,0.05), transparent 50%);
+    pointer-events:none;
+}
+
+#evento h3{
+    position:relative;
+    z-index:1;
+    text-shadow:0 0 20px rgba(90,15,28,0.6);
+}
+
+/* ===== CARDS ===== */
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(20px,3vw,30px);
+    margin-top:40px;
+    position:relative;
+    z-index:1;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(90,15,28,0.3);
+    padding:clamp(20px,4vw,30px);
+    border-radius:20px;
+    transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    right:-50%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg, rgba(90,15,28,0.2), rgba(212,175,55,0.1));
+    opacity:0;
+    transition:0.4s;
+}
+
+.card:hover::before{
+    opacity:1;
+}
+
+.card h4{
+    font-family:'Cinzel';
+    font-size:clamp(18px,3.5vw,24px);
+    color:#D4AF37;
+    margin:0 0 15px 0;
+    text-shadow:0 2px 10px rgba(90,15,28,0.4);
+    letter-spacing:1px;
+    transition:0.3s;
+    position:relative;
+    z-index:2;
+}
+
+.card p{
+    font-size:clamp(14px,2vw,17px);
+    color:#e0e0e0;
+    margin:0;
+    font-weight:300;
+    line-height:1.6;
+    transition:0.3s;
+    position:relative;
+    z-index:2;
+}
+
+.card:hover{
+    transform:translateY(-15px) scale(1.05);
+    box-shadow:0 15px 40px rgba(90,15,28,0.4), 0 0 30px rgba(90,15,28,0.2);
+    border-color:rgba(90,15,28,0.6);
+}
+
+.card:hover h4{
+    color:#D4AF37;
+    text-shadow:0 0 20px rgba(212,175,55,0.8), 0 2px 10px rgba(90,15,28,0.6);
+    transform:scale(1.08);
+}
+
+.card:hover p{
+    color:#D4AF37;
+}
+
+/* ===== GALERÍA ===== */
+.gallery-section{
+    padding:clamp(60px,8vw,100px) 20px;
+    background:linear-gradient(180deg, transparent 0%, rgba(90,15,28,0.05) 50%, transparent 100%);
+    text-align:center;
+}
+
+.gallery-title{
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(28px,6vw,45px);
+    margin:0 0 40px 0;
+    animation:fadeUp 0.8s ease;
+}
+
+.filter-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(10px,2vw,15px);
+    margin-bottom:40px;
+    animation:fadeUp 1s ease;
+}
+
+.filter-btn{
+    padding:clamp(10px,2vw,14px) clamp(18px,3vw,28px);
+    background:rgba(90,15,28,0.1);
+    color:#D4AF37;
+    border:2px solid #5A0F1C;
+    border-radius:30px;
+    cursor:pointer;
+    font-family:'Montserrat';
+    font-size:clamp(12px,1.8vw,15px);
+    font-weight:600;
+    transition:0.3s;
+}
+
+.filter-btn:hover{
+    background:rgba(90,15,28,0.2);
+    transform:scale(1.08);
+    box-shadow:0 0 20px rgba(90,15,28,0.4);
+}
+
+.filter-btn.active{
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    color:white;
+    box-shadow:0 0 30px rgba(90,15,28,0.6), 0 0 15px rgba(212,175,55,0.4);
+}
+
+.gallery-container{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.gallery-nav-btn{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:2px solid #5A0F1C;
+    background:rgba(90,15,28,0.1);
+    color:#D4AF37;
+    font-size:24px;
+    cursor:pointer;
+    transition:0.3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.gallery-nav-btn:hover{
+    background:rgba(90,15,28,0.3);
+    transform:scale(1.1);
+    box-shadow:0 0 20px rgba(90,15,28,0.4);
+}
+
+.gallery-nav-btn.disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+    background:rgba(90,15,28,0.05);
+}
+
+.gallery-nav-btn.disabled:hover{
+    transform:scale(1);
+    box-shadow:none;
+}
+
+.gallery-wrapper{
+    display:flex;
+    gap:clamp(15px,3vw,30px);
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding:20px;
+    cursor:grab;
+    scroll-behavior:smooth;
+    position:relative;
+    flex:1;
+}
+
+.gallery-wrapper.autoplay-active{
+    cursor:auto;
+}
+
+.gallery-wrapper::-webkit-scrollbar{
+    height:8px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-track{
+    background:rgba(255,255,255,0.05);
+    border-radius:10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb{
+    background:linear-gradient(180deg, #5A0F1C, #D4AF37);
+    border-radius:10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb:hover{
+    background:var(--gold);
+}
+
+.gallery-item{
+    min-width:clamp(200px,50vw,350px);
+    height:clamp(280px,50vw,400px);
+    border-radius:20px;
+    overflow:hidden;
+    scroll-snap-align:center;
+    transition:0.5s;
+    flex-shrink:0;
+    position:relative;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.gallery-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.gallery-item:hover{
+    transform:scale(1.08);
+    box-shadow:0 20px 50px rgba(90,15,28,0.5), 0 0 30px rgba(212,175,55,0.3);
+}
+
+.gallery-controls{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.autoplay-btn{
+    padding:12px 28px;
+    background:rgba(90,15,28,0.1);
+    color:#D4AF37;
+    border:2px solid #5A0F1C;
+    border-radius:30px;
+    cursor:pointer;
+    font-family:'Montserrat';
+    font-size:clamp(12px,1.8vw,15px);
+    font-weight:600;
+    transition:0.3s;
+}
+
+.autoplay-btn:hover{
+    background:rgba(90,15,28,0.2);
+    transform:scale(1.08);
+    box-shadow:0 0 20px rgba(90,15,28,0.4);
+}
+
+.autoplay-btn.active{
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    color:white;
+    box-shadow:0 0 30px rgba(90,15,28,0.6), 0 0 15px rgba(212,175,55,0.4);
+}
+
+.scroll-progress{
+    height:4px;
+    background:rgba(90,15,28,0.2);
+    margin-top:20px;
+    border-radius:2px;
+    overflow:hidden;
+}
+
+.scroll-progress-bar{
+    height:100%;
+    background:linear-gradient(90deg, #5A0F1C, #D4AF37);
+    width:0%;
+    transition:width 0.1s ease;
+}
+
+.scroll-info{
+    text-align:center;
+    color:#5A0F1C;
+    margin-top:15px;
+    font-size:clamp(12px,2vw,15px);
+    font-family:'Montserrat';
+    font-weight:600;
+}
+/* ===== AUTENTICACIÓN ===== */
+.auth-section{
+    padding:clamp(60px,8vw,100px) 20px;
+    background:linear-gradient(135deg, rgba(11,11,11,0.9) 0%, rgba(90,15,28,0.2) 50%, rgba(11,11,11,0.9) 100%);
+    max-width:400px;
+    margin:0 auto;
+    border-radius:20px;
+    border:1px solid rgba(90,15,28,0.3);
+    box-shadow:0 0 30px rgba(90,15,28,0.2);
+}
+.auth-section h3{
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    font-size:clamp(28px,6vw,45px);
+    margin:0 0 30px 0;
+    text-align:center;
+    animation:fadeUp 0.8s ease;
+}
+.auth-form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    animation:fadeUp 1.2s ease;
+}     
+/* =========================================
+   DISEÑO PREMIUM DEL FORMULARIO DE SUBIDA
+   ========================================= */
+.formulario-premium {
+    background: rgba(20, 20, 20, 0.8); /* Fondo oscuro transparente */
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Borde dorado sutil */
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.titulo-subida {
+    color: #D4AF37;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* LA CAJA DE TEXTO */
+.input-texto {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+.input-texto:focus {
+    outline: none;
+    border-color: #D4AF37; /* Brilla dorado al escribir */
+}
+
+/* CONTENEDOR DE LOS BOTONES */
+.acciones-subida {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+/* BOTÓN DE ELEGIR FOTO (Borde dorado) */
+.btn-secundario {
+    flex: 1;
+    background: transparent;
+    border: 1px solid #D4AF37;
+    color: #D4AF37;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-secundario:hover {
+    background: rgba(212, 175, 55, 0.15);
+    transform: translateY(-2px);
+}
+
+/* BOTÓN DE PUBLICAR (Dorado sólido) */
+.btn-principal {
+    flex: 1;
+    background: linear-gradient(135deg, #D4AF37 0%, #AA8529 100%);
+    border: none;
+    color: #000;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
+
+.btn-principal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
+}
+/* ===== MURO SOCIAL ===== */
+.muro-section{
+    padding:clamp(60px,8vw,100px) 20px;
+    background:linear-gradient(135deg, rgba(11,11,11,0.9) 0%, rgba(90,15,28,0.2) 50%, rgba(11,11,11,0.9) 100%);
+    max-width:900px;
+    margin:0 auto;
+}
+
+.muro-header{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.muro-title{
+    font-family:'Cinzel';
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    font-size:clamp(28px,6vw,45px);
+    margin:0 0 10px 0;
+    animation:fadeUp 0.8s ease;
+}
+
+.muro-subtitle{
+    color:#D4AF37;
+    font-size:clamp(14px,2vw,18px);
+    margin:0;
+    animation:fadeUp 1s ease;
+}
+
+.post-form-container{
+    margin-bottom:40px;
+    animation:fadeUp 1.2s ease;
+}
+
+.post-form{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(90,15,28,0.3);
+    border-radius:20px;
+    padding:25px;
+    transition:0.3s;
+}
+
+.post-form:focus-within{
+    border-color:rgba(90,15,28,0.6);
+    box-shadow:0 0 30px rgba(90,15,28,0.2);
+}
+
+.form-header{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.user-avatar{
+    font-size:32px;
+}
+
+.form-input{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:#F5F5F5;
+    font-size:16px;
+    font-weight:600;
+    outline:none;
+    padding:0;
+}
+
+.form-input::placeholder{
+    color:rgba(255,255,255,0.5);
+}
+
+.form-textarea{
+    width:100%;
+    background:transparent;
+    border:1px solid rgba(90,15,28,0.3);
+    border-radius:12px;
+    color:#F5F5F5;
+    font-size:16px;
+    padding:15px;
+    resize:vertical;
+    min-height:100px;
+    font-family:'Montserrat';
+    outline:none;
+    transition:0.3s;
+    margin-bottom:15px;
+}
+
+.form-textarea:focus{
+    border-color:rgba(90,15,28,0.6);
+    background:rgba(90,15,28,0.1);
+}
+
+.form-textarea::placeholder{
+    color:rgba(255,255,255,0.5);
+}
+
+.form-controls{
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+}
+
+.btn-enviar{
+    padding:12px 32px;
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    color:white;
+    border:none;
+    border-radius:30px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:14px;
+}
+
+.btn-enviar:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 30px rgba(90,15,28,0.6);
+}
+
+.btn-enviar:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+
+.muro-feed{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+.post{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(90,15,28,0.3);
+    border-radius:20px;
+    padding:25px;
+    transition:0.4s;
+    animation:fadeUp 0.6s ease;
+}
+
+.post:hover{
+    border-color:rgba(90,15,28,0.6);
+    box-shadow:0 10px 40px rgba(90,15,28,0.3);
+}
+
+.post-header{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:15px;
+}
+.post-avatar {
+    width: 45px;          /* Ajusta este valor si la quieres un poco más grande o chica */
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #222; /* Fondo oscuro por si no carga la imagen */
+    overflow: hidden;     /* Recorta la imagen para que no se salga del círculo */
+    border: 2px solid #D4AF37; /* Un toque elegante dorado (opcional) */
+    flex-shrink: 0;       /* Evita que el círculo se deforme */
+}
+
+/* La imagen dentro del contenedor */
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* Clave: ajusta la foto al círculo sin distorsionarla */
+    display: block;
+}
+
+.post-info{
+    flex:1;
+}
+
+.post-autor{
+    font-weight:700;
+    color:#D4AF37;
+    font-size:16px;
+    margin:0;
+}
+
+.post-tipo{
+    font-size:12px;
+    color:rgba(255,255,255,0.6);
+    margin:5px 0 0;
+    padding:4px 10px;
+    background:rgba(90,15,28,0.3);
+    width:fit-content;
+    border-radius:8px;
+}
+
+.post-tiempo{
+    font-size:13px;
+    color:rgba(255,255,255,0.5);
+    text-align:right;
+}
+
+.post-contenido{
+    color:#F5F5F5;
+    font-size:15px;
+    line-height:1.6;
+    margin:15px 0;
+    word-wrap:break-word;
+}
+
+.post-imagen{
+    width:100%;
+    max-height:400px;
+    border-radius:15px;
+    object-fit:cover;
+    margin:15px 0;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.post-imagen:hover{
+    transform:scale(1.02);
+    filter:brightness(1.1);
+}
+
+.post-acciones{
+    display:flex;
+    gap:20px;
+    margin:20px 0;
+    padding:15px 0;
+    border-top:1px solid rgba(90,15,28,0.3);
+    border-bottom:1px solid rgba(90,15,28,0.3);
+}
+
+.accion-btn{
+    background:none;
+    border:none;
+    color:rgba(255,255,255,0.7);
+    cursor:pointer;
+    font-size:18px;
+    transition:0.3s;
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.accion-btn:hover{
+    color:#D4AF37;
+    transform:scale(1.15);
+}
+
+.reacciones-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:15px;
+}
+
+.reaccion-btn{
+    background:rgba(90,15,28,0.1);
+    border:1px solid rgba(90,15,28,0.3);
+    border-radius:20px;
+    padding:6px 14px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+    display:flex;
+    gap:6px;
+    align-items:center;
+    color:#F5F5F5;
+}
+
+.reaccion-btn:hover{
+    background:rgba(90,15,28,0.3);
+    transform:scale(1.1);
+}
+
+.reaccion-btn.activa{
+    background:linear-gradient(135deg, #5A0F1C, #D4AF37);
+    border-color:#D4AF37;
+}
+
+.reaccion-count{
+    font-size:12px;
+    font-weight:600;
+}
+
+.comentarios-section{
+    margin-top:15px;
+}
+
+.comentarios-titulo{
+    font-size:13px;
+    font-weight:700;
+    color:#D4AF37;
+    margin-bottom:12px;
+    cursor:pointer;
+}
+
+.comentarios-lista{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.comentario{
+    background:rgba(90,15,28,0.1);
+    border-radius:12px;
+    padding:12px 15px;
+    border-left:3px solid #D4AF37;
+}
+
+.comentario-header{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    margin-bottom:6px;
+}
+
+.comentario-avatar{
+    font-size:20px;
+}
+
+.comentario-autor{
+    font-weight:600;
+    color:#D4AF37;
+    font-size:13px;
+}
+
+.comentario-tiempo{
+    font-size:11px;
+    color:rgba(255,255,255,0.5);
+    margin-left:auto;
+}
+
+.comentario-texto{
+    color:#e0e0e0;
+    font-size:14px;
+    line-height:1.5;
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* ===== PREMIOS Y RANKINGS ===== */
+/* ===== PREMIOS ===== */
+/* CONTENIDO FLEX */
+
+.premio-contenido{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+}
+
+/* BOTON ABAJO */
+
+.btn-compartir{
+
+    margin-top:auto;
+}
+/* =========================================
+   INDICADOR DE SWIPE (DESLIZAR EN CELULARES)
+   ========================================= */
+.swipe-indicador {
+    display: none; /* Oculto por defecto en computadoras */
+    margin-top: 20px;
+    color: #D4AF37; /* Color dorado para combinar */
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.swipe-indicador span {
+    display: inline-block;
+    animation: deslizarPulso 2s infinite ease-in-out;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Animación que llama la atención moviéndose ligeramente */
+@keyframes deslizarPulso {
+    0%, 100% { 
+        transform: translateX(0); 
+        opacity: 0.7; 
+    }
+    50% { 
+        transform: translateX(5px); /* Se mueve un poco a la derecha */
+        opacity: 1; 
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+}
+
+/* Mostrar solo en pantallas donde se activa el scroll (1250px o menos) */
+@media (max-width: 1250px) {
+    .swipe-indicador {
+        display: block;
+    }
+}
+
+/* Ajuste un poco más pequeño para celulares muy chicos */
+@media (max-width: 768px) {
+    .swipe-indicador {
+        font-size: 12px;
+        margin-top: 15px;
+    }
+}
+.premios-section{
+
+    padding:90px 20px;
+
+    background:
+    radial-gradient(circle at top,#111827,#020617);
+
+    text-align:center;
+}
+
+/* HEADER */
+
+.premios-header{
+
+    margin-bottom:60px;
+}
+
+.premios-title{
+
+    font-size:3rem;
+
+    font-weight:800;
+
+    color:#ffd700;
+
+    margin-bottom:15px;
+}
+
+.premios-subtitle{
+
+    color:rgba(255,255,255,.75);
+
+    font-size:18px;
+}
+
+/* GRID */
+/* GRID - AHORA TOTALMENTE HORIZONTAL */
+/* GRID - AHORA TOTALMENTE HORIZONTAL Y CENTRADO */
+.premios-grid {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    justify-content: center; /* <--- CLAVE: Centra las 4 tarjetas en computadoras */
+    flex-wrap: nowrap; 
+    gap: 35px;
+    overflow-x: auto; 
+    padding: 20px 10px 40px 10px; /* Da espacio arriba y abajo para que la sombra (hover) no se corte */
+    scroll-snap-type: x mandatory; 
+    
+    /* Diseño elegante para la barra de scroll */
+    scrollbar-width: thin; 
+    scrollbar-color: #D4AF37 transparent; 
+}
+
+/* Ocultar barra de scroll en Chrome/Safari pero mantener la funcionalidad */
+.premios-grid::-webkit-scrollbar {
+    height: 8px;
+}
+.premios-grid::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 10px;
+}
+
+/* =========================================
+   AJUSTE PARA CELULARES Y PANTALLAS CHICAS
+   ========================================= */
+@media (max-width: 1250px) {
+    .premios-grid {
+        justify-content: flex-start; /* Alinea a la izquierda para que el scroll funcione correctamente */
+        padding-left: 20px; /* Da un margen para que no choquen con la orilla del teléfono */
+        padding-right: 20px;
+    }
+    .premio-card {
+        scroll-snap-align: center; /* Hace que la tarjeta se centre automáticamente al deslizar con el dedo */
+    }
+}
+
+.premio-card{
+
+    width:280px;
+
+    padding:28px 22px;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(35,40,60,.95),
+    rgba(20,25,45,.92)
+    );
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    transition:.3s ease;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.25);
+
+    text-align:center;
+
+    flex-shrink:0;
+
+    /* IMPORTANTE */
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+}
+/* HOVER */
+
+.premio-card:hover{
+
+    transform:
+    translateY(-10px)
+    scale(1.02);
+
+    box-shadow:
+    0 25px 70px rgba(0,0,0,.5);
+}
+
+/* BRILLO */
+
+.premio-card::before{
+
+    content:'';
+
+    position:absolute;
+
+    top:-120%;
+    left:-120%;
+
+    width:250%;
+    height:250%;
+
+    background:
+    linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+    );
+
+    transform:rotate(25deg);
+
+    transition:1s;
+}
+
+.premio-card:hover::before{
+
+    top:100%;
+    left:100%;
+}
+
+.puntual-card{
+    border-top:4px solid #FFD700;
+    background:linear-gradient(135deg, rgba(255,215,0,0.05) 0%, rgba(11,11,11,0.9) 100%);
+}
+
+.divertido-card{
+    border-top:4px solid #FF6B9D;
+    background:linear-gradient(135deg, rgba(255,107,157,0.05) 0%, rgba(11,11,11,0.9) 100%);
+}
+
+.dormillon-card{
+    border-top:4px solid #87CEEB;
+    background:linear-gradient(135deg, rgba(135,206,235,0.05) 0%, rgba(11,11,11,0.9) 100%);
+}
+
+.sociable-card{
+    border-top:4px solid #FF69B4;
+    background:linear-gradient(135deg, rgba(255,105,180,0.05) 0%, rgba(11,11,11,0.9) 100%);
+}
+
+.premio-emoji{
+    font-size:clamp(48px,10vw,70px);
+    margin-bottom:15px;
+    animation:bounce 2s infinite;
+    display:inline-block;
+}
+
+@keyframes bounce{
+    0%, 100%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-15px) scale(1.1);}
+}
+
+.premio-nombre{
+    font-family:'Cinzel';
+    font-size:clamp(20px,4vw,28px);
+    color:#FFD700;
+    margin:15px 0;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.premio-descripcion{
+    color:rgba(255,255,255,0.8);
+    font-size:clamp(13px,2vw,16px);
+    margin:10px 0 20px;
+    line-height:1.5;
+}
+
+.premio-badge{
+    font-size:clamp(40px,8vw,60px);
+    margin:20px 0;
+    animation:spin 3s linear infinite;
+    display:inline-block;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.premio-card:hover .premio-badge{
+    animation:spin 1s linear infinite;
+}
+
+.btn-compartir{
+    margin-top:20px;
+    padding:12px 28px;
+    background:linear-gradient(135deg, #FFD700, #D4AF37);
+    color:#0B0B0B;
+    border:none;
+    border-radius:30px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:14px;
+}
+
+.btn-compartir:hover{
+    transform:scale(1.1);
+    box-shadow:0 10px 30px rgba(212,175,55,0.6);
+}
+
+.btn-compartir:active{
+    transform:scale(0.95);
+}
+
+.premios-footer{
+    font-size:clamp(16px,3vw,20px);
+    color:#D4AF37;
+    margin-top:40px;
+    animation:fadeUp 1.2s ease;
+    font-weight:600;
+}
+
+/* ===== EGRESADOS ===== */
+.img-box{
+    max-width:100%;
+    width:100%;
+    max-width:1000px;
+    margin:40px auto;
+    border-radius:20px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 15px 50px rgba(90,15,28,0.4);
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.img-box img{
+    width:100%;
+    height:auto;
+    transition:0.5s;
+    display:block;
+}
+
+#egressImage:hover{
+    filter:brightness(1.15) drop-shadow(0 0 30px rgba(90,15,28,0.6));
+    transform:scale(1.05);
+}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    pointer-events:none;
+    transition:0.4s;
+    z-index:999;
+}
+
+.lightbox.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.lightbox img{
+    max-width:90%;
+    max-height:85%;
+    border-radius:15px;
+    animation:zoomIn 0.4s ease;
+    box-shadow:0 0 50px rgba(90,15,28,0.6);
+}
+
+.close{
+    position:absolute;
+    top:clamp(20px,5vw,40px);
+    right:clamp(20px,5vw,40px);
+    font-size:clamp(32px,6vw,48px);
+    color:#D4AF37;
+    cursor:pointer;
+    transition:0.3s;
+    background:rgba(0,0,0,0.5);
+    width:clamp(50px,10vw,70px);
+    height:clamp(50px,10vw,70px);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(10px);
+}
+
+.close:hover{
+    background:rgba(0,0,0,0.8);
+    transform:rotate(90deg);
+    color:#5A0F1C;
+}
+
+/* ===== REVEAL ===== */
+.reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s;
+}
+
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(10px);
+    padding:clamp(30px,5vw,50px) 20px;
+    text-align:center;
+    color:#aaa;
+    border-top:1px solid rgba(90,15,28,0.3);
+    font-size:clamp(12px,2vw,15px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .section{
+        padding:60px 15px;
+    }
+    
+    .card{
+        max-width:100%;
+    }
+    
+    .gallery-item{
+        min-width:clamp(180px,70vw,280px);
+    }
+}
+
+@media(max-width:480px){
+    .ceremonia-title::before,
+    .ceremonia-title::after{
+        display:none;
+    }
+    
+    .hero{
+        min-height:auto;
+        padding:100px 15px 40px;
+    }
+}
+    /* ===== PRELOADER ELEGANTE ===== */
+#preloader {
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    background:
+    radial-gradient(circle at center,
+    #16213e 0%,
+    #0b1026 45%,
+    #050816 100%);
+
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    transition:opacity 1s ease;
+}
+/* =========================
+LOGO
+========================= */
+
+.logo-loader{
+
+    position:absolute;
+
+    width:280px;
+
+    opacity:.12;
+
+    animation:
+    pulseLogo 4s ease-in-out infinite,
+     glowLogo 2s ease-in-out infinite;
+
+    filter:
+    drop-shadow(0 0 25px rgba(255,255,255,.2));
+
+}
+/* =========================
+TEXTOS
+========================= */
+
+.loader-content{
+    position:relative;
+    z-index:100;
+    text-align:center;
+    color:gold;
+}
+/* TÍTULO */
+
+.titulo-loader{
+
+    animation:
+    pulseText 2s ease-in-out infinite;
+
+    text-shadow:
+    0 0 8px rgba(255,215,0,.4),
+    0 0 20px rgba(255,215,0,.25);
+
+}
+
+/* SUBTEXTO */
+
+.texto-loader{
+
+    animation:
+    pulseText 2.5s ease-in-out infinite;
+
+    opacity:.85;
+
+}
+
+/* PALPITACIÓN */
+
+@keyframes pulseText{
+
+    0%{
+        transform:scale(1);
+        opacity:.85;
+    }
+
+    50%{
+        transform:scale(1.08);
+        opacity:1;
+
+        text-shadow:
+        0 0 12px rgba(255,215,0,.8),
+        0 0 35px rgba(255,215,0,.45);
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:.85;
+    }
+
+}
+.loader-content h1{
+    font-size:3rem;
+    margin-bottom:350px;
+    letter-spacing:2px;
+}
+
+.loader-content p{
+    font-size:1.1rem;
+    opacity:.8;
+}
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.preloader-logo {
+    width: 110px;
+    height: auto;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+    animation: pulsoLogo 2.5s infinite ease-in-out;
+    margin-bottom: 50px;
+}
+
+.preloader-spinner {
+    width: 45px;
+    height: 45px;
+    border: 3px solid rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    border-top-color: #D4AF37;
+    animation: giroPreloader 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.preloader-texto {
+    font-family: 'Cinzel', serif;
+    color: #D4AF37;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* Animaciones del Preloader */
+@keyframes pulsoLogo {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+    }
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 50px rgba(212, 175, 55, 0.7), 0 0 20px rgba(90, 15, 28, 0.5);
+    }
+}
+
+@keyframes giroPreloader {
+    to { transform: rotate(360deg); }
+}
+
+/* Clase para desaparecerlo suavemente con JS */
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+    
+</style>
+
+<!-- FIREBASE SDK MODULAR -->
+ 
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, updateDoc, doc, getDoc, deleteDoc, setDoc, serverTimestamp  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+ 
+  // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBvDDwvOq-p2L2dItuUmgkh8Y7xQxOQEjw",
+        authDomain: "grad2026-9547a.firebaseapp.com",
+        projectId: "grad2026-9547a",
+        storageBucket: "grad2026-9547a.firebasestorage.app",
+        messagingSenderId: "541940488857",
+        appId: "1:541940488857:web:d709879a78e94654127608",
+        measurementId: "G-1YDFNE8QH2"
+    };
+     // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+// Hacer auth y funciones de autenticación accesibles globalmente
+    window.auth = auth;
+    window.provider = provider;
+    window.signInWithPopup = signInWithPopup;
+    window.signOut = signOut;
+    window.onAuthStateChanged = onAuthStateChanged;
+    
+
+    // Hacer db y funciones accesibles globalmente
+    window.db = db;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.query = query;
+    window.orderBy = orderBy;
+    window.onSnapshot = onSnapshot;
+    window.updateDoc = updateDoc;
+    window.doc = doc;
+    window.getDoc = getDoc;
+    window.deleteDoc = deleteDoc;
+    window.setDoc = setDoc;
+    window.serverTimestamp = serverTimestamp;
+    window.storage = getStorage();
+    window.ref = ref;
+    window.uploadBytes = uploadBytes;
+    window.getDownloadURL = getDownloadURL;
+
+    console.log("✅ Firebase inicializado correctamente");
+// Inicializa storage
+const storage = getStorage();
+
+// Función para mostrar el cargador
+window.mostrarCargaGoogle = function() {
+    const loader = document.getElementById("loader-google");
+    if (loader) {
+        loader.style.display = "flex";
+        
+        // Seguro de vida: Si el alumno cierra la ventana de Google sin loguearse,
+        // quitamos el cargador después de 6 segundos para que no se quede atrapado.
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 6000); 
+    }
+};
+// ==========================================
+// LÓGICA DE LA PUERTA DE BIENVENIDA
+// ==========================================
+
+// 1. Ocultar la puerta (para invitados o cuando alguien ya se logueó)
+window.cerrarPuerta = function(esInvitado = false) {
+    const modalBienvenida = document.getElementById("modal-bienvenida");
+    
+    if (esInvitado) {
+        // Le damos un "ticket" digital al celular para que no vuelva a preguntar
+        localStorage.setItem("pasoLaPuerta", "true");
+    }
+
+    if (modalBienvenida) {
+        modalBienvenida.style.opacity = "0";
+        setTimeout(() => modalBienvenida.style.display = "none", 500);
+    }
+};
+
+// 2. Acción de entrar con Google desde la puerta
+window.iniciarDesdePuerta = function() {
+    // Aquí mandamos llamar la función real que ya tienes conectada a tu botón de Google
+    // (Asegúrate de que este ID sea el de tu botón real del muro social)
+    const botonLoginOculto = document.getElementById("loginGoogleBtn"); 
+    if (botonLoginOculto) {
+        botonLoginOculto.click();
+    } else {
+        // Si tienes una función directa, úsala aquí, ej: window.iniciarSesion();
+        console.error("No se encontró el botón de inicio de sesión");
+    }
+};
+
+// 3. El pase automático: Si Firebase detecta que ya hay un usuario guardado, quita la puerta sin preguntar
+// (Asegúrate de poner esto dentro de tu onAuthStateChanged)
+// EL VIGILANTE MAESTRO (onAuthStateChanged)
+onAuthStateChanged(auth, (user) => {
+    const zonaSubida = document.getElementById("seccion-subida");
+    const btnLogin = document.getElementById("btn-login");
+    const btnLogout = document.getElementById("btn-logout");
+    const mensajeUsuario = document.getElementById("mensaje-usuario");
+    const usuarioNav = document.getElementById("usuario-nav");
+    const modalBienvenida = document.getElementById("modal-bienvenida");
+
+    // 🔥 1. Capturamos el cargador de Google aquí arriba
+    const loaderGoogle = document.getElementById("loader-google");
+    
+    if (user) {
+        // === ESCENARIO 1: ES UN ALUMNO LOGUEADO ===
+        
+        // 🔥 2. APAGAMOS EL CARGADOR DE GOOGLE AL INSTANTE
+        if (loaderGoogle) loaderGoogle.style.display = "none";
+
+        // 1. Ocultamos la puerta si estaba visible
+        window.cerrarPuerta(); 
+        
+        // 2. Mostramos el formulario de fotos y actualizamos su nombre
+        if(zonaSubida) zonaSubida.style.display = "block";
+        if(btnLogin) btnLogin.style.display = "none";
+        if(btnLogout) btnLogout.style.display = "inline-block";
+        if(mensajeUsuario) mensajeUsuario.innerHTML = `¡Hola, <strong style="color:#D4AF37;">${user.displayName}</strong>!`;
+        if(usuarioNav) usuarioNav.textContent = `✨ ${user.displayName}`;
+
+    } else {
+        // === ESCENARIO 2: NO HAY SESIÓN ===
+        
+        // 🔥 3. También lo apagamos aquí por si cancelan el login, para que no se quede estorbando
+        if (loaderGoogle) loaderGoogle.style.display = "none";
+
+        // Ocultamos las funciones premium
+        if(zonaSubida) zonaSubida.style.display = "none";
+        if(btnLogin) btnLogin.style.display = "inline-block";
+        if(btnLogout) btnLogout.style.display = "none";
+        if(mensajeUsuario) mensajeUsuario.innerHTML = "Inicia sesión para compartir fotos.";
+        if(usuarioNav) usuarioNav.textContent = "✨ Invitado";
+
+        // Revisamos si ya le habíamos dado el "ticket" de invitado antes
+        const yaEsInvitado = localStorage.getItem("pasoLaPuerta");
+
+        if (!yaEsInvitado) {
+            // Si NO tiene ticket y NO está logueado, le mostramos la puerta VIP
+            if(modalBienvenida) {
+                modalBienvenida.style.display = "flex";
+                modalBienvenida.style.opacity = "1";
+            }
+        }
+    }
+});
+window.subirRecuerdo = async function() {
+    // 1. EL GUARDIA DE SEGURIDAD (Reciclando el login de tu muro social)
+    // Asumimos que tu variable de autenticación global se llama 'window.auth'
+    const usuarioActual = window.auth ? window.auth.currentUser : null; 
+    
+    if (!usuarioActual) {
+        loginGoogleBtn.click(); // Si no hay usuario, forzamos el inicio de sesión
+       // alert("🔒 ¡Inicia sesión en el Muro Social primero para poder subir fotos a la Galería!");
+        return; // Detiene la función, no los deja pasar
+    }
+
+    // 2. RECOPILACIÓN DE DATOS
+    const input = document.getElementById("archivoImagen");
+    const texto = document.getElementById("textoRecuerdo").value;
+    
+    if (input.files.length === 0) return alert("Selecciona una foto primero");
+
+    const archivo = input.files[0];
+    const formData = new FormData();
+    formData.append("image", archivo);
+    
+    const IMGBB_KEY = "65666741ff25237e9b0bcb5470a8a80f"; // Tu llave gratuita de ImgBB
+
+    try {
+        alert("Subiendo foto a la galería... espera un momento.");
+        
+        // 3. SUBIDA A IMGBB
+        const respuesta = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+            method: "POST",
+            body: formData
+        });
+        
+        const datosImg = await respuesta.json();
+        if (!datosImg.success) throw new Error("Error en ImgBB");
+        
+        const urlImagen = datosImg.data.url;
+        
+        // 4. GUARDADO EN FIREBASE CON EL NOMBRE DEL ALUMNO
+        await window.addDoc(window.collection(window.db, "galeria"), {
+            imagen: urlImagen,
+            descripcion: texto,
+            autor: usuarioActual.displayName || "Alumno", // <-- ¡Aquí atrapamos su nombre de Google!
+            timestamp: new Date()
+        });
+        
+        alert("¡Foto añadida a la galería de recuerdos!");
+        
+        // Limpiamos el formulario para que quede como nuevo
+        if(document.getElementById("textoRecuerdo")) document.getElementById("textoRecuerdo").value = "";
+        document.getElementById("nombreArchivo").innerText = "Ninguna foto seleccionada";
+        input.value = "";
+        
+    } catch (error) {
+        console.error("Error al subir:", error);
+        alert("No se pudo subir la foto.");
+    }
+};
+// ==========================================
+// CONTROL DEL HORARIO (TIMELINE)
+// ==========================================
+window.abrirHorario = function() {
+    const modal = document.getElementById("modal-horario");
+    if(modal) {
+        modal.style.display = "flex";
+        // Pequeño retraso para que se vea el efecto de "Fade In"
+        setTimeout(() => {
+            modal.style.opacity = "1";
+            modal.querySelector('.modal-horario-box').style.transform = "translateY(0)";
+        }, 50);
+    }
+};
+
+window.cerrarHorario = function() {
+    const modal = document.getElementById("modal-horario");
+    if(modal) {
+        modal.style.opacity = "0";
+        modal.querySelector('.modal-horario-box').style.transform = "translateY(30px)";
+        setTimeout(() => {
+            modal.style.display = "none";
+        }, 400); // Espera a que termine la animación para ocultarlo
+    }
+};
+   
+   
+
+   
+</script>
+</head>
+
+<body>
+    <div id="preloader">
+        <img src="logo1.png" class="logo-loader">
+     <div class="graduation-rain"></div>
+
+   <div class="loader-content">
+
+    <h1 class="titulo-loader">
+        Generación 2026
+    </h1>
+
+    <p class="texto-loader">
+        Cargando recuerdos...
+    </p>
+
+</div>
+<div id="loader-google" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px); z-index: 9999999; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="spinner-dorado"></div>
+    <p style="color: #D4AF37; font-family: 'Montserrat', sans-serif; font-size: 14px; margin-top: 15px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+        Conectando con Google...
+    </p>
+</div>
+    </div>
+    <div id="modal-bienvenida" style="display: none;">
+    <div class="caja-bienvenida">
+        <h2 style="font-family: 'Cinzel', serif; color: #D4AF37; margin-bottom: 10px; font-size: 28px;">Bienvenido</h2>
+        <p style="color: #cbd5e1; font-size: 15px; margin-bottom: 25px;">Para vivir la experiencia completa de la Generación y compartir tus recuerdos, identifícate.</p>
+        
+        <button onclick="iniciarDesdePuerta()" class="btn-puerta-google">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+            Soy Alumno (Google)
+        </button>
+        
+        <div style="margin: 15px 0; color: #64748b; font-size: 12px; letter-spacing: 2px;">O</div>
+        
+        <button onclick="cerrarPuerta(true)" class="btn-puerta-invitado">
+    Entrar como Invitado
+</button>
+    </div>
+</div>
+    
+<!-- AUDIO DE FONDO -->
+<audio id="backgroundMusic" preload="auto" crossorigin="anonymous">
+    <source src="MUSICA/Gladiator - Now We Are Free.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+</audio>
+
+<!-- BOTÓN CONTROL DE MÚSICA -->
+<button id="musicToggle" class="music-toggle" title="Silenciar/Activar música">
+    <span class="music-icon">🔊</span>
+</button>
+
+<!-- NAV -->
+<div class="nav">
+    <h1>
+        <img src="logo1.png" alt="Logo" id="logoClickable" style="vertical-align: middle;">
+        
+        <div style="display: inline-block; vertical-align: middle; text-align: left; margin-left: 20px;">
+            <span style="display: block;">Preparatoria San Andrés</span>
+            
+            <span id="usuario-nav" style="display: block; font-size: 11px; color: #D4AF37; font-family: 'Montserrat', sans-serif; font-weight: 600; margin-top: 2px; letter-spacing: 1px; text-transform: uppercase;"></span>
+        </div>
+    </h1>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+        <a href="#inicio">Inicio</a>
+        <a href="#evento">Evento</a>
+        <a href="#muro">Muro Social</a>
+        <a href="#premios">🏆 Premios</a>
+        <a href="#egresados">Egresados</a>
+        <a href="#dedicatorias">Dedicatorias</a>
+        <a href="libro.html" class="btn-libro">Ver Libro Digital</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+    <div>
+        <h2>Generación 2023 - 2026</h2>
+        <p class="ceremonia-title">Ceremonia de Clausura</p>
+<button class="btn" style="font-size: 1.5rem; padding: 18px 45px; letter-spacing: 2px; font-weight: bold; border-radius: 50px;" onclick="abrirHorario()">
+    10 de Julio | 14:00 HRS
+</button>        
+        <div id="zona-reloj">
+            <p class="ceremonia-title">Faltan...</p>
+            <div class="countdown-pro">
+                <div class="time-box">
+                    <span id="dias">00</span>
+                    <p>Días</p>
+                </div>
+                <div class="time-box">
+                    <span id="horas">00</span>
+                    <p>Horas</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutos">00</span>
+                    <p>Min</p>
+                </div>
+                <div class="time-box">
+                    <span id="segundos">00</span>
+                    <p>Seg</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="modal-horario" class="modal-overlay" style="display: none;">
+    <div class="modal-horario-box">
+        
+        <span class="cerrar-horario" onclick="cerrarHorario()">&times;</span>
+        
+        <h3 class="titulo-horario">Programa del Evento</h3>
+        <p class="subtitulo-horario">10 de Julio de 2026</p>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-hora">12:00 PM</div>
+                <div class="timeline-contenido">
+                    <h4>Misa de Acción de Gracias</h4>
+                    <p>Parroquia de San Andrés</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-hora">2:00 PM</div>
+                <div class="timeline-contenido">
+                    <h4>Acto Académico</h4>
+                    <p>Auditorio Principal, Preparatora San Andrés</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-hora">4:00 PM</div>
+                <div class="timeline-contenido">
+                    <h4>Banquete y Celebración</h4>
+                    <p>Plaza Principal, San Andrés</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-hora">6:00 PM</div>
+                <div class="timeline-contenido">
+                    <h4>Música en vivo, festejo y baile</h4>
+                    <p>Cancha al lado de la plaza principal</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="horario1.png" download="Horario_Graduacion_2026.png" class="btn-descargar-img">
+                📥 Descargar Horario en Imagen
+            </a>
+        </div>
+        
+    </div>
+</div>
+</section>
+<!-- EVENTO -->
+<section class="section reveal" id="evento">
+    <h3>La Ceremonia</h3>
+    <div class="cards">
+        <div class="card location-card" onclick="abrirLightbox('HISTORIA/ENTRADA1.jpg')">
+    <h4>📍 Ubicación</h4>
+    <p>Auditorio principal</p>
+    <button class="location-btn">
+        Ver ubicación
+    </button>
+</div>
+        <div class="card" onclick="abrirHorario()">
+            <h4>🕙 Hora </h4>
+            <p>14:00 HRS</p>
+        </div>
+       <div class="card event-card" onclick="abrirLightbox('cara1.jpg')">
+    <h4>🎓 Evento</h4>
+    <p>Entrega de certificados</p>
+
+    <button class="event-btn">
+        Ver programa
+    </button>
+</div>
+    </div>
+</section>
+<div class="formulario-premium">
+    <h3 class="titulo-subida">📸 QUIERES SUBIR ALGUN RECUERDO, HAZLO AQUI!</h3>
+    
+    <textarea id="textoRecuerdo" class="input-texto" placeholder="Escribe algo sobre este momento..."></textarea>
+    
+    <div class="acciones-subida">
+        <input type="file" id="archivoImagen" accept="image/*" style="display: none;" onchange="document.getElementById('nombreArchivo').innerText = this.files[0].name">
+        
+        <label for="archivoImagen" class="btn-secundario">
+            📁 Elegir Foto
+        </label>
+        
+        <button onclick="subirRecuerdo()" class="btn-principal">
+            🚀 Publicar
+        </button>
+    </div>
+    
+    <div id="nombreArchivo" style="color: #a1a1aa; font-size: 11px; margin-top: 8px; text-align: center;">Ninguna foto seleccionada</div>
+</div>
+<!-- GALERÍA -->
+<section class="gallery-section">
+    <h2 class="gallery-title">Recuerdos de nuestra aventura</h2>
+    <h3 class="gallery-title" data-aos="fade-up">Galería de Recuerdos</h3>
+    </div>
+    
+    
+    <div class="filter-buttons" id="filterButtons"></div>
+    
+    <div class="gallery-container">
+        <button class="gallery-nav-btn gallery-prev" id="galleryPrev" title="Anterior">❮</button>
+        <div class="gallery-wrapper" id="gallery"></div>
+        <button class="gallery-nav-btn gallery-next" id="galleryNext" title="Siguiente">❯</button>
+    </div>
+    
+    <div class="gallery-controls">
+        <button class="autoplay-btn" id="autoplayBtn" title="Activar autoplay">▶ Autoplay</button>
+    </div>
+    
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar" id="progressBar"></div>
+    </div>
+    <div class="scroll-info" id="scrollInfo"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+    <span class="close" onclick="cerrarLightbox()">×</span>
+    <img id="lightbox-img" alt="Imagen ampliada">
+</div>
+<!-- AUTENTICACIÓN -->
+<div id="authSection" style="text-align:center;margin-bottom:25px;">
+
+    <button id="loginGoogleBtn" class="btn-enviar">
+        🔐 Iniciar sesión con Google
+    </button>
+
+    <div id="userInfo" style="display:none;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;">
+
+        <img id="userPhoto"
+             style="width:55px;height:55px;border-radius:50%;border:2px solid #D4AF37;">
+
+        <div>
+            <div id="userName" style="font-weight:700;color:#D4AF37;"></div>
+
+            <button id="logoutBtn"
+                    class="btn-enviar"
+                    style="margin-top:8px;">
+                Cerrar sesión
+            </button>
+        </div>
+
+    </div>
+
+</div>
+<!-- MURO SOCIAL -->
+<section class="muro-section" id="muro">
+    <div class="muro-header">
+        <h2 class="muro-title">📱 Muro Social - Generación 2026</h2>
+        <p class="muro-subtitle">Comparte tus recuerdos y mensajes en tiempo real</p>
+    </div>
+
+    <!-- FORMULARIO NUEVO POST -->
+    <div class="post-form-container">
+        <div class="post-form">
+            <div class="form-header">
+                <span class="user-avatar">👤</span>
+                    
+            </div>
+            <textarea id="formContenido" placeholder="¿Qué quieres compartir? (mensaje, dedicatoria, recuerdo...)" class="form-textarea"></textarea>
+            <div class="form-controls">
+                <button id="formBtnEnviar" class="btn-enviar">Enviar Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POSTS FEED -->
+    <div class="muro-feed" id="muroFeed">
+        <!-- Se renderiza automáticamente desde mensajes.json -->
+    </div>
+</section>
+
+<!-- PREMIOS Y RANKINGS -->
+
+<section class="premios-section" id="premios">
+    <div class="premios-header">
+        <h2 class="premios-title">🏆 Ranking de Premios</h2>
+        <p class="premios-subtitle">Los superlativos para recordar</p>
+         <h1 class="premios-footer">Quien merece cada premio? ¡Vota en las tarjetas 👇</h1>
+        <div class="swipe-indicador">
+        <span>👈 Desliza para ver más 👉</span>
+    </div>
+    </div>
+<div class="premios-grid">
+
+    <!-- CARD 
+     >  data-img="alumnos/ROBERTOMICHEL.jpeg"
+         data-nombre="Robert Michel"
+         onclick="abrirAlumno(this)">-->
+   <div class="premio-card puntual-card" onclick="votarPremio('puntual', 'El Más Puntual')">
+    <div class="premio-emoji">⏰</div>
+    <h3 class="premio-nombre">El Más Puntual</h3>
+    <p class="premio-descripcion">Siempre llega antes de que abran el salón.</p>
+    <div class="premio-badge">🏅</div>
+    <div id="resultados-puntual" class="resultados-votos"></div>
+</div>
+
+<div class="premio-card divertido-card" onclick="votarPremio('divertido', 'El Más Divertido')">
+    <div class="premio-emoji">🤡</div>
+    <h3 class="premio-nombre">El Más Divertido</h3>
+    <p class="premio-descripcion">El alma de la fiesta y los mejores chistes.</p>
+     <div class="premio-badge">🎭</div>
+    <div id="resultados-divertido" class="resultados-votos"></div>
+</div>
+
+<div class="premio-card dormilon-card" onclick="votarPremio('dormilon', 'El Más Dormilón')">
+    <div class="premio-emoji">😴</div>
+    <h3 class="premio-nombre">El Más Dormilón</h3>
+    <p class="premio-descripcion">Sobrevive a las clases a base de siestas.</p>
+    <div class="premio-badge">💤</div>
+    <div id="resultados-dormilon" class="resultados-votos"></div>
+</div>
+
+<div class="premio-card sociable-card" onclick="votarPremio('sociable', 'El Más Sociable')">
+    <div class="premio-emoji">🤝</div>
+    <h3 class="premio-nombre">El Más Sociable</h3>
+    <p class="premio-descripcion">Conoce a todos en la escuela, literalmente.</p>
+    <div class="premio-badge">👥</div>
+    <div id="resultados-sociable" class="resultados-votos"></div>
+</div>
+    <div class="premios-footer">
+</div>
+</div>
+
+        
+</section>
+
+<!-- EGRESADOS -->
+<section class="section reveal" id="egresados">
+    <h3>Egresados 2026</h3>
+    <div class="img-box">
+        <img id="egressImage" src="CARA INTERIOR.png" alt="Egresados">
+    </div>
+</section>
+<!-- =========================================
+SECCIÓN MENSAJES Y DEDICATORIAS
+Pegar dentro del <body>
+========================================= -->
+
+<section id="dedicatorias">
+
+    <!-- TITULO -->
+
+    <div class="titulo-dedicatorias">
+
+        <span class="linea"></span>
+
+        <h1>Mensajes & Dedicatorias</h1>
+
+        <span class="linea"></span>
+
+    </div>
+
+    <p class="subtitulo-dedicatorias">
+        Palabras que quedarán para siempre en la memoria de esta generación.
+    </p>
+
+
+
+    <!-- GRID -->
+
+    <div class="dedicatorias-grid">
+
+
+        <!-- PADRES -->
+
+        <div class="card-dedicatoria padres">
+
+            <div class="icono">
+                ❤️
+            </div>
+
+            <h2>Padres</h2>
+
+            <p>
+                “Gracias por acompañarnos en cada desvelo, cada esfuerzo y cada sueño.
+                Este logro también les pertenece.”
+            </p>
+
+            <span class="firma">
+                — Generación 2026
+            </span>
+
+        </div>
+
+
+
+        <!-- AMIGOS -->
+
+        <div class="card-dedicatoria amigos">
+
+            <div class="icono">
+                🎓
+            </div>
+
+            <h2>Amigos</h2>
+
+            <p>
+                “Comenzamos siendo compañeros y terminamos siendo familia.
+                Gracias por cada risa, locura y recuerdo inolvidable.”
+            </p>
+
+            <span class="firma">
+                — Amigos por siempre
+            </span>
+
+        </div>
+
+
+
+        <!-- MAESTROS -->
+
+        <div class="card-dedicatoria maestros">
+
+            <div class="icono">
+                📚
+            </div>
+
+            <h2>Maestros</h2>
+
+            <p>
+                “Gracias por compartir conocimiento, disciplina y motivación.
+                Dejaron huella en cada uno de nosotros.”
+            </p>
+
+            <span class="firma">
+                — Con admiración y respeto
+            </span>
+
+        </div>
+
+
+
+        <!-- DIRECCIÓN -->
+
+        <div class="card-dedicatoria direccion">
+
+            <div class="icono">
+                🏛️
+            </div>
+
+            <h2>Dirección</h2>
+
+            <p>
+                “Hoy despedimos una generación llena de talento y esperanza.
+                Que el futuro les abra caminos extraordinarios.”
+            </p>
+
+            <span class="firma">
+                — Dirección Académica
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+<!-- =========================================
+ESTILOS
+========================================= -->
+
+<style>
+    
+    /* =========================================
+   ESTILOS DE LA PUERTA DE BIENVENIDA
+   ========================================= */
+#modal-bienvenida {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.90); /* Fondo oscuro elegante */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999990; /* Justo debajo del preloader pero encima de todo lo demás */
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+}
+
+.caja-bienvenida {
+    background: linear-gradient(145deg, #111827, #0f172a);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.1);
+    animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-puerta-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: white;
+    color: #333;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+}
+
+.btn-puerta-google:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
+}
+
+.btn-puerta-google img {
+    width: 20px; height: 20px;
+}
+
+.btn-puerta-invitado {
+    background: transparent;
+    color: #a1a1aa;
+    border: 1px solid #3f3f46;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-puerta-invitado:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: #D4AF37;
+    border-color: #D4AF37;
+}
+/* =========================================
+   MARCADOR EN VIVO DE PREMIOS
+   ========================================= */
+.resultados-votos {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    font-size: 13px;
+    text-align: left;
+    min-height: 80px; /* Evita que la tarjeta brinque cuando cargan los datos */
+}
+
+.resultado-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.resultado-nombre {
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 75%;
+}
+
+.resultado-votos {
+    color: #FFD700;
+    font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.sin-votos {
+    text-align: center;
+    color: #a1a1aa;
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 15px;
+}
+/* =========================
+SECCIÓN
+========================= */
+
+#dedicatorias{
+
+    position:relative;
+    padding:120px 20px;
+    background:
+    radial-gradient(circle at top,#111827,#020617);
+
+    overflow:hidden;
+    font-family:'Poppins',sans-serif;
+}
+
+
+/* =========================
+TITULO
+========================= */
+
+.titulo-dedicatorias{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.titulo-dedicatorias h1{
+
+    font-size:3rem;
+    font-weight:800;
+    text-align:center;
+
+    background:linear-gradient(90deg,#fff,#ffd700,#fff);
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    background-size:200%;
+
+    animation:brilloTitulo 5s linear infinite;
+}
+
+.linea{
+
+    width:80px;
+    height:2px;
+    background:#ffd700;
+}
+
+@keyframes brilloTitulo{
+
+    from{
+        background-position:0%;
+    }
+
+    to{
+        background-position:200%;
+    }
+}
+
+.subtitulo-dedicatorias{
+
+    text-align:center;
+    color:rgba(255,255,255,0.75);
+    margin-bottom:70px;
+    font-size:18px;
+}
+
+
+/* =========================
+GRID
+========================= */
+
+.dedicatorias-grid{
+
+    max-width:1400px;
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:35px;
+}
+
+
+/* =========================
+CARDS
+========================= */
+
+.card-dedicatoria{
+
+    position:relative;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:28px;
+
+    padding:40px 30px;
+
+    transition:0.5s;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.35);
+}
+
+
+/* =========================
+HOVER
+========================= */
+
+.card-dedicatoria:hover{
+
+    transform:
+    translateY(-12px)
+    scale(1.02);
+
+    box-shadow:
+    0 25px 70px rgba(0,0,0,0.5);
+}
+
+
+/* =========================
+BRILLO
+========================= */
+
+.card-dedicatoria::before{
+
+    content:'';
+
+    position:absolute;
+
+    top:-120%;
+    left:-120%;
+
+    width:250%;
+    height:250%;
+
+    background:
+    linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+    );
+
+    transform:rotate(25deg);
+
+    transition:1s;
+}
+
+.card-dedicatoria:hover::before{
+
+    top:100%;
+    left:100%;
+}
+
+
+/* =========================
+ICONO
+========================= */
+
+.icono{
+
+    width:80px;
+    height:80px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:auto auto 25px;
+
+    border-radius:50%;
+
+    font-size:2rem;
+
+    background:
+    linear-gradient(135deg,#ffd700,#ffb700);
+
+    box-shadow:
+    0 10px 25px rgba(255,215,0,0.35);
+}
+
+
+/* =========================
+TEXTOS
+========================= */
+
+.card-dedicatoria h2{
+
+    text-align:center;
+    font-size:2rem;
+    margin-bottom:20px;
+    color:white;
+}
+
+.card-dedicatoria p{
+
+    text-align:center;
+    line-height:1.9;
+    color:rgba(255,255,255,0.82);
+    font-size:16px;
+}
+
+.firma{
+
+    display:block;
+
+    margin-top:30px;
+
+    text-align:center;
+
+    color:#ffd700;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+}
+
+
+/* =========================
+COLORES DIFERENTES
+========================= */
+
+.padres{
+    border-top:4px solid #ff4d6d;
+}
+
+.amigos{
+    border-top:4px solid #38bdf8;
+}
+
+.maestros{
+    border-top:4px solid #22c55e;
+}
+
+.direccion{
+    border-top:4px solid #facc15;
+}
+
+
+/* =========================
+POPUP PEQUEÑO
+========================= */
+
+.modal-alumno{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.45);
+
+    z-index:99999;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    backdrop-filter:blur(4px);
+
+    animation:fadeModal .25s ease;
+}
+
+/* CARD */
+
+.popup-alumno{
+
+    position:relative;
+
+    width:320px;
+
+    background:
+    rgba(15,15,25,.95);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    text-align:center;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.4);
+
+    animation:popupShow .3s ease;
+}
+
+/* FOTO */
+
+.popup-alumno img{
+
+    width:180px;
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+    margin-bottom:15px;
+
+    border:
+    3px solid rgba(255,215,0,.7);
+
+    box-shadow:
+    0 0 25px rgba(255,215,0,.25);
+}
+
+/* NOMBRE */
+
+#nombreAlumno{
+
+    color:white;
+
+    font-size:1.5rem;
+
+    margin-top:10px;
+}
+
+.cerrar-alumno {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    width: 44px;  /* Área táctil recomendada para celulares */
+    height: 44px;
+    
+    /* Diseño premium */
+    background: rgba(0, 0, 0, 0.8);
+    color: #D4AF37;
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+    
+    /* Centramos la X perfectamente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    
+    /* Forzamos que esté por encima de la foto del alumno */
+    z-index: 999999; 
+    
+    /* Elimina el retraso táctil del celular */
+    touch-action: manipulation;
+    pointer-events: auto !important;
+}
+
+/* Efecto al pasar el mouse (para computadora) */
+.cerrar-alumno:hover {
+    background: #D4AF37;
+    color: #000;
+}
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .titulo-dedicatorias h1{
+        font-size:2.2rem;
+    }
+
+    .linea{
+        width:40px;
+    }
+
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+// ===== MENU HAMBURGUESA =====
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+    });
+});
+
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const logo = document.getElementById("logoClickable");
+
+if(logo){
+    logo.addEventListener("click", () => {
+        abrirLightbox(logo.src);
+    });
+}
+
+function abrirLightbox(src) {
+    lightbox.classList.add("active");
+    lightboxImg.src = src;
+}
+
+function cerrarLightbox() {
+    lightbox.classList.remove("active");
+}
+
+lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) {
+        cerrarLightbox();
+    }
+});
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+        cerrarLightbox();
+    }
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const inputArchivo = document.getElementById("archivoImagen");
+    
+    if (inputArchivo) {
+        inputArchivo.addEventListener("click", function(event) {
+            const usuarioActual = window.auth ? window.auth.currentUser : null; 
+            
+            if (!usuarioActual) {
+                event.preventDefault(); // Bloquea la galería de fotos
+                
+                // 🔥 1. PRENDEMOS EL AVISO VISUAL DE INMEDIATO
+                window.mostrarCargaGoogle();
+                
+                // 2. Disparamos la ventana de Google
+                const botonLoginOculto = document.getElementById("loginGoogleBtn"); 
+                if (botonLoginOculto) {
+                    botonLoginOculto.click();
+                }
+            }
+        });
+    }
+});
+
+// ===== MURO SOCIAL CON FIREBASE =====
+document.addEventListener("DOMContentLoaded", () => {
+    const muroFeed = document.getElementById("muroFeed");
+    const formNombre = document.getElementById("formNombre");
+    const formContenido = document.getElementById("formContenido");
+    const formBtnEnviar = document.getElementById("formBtnEnviar");
+    const loginGoogleBtn = document.getElementById("loginGoogleBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userInfo = document.getElementById("userInfo");
+    const userPhoto = document.getElementById("userPhoto");
+    const userName =    document.getElementById("userName");
+        let unsubscribe = null;
+        let usuarioActual = null;
+
+loginGoogleBtn.addEventListener("click", async () => {
+
+    try {
+
+        await window.signInWithPopup(
+            window.auth,
+            window.provider
+        );
+
+    } catch(error) {
+
+        console.error(error);
+        alert("Error iniciando sesión");
+
+    }
+
+});
+
+logoutBtn.addEventListener("click", async () => {
+
+    await window.signOut(window.auth);
+
+});
+
+window.onAuthStateChanged(window.auth, (user) => {
+
+    if(user){
+    usuarioActual = user;
+    console.log("Usuario actual detectado:", usuarioActual.displayName);
+        loginGoogleBtn.style.display = "none";
+
+        userInfo.style.display = "flex";
+
+        userPhoto.src = user.photoURL;
+
+        userName.textContent =
+        user.displayName;
+
+        formBtnEnviar.disabled = false;
+
+        formContenido.disabled = false;
+        if (window.db) {
+            cargarMensajesDesdeBD(); 
+        }
+
+    } else {
+        usuarioActual = null;
+        console.log("No hay usuario activo.");
+        
+        // Volvemos a cargar para que desaparezcan los botones de eliminar si cambió de cuenta
+        if (window.db) {
+            cargarMensajesDesdeBD();
+
+        loginGoogleBtn.style.display = "inline-block";
+
+        userInfo.style.display = "none";
+
+        formBtnEnviar.disabled = true;
+
+        formContenido.disabled = true;
+    }
+    }
+
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const botonCerrar = document.querySelector(".cerrar-alumno");
+    const modal = document.getElementById("modalAlumno");
+
+    if (botonCerrar && modal) {
+        // Función maestra para destruir cualquier evento y cerrar el modal
+        const forzarCierre = (e) => {
+            e.preventDefault();   // Detiene el comportamiento "fantasma" de los celulares
+            e.stopPropagation();  // Evita que el toque "atraviese" la X y le dé a la foto
+            modal.style.display = 'none';
+        };
+
+        // Escucha el clic normal (para computadora)
+        botonCerrar.addEventListener("click", forzarCierre);
+        
+        // Escucha el toque directo del dedo (Prioridad máxima en celulares)
+        botonCerrar.addEventListener("touchstart", forzarCierre, { passive: false });
+    }
+});
+// ==========================================
+// SISTEMA DE VOTACIÓN CON LISTA PREDEFINIDA
+// ==========================================
+
+// 1. AQUÍ METES TU LISTA REAL DE ALUMNOS (SEPARADOS POR COMAS Y ENTRE COMILLAS)
+const LISTA_ALUMNOS_2026 = [
+    "ARCE HERNANDEZ ROBERTO MICHEL",
+    "CARRILLO CORONEL EDGAR",
+    "CARRILLO GARCIA RICARDO EMILIANO",
+    "CARRILLO RUIZ KAROLY HARUMY",
+    "CORONEL RAMOS ALEJANDRO",
+    "CORONEL RUBIO JOSE MANUEL",
+    "DIAZ ESCOBEDO RENATA",
+    "GARCIA CARRILLO CRISTHOFER",
+    "GARCIA RODRIGUEZ DAFNE MARIELA",
+    "GARCIA SANTIAGO SEBASTIAN",
+    "GARCIA SANTIAGO YURIDIA GUADALUPE",
+    "GOMEZ CARRILLO HECTOR FRANCISCO",
+    "HERNANDEZ FIGUEROA DANNA PAOLA",
+    "HERNANDEZ GONZALEZ ESBEHIDY",
+    "HERNANDEZ HERNANDEZ RUBEN ARON",
+    "HERNANDEZ OSUNA ROGELIO",
+    "HERNANDEZ SANCHEZ GERARDO ANTONIO",
+    "HERNANDEZ SANCHEZ LUIS DANIEL",
+    "HERRERA CARRILLO CHRISTIAN ALEXANDER",
+    "LEAL JR . JUAN JOSE",
+    "MARTINEZ BAUTISTA LUIS FERNANDO",
+    "MARTINEZ CARRILLO JOSE EMILIANO",
+    "MORENO ARCE ESPERANZA NAZARET",
+    "RAMIREZ CORONEL KARLA CITLALI",
+    "RODRIGUEZ CARRILLO ROMAN",
+    "RODRIGUEZ MARTINEZ JOSE ANGEL",
+    "RUBIO CARRILLO ENEDINA YAMILETH",
+    "RUBIO GARCIA DANIEL",
+    "RUBIO MERCADO ANGEL",
+    "SANTIAGO BECERRA ADAN",
+    "SANTIAGO CARRILLO ELIZABETH",
+    "SANTIAGO HERNANDEZ CARELY ANAY",
+    "TAPIA ROMERO ERYX ELIEL",
+    "TORRES BERNAL KEIVIN ZAVIT",
+    "VILLEGAS RUIZ JUAN PABLO"
+];
+
+// Variables temporales para saber qué está votando el usuario
+let categoriaSeleccionada = "";
+let nombrePremioSeleccionado = "";
+
+// 2. FUNCIÓN PARA ABRIR EL MODAL
+window.votarPremio = function(categoriaId, nombrePremio) {
+    const usuarioValido = (typeof usuarioActual !== 'undefined' && usuarioActual) ? usuarioActual : (window.auth && window.auth.currentUser);
+
+    if (!usuarioValido) {
+        alert("Debes iniciar sesión con Google para poder votar en los premios.");
+        return;
+    }
+
+    categoriaSeleccionada = categoriaId;
+    nombrePremioSeleccionado = nombrePremio;
+
+    // Llenar el título del modal
+    document.getElementById("modalVotacionTitulo").innerText = `Nominar para ${nombrePremio}`;
+
+    // Llenar la lista desplegable con tus alumnos
+    const select = document.getElementById("selectAlumnoVoto");
+    select.innerHTML = '<option value="" disabled selected>Elige un alumno...</option>'; // Limpiar opciones anteriores
+    
+    // Ordenar alfabéticamente para que sea más fácil buscar
+    LISTA_ALUMNOS_2026.sort().forEach(alumno => {
+        let opcion = document.createElement("option");
+        opcion.value = alumno;
+        opcion.text = alumno;
+        select.appendChild(opcion);
+    });
+// ==========================================
+// MOTOR DE CONTEO EN TIEMPO REAL (TOP 3)
+// ==========================================
+
+// Arrancamos el motor de conteo 2 segundos después de que cargue la página
+// para darle tiempo a Firebase de conectar bien
+setTimeout(() => {
+    if (window.db && window.collection && window.onSnapshot) {
+        window.iniciarConteoPremios();
+    }
+}, 2000);
+    // Mostrar el modal
+    document.getElementById("modalVotacion").style.display = "flex";
+};
+
+// 3. FUNCIÓN PARA CERRAR EL MODAL
+window.cerrarModalVotacion = function() {
+    document.getElementById("modalVotacion").style.display = "none";
+};
+
+// 4. FUNCIÓN PARA ENVIAR EL VOTO A FIREBASE
+window.confirmarVotoFirebase = async function() {
+    const select = document.getElementById("selectAlumnoVoto");
+    const alumnoElegido = select.value;
+
+    if (!alumnoElegido) {
+        alert("Por favor, selecciona a un compañero de la lista.");
+        return;
+    }
+
+    const usuarioValido = window.auth.currentUser || usuarioActual;
+
+    try {
+        const votoRef = window.doc(window.db, "votos_premios", usuarioValido.uid);
+
+        await window.setDoc(votoRef, {
+            votanteNombre: usuarioValido.displayName,
+            [categoriaSeleccionada]: alumnoElegido, // Guarda al alumno en la categoría correspondiente
+            ultimaActualizacion: new Date()
+        }, { merge: true });
+
+        // Cerrar modal y avisar que fue un éxito
+        cerrarModalVotacion();
+        alert(`¡Voto registrado con éxito!\nHas nominado a ${alumnoElegido} para ${nombrePremioSeleccionado}.`);
+        
+    } catch (error) {
+        console.error("❌ Error al guardar el voto:", error);
+        alert("Hubo un error al registrar tu voto. Revisa tu conexión.");
+    }
+};
+
+    function formatearTiempo(timestamp) {
+
+    if(!timestamp) return "Ahora";
+
+    const fecha =
+    timestamp.toDate
+    ? timestamp.toDate()
+    : new Date(timestamp);
+
+    const ahora = new Date();
+
+    const diferencia = ahora - fecha;
+
+    const minutos = Math.floor(diferencia / 60000);
+
+    const horas = Math.floor(diferencia / 3600000);
+
+    const dias = Math.floor(diferencia / 86400000);
+
+    if(minutos < 1) return "Hace unos segundos";
+
+    if(minutos < 60)
+        return `Hace ${minutos}m`;
+
+    if(horas < 24)
+        return `Hace ${horas}h`;
+
+    if(dias < 7)
+        return `Hace ${dias}d`;
+
+    return fecha.toLocaleDateString('es-MX');
+}
+
+  function renderizarPosts(posts) {
+    console.log("POSTS RECIBIDOS:", posts.length);
+    
+    const muroFeed = document.getElementById("muroFeed");
+    if (muroFeed) {
+        muroFeed.innerHTML = ""; // Limpia el muro
+    } else {
+        console.error("No se encontró el muroFeed");
+        return;
+    }
+
+    // Ordenar posts por fecha
+    posts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)).forEach(post => {
+        const postEl = document.createElement("div");
+        postEl.className = "post";
+        postEl.id = `post-${post.id}`;
+
+        // 1. IMAGEN DEL POST
+        let imagenHTML = "";
+        if(post.imagen) {
+            imagenHTML = `<img src="HISTORIA/${post.imagen}" alt="Post image" class="post-imagen" onclick="abrirLightbox(this.src)">`;
+        }
+
+        // 2. REACCIONES
+        let reaccionesHTML = "";
+        const reacciones = post.reacciones || {};
+        if(Object.keys(reacciones).length > 0) {
+            reaccionesHTML = `<div class="reacciones-container">`;
+            Object.entries(reacciones).forEach(([emoji, usuarios]) => {
+                const usuariosArray = Array.isArray(usuarios) ? usuarios : Object.values(usuarios || {});
+                reaccionesHTML += `
+                    <button class="reaccion-btn" onclick="agregarReaccion('${post.id}', '${emoji}')" title="${usuariosArray.join(', ')}">
+                        <span>${emoji}</span>
+                        <span class="reaccion-count">${usuariosArray.length}</span>
+                    </button>
+                `;
+            });
+            reaccionesHTML += `</div>`;
+        }
+
+        // 3. COMENTARIOS (AQUÍ ESTÁ LA CORRECCIÓN)
+        let comentariosHTML = "";
+        const comentarios = post.comentarios || [];
+        if(comentarios.length > 0) {
+            comentariosHTML = `
+                <div class="comentarios-section">
+                    <div class="comentarios-titulo">💬 ${comentarios.length} comentario(s)</div>
+                    <div class="comentarios-lista">
+                        ${comentarios.map((comentario) => {
+                            
+                            // A. Transformar el enlace en una Imagen Redonda
+                            let avatarIMG = comentario.avatar && comentario.avatar.startsWith("http") 
+                                ? `<img src="${comentario.avatar}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">` 
+                                : `<span style="font-size:18px;">👤</span>`;
+                            
+                            // B. Reparar la Fecha (Quitar el Invalid Date)
+                            let fechaComentario = "Hace un momento";
+                            if (comentario.timestamp && comentario.timestamp.seconds) {
+                                let fecha = new Date(comentario.timestamp.seconds * 1000);
+                                // Lo formateamos a un estilo como: "10/7/2026 14:30"
+                                fechaComentario = fecha.toLocaleDateString() + " " + fecha.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                            }
+
+                            return `
+                            <div class="comentario">
+                                <div class="comentario-header" style="display:flex; align-items:center; gap:8px;">
+                                    ${avatarIMG}
+                                    <span class="comentario-autor">${comentario.autor}</span>
+                                    <span class="comentario-tiempo" style="font-size:11px; color:#a1a1aa; margin-left:auto;">${fechaComentario}</span>
+                                </div>
+                                <div class="comentario-texto" style="margin-top:4px;">${comentario.texto}</div>
+                                
+                                <div class="comentario-acciones" style="margin-top: 8px; text-align: left;">
+                                    <button onclick="abrirFormularioComentario('${post.id}', '${comentario.autor}')" style="background:none; border:none; color:#D4AF37; cursor:pointer; font-size:12px; font-weight:bold; font-family:'Montserrat', sans-serif;">
+                                        ↪ Responder a ${comentario.autor}
+                                    </button>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. VERIFICAR SI EL USUARIO YA LE DIO LIKE
+        const usuariosLike = post.reacciones && post.reacciones['❤️'] ? post.reacciones['❤️'] : [];
+        const usuariosArray = Array.isArray(usuariosLike) ? usuariosLike : Object.values(usuariosLike);
+        const haReaccionado = typeof usuarioActual !== 'undefined' && usuarioActual ? usuariosArray.includes(usuarioActual.displayName) : false;
+
+        // 5. ARMAR EL HTML COMPLETO DEL POST
+        postEl.innerHTML = `
+            <div class="post-header">
+                <div class="post-avatar">
+                    ${post.avatar && post.avatar.startsWith("http") ? `<img src="${post.avatar}" class="avatar-img" alt="Avatar">` : `<span style="font-size:22px;">👤</span>`}
+                </div>
+                <div class="post-info">
+                    <p class="post-autor">${post.autor}</p>
+                    <span class="post-tipo">${post.tipo === 'mensaje' ? '💬 Mensaje' : post.tipo === 'dedicatoria' ? '💌 Dedicatoria' : '📸 Recuerdo'}</span>
+                </div>
+                <div class="post-right">
+                    <div class="post-tiempo">${formatearTiempo(post.timestamp)}</div>
+                    
+                    ${typeof usuarioActual !== 'undefined' && usuarioActual && usuarioActual.uid === post.uid ? `
+                        <button class="btn-eliminar" onclick="eliminarPost('${post.id}')" title="Eliminar publicación">
+                            <span class="btn-eliminar-icon">🗑️</span><span class="btn-eliminar-texto">Eliminar</span>
+                        </button>
+                    ` : ""}
+                </div>
+            </div>
+
+            <div class="post-contenido">
+                ${post.contenido}
+            </div>
+
+            ${imagenHTML}
+
+            <div class="post-acciones">
+                <button class="accion-btn btn-me-encanta ${haReaccionado ? 'liked' : ''}" onclick="agregarReaccion('${post.id}', '❤️')">
+                    <span>❤️</span> ${haReaccionado ? 'Te encanta' : 'Me encanta'}
+                </button>
+                
+                <button class="accion-btn" onclick="abrirFormularioComentario('${post.id}')">
+                    💬 Comentar
+                </button>
+                
+                <button class="accion-btn" onclick="compartirPost('${post.autor}')">
+                    ↗️ Compartir
+                </button>
+            </div>
+            
+            ${reaccionesHTML}
+            ${comentariosHTML}
+        `;
+
+        muroFeed.appendChild(postEl);
+    });
+}
+
+function cargarMensajesDesdeBD() {
+    if(unsubscribe){
+        unsubscribe();
+        unsubscribe = null;
+    }
+    if (!window.db) {
+        console.error("❌ Firebase no está inicializado");
+        muroFeed.innerHTML = '<p style="text-align:center;color:#D4AF37;">Conectando a la base de datos...</p>';
+        return;
+    }
+
+    try {
+        const q = window.query(
+            window.collection(window.db, "posts"),
+            window.orderBy("timestamp", "desc")
+        );
+
+        unsubscribe = window.onSnapshot(
+            q,
+            (snapshot) => {
+                console.log("🔄 Actualizando posts desde Firestore...");
+                const posts = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                renderizarPosts(posts);
+            },
+            (error) => {
+                console.error("❌ Error cargando posts:", error);
+                muroFeed.innerHTML = '<p style="text-align:center;color:#D4AF37;">Error cargando el muro social. Verifica que la colección "posts" exista en Firestore.</p>';
+            }
+        );
+    } catch(error) {
+        console.error("❌ Error en cargarMensajesDesdeBD:", error);
+        muroFeed.innerHTML = '<p style="text-align:center;color:#D4AF37;">Error inicializando el muro social.</p>';
+    }
+}
+// ==========================================
+// CERRAR SESIÓN AUTOMÁTICAMENTE AL SALIR
+// ==========================================
+window.addEventListener("beforeunload", (e) => {
+    // 1. Limpiar el listener en tiempo real del muro para evitar fugas de memoria
+    if (unsubscribe) {
+        unsubscribe();
+    }
+
+    // 2. Ejecutar el cierre de sesión en Firebase Auth si window.auth existe
+    if (window.auth) {
+        // Usamos la función modular de cerrar sesión expuesta en tu entorno
+        window.signOut(window.auth)
+            .then(() => {
+                console.log("Sesión cerrada correctamente al salir.");
+            })
+            .catch((error) => {
+                console.error("Error al cerrar sesión al salir:", error);
+            });
+    }
+});
+
+// ==========================================
+// CORRECCIÓN 2: ELIMINAR POST EXPUETO GLOBALMENTE (FUERA DE OTRA FUNCIÓN)
+// ==========================================
+window.eliminarPost = async function(postId){
+    const confirmar = confirm("¿Eliminar este post?");
+    if(!confirmar) return;
+
+    try{
+        await window.deleteDoc(
+            window.doc(window.db, "posts", postId)
+        );
+        console.log("✅ Post eliminado");
+    } catch(error){
+        console.error(error);
+        alert("Error eliminando post");
+    }
+}
+// ==========================================
+// FUNCIÓN PARA AGREGAR/QUITAR "ME ENCANTA"
+// ==========================================
+window.agregarReaccion = async function(postId, emoji) {
+    if (!usuarioActual) {
+        alert("Debes iniciar sesión con Google para poder reaccionar.");
+        return;
+    }
+
+    try {
+        const postRef = window.doc(window.db, "posts", postId);
+        const postSnap = await window.getDoc(postRef);
+        
+        if (postSnap.exists()) {
+            const post = postSnap.data();
+            let reacciones = post.reacciones || {};
+            let usuarios = reacciones[emoji] || [];
+            
+            // Asegurar que la lista de usuarios sea un arreglo
+            if (!Array.isArray(usuarios)) {
+                usuarios = Object.values(usuarios);
+            }
+
+            // Buscar si el usuario actual ya le dio "Me encanta"
+            const index = usuarios.indexOf(usuarioActual.displayName);
+            
+            if (index === -1) {
+                // Si no está, lo agregamos
+                usuarios.push(usuarioActual.displayName);
+            } else {
+                // Si ya está, se lo quitamos (Toggle)
+                usuarios.splice(index, 1);
+            }
+            
+            reacciones[emoji] = usuarios;
+
+            // Actualizar la base de datos
+            await window.updateDoc(postRef, {
+                reacciones: reacciones
+            });
+            
+            console.log("Reacción actualizada con éxito");
+        }
+    } catch (error) {
+        console.error("Error al actualizar la reacción:", error);
+    }
+};
+function agregarPost() {
+
+    const contenido = formContenido.value.trim();
+    const palabrasProhibidas = [
+
+    "puta",
+    "pendejo",
+    "mierda",
+    "culo",
+    "verga",
+    "chingar",
+    "chingada",
+    "idiota"
+
+];
+    let contenidoFiltrado = contenido;
+if(contenido.length > 500){
+
+    alert(
+        "Máximo 500 caracteres"
+    );
+
+    return;
+
+}
+palabrasProhibidas.forEach(palabra => {
+
+    const regex =
+    new RegExp(palabra, "gi");
+
+    contenidoFiltrado =
+    contenidoFiltrado.replace(regex, "****");
+
+});
+       
+    if(!usuarioActual){
+        alert("Debes iniciar sesión con Google");
+        return;
+    }
+
+    if(!contenido) {
+        alert("Por favor escribe algo");
+        return;
+    }
+
+    formBtnEnviar.disabled = true;
+    formBtnEnviar.textContent = "Enviando...";
+
+    const nuevoPost = {
+        autor: usuarioActual.displayName,
+        avatar: usuarioActual.photoURL,
+        uid: usuarioActual.uid,
+        email: usuarioActual.email,
+        contenido: contenidoFiltrado,
+        imagen: null,
+        tipo: "mensaje",
+        timestamp: window.serverTimestamp(),
+        reacciones: {},
+        comentarios: []
+    };
+
+    if(!window.db) {
+        alert("Firebase no está listo. Intenta de nuevo en un momento.");
+        formBtnEnviar.disabled = false;
+        formBtnEnviar.textContent = "Enviar Post";
+        return;
+    }
+
+    console.log("Intentando publicar...");
+    
+    window.addDoc(window.collection(window.db, "posts"), nuevoPost)
+        .then((docRef) => {
+            formContenido.value = "";
+            formBtnEnviar.disabled = false;
+            formBtnEnviar.textContent = "Enviar Post";
+            console.log("✅ Post agregado a Firestore con ID:", docRef.id);
+        })
+        .catch((error) => {
+            console.error("❌ Error agregando post:", error);
+            alert("Error al enviar el post: " + error.message);
+            formBtnEnviar.disabled = false;
+            formBtnEnviar.textContent = "Enviar Post";
+        });
+}
+
+    formBtnEnviar.addEventListener("click", agregarPost);
+    formContenido.addEventListener("keydown", (e) => {
+        if(e.ctrlKey && e.key === "Enter") {
+            agregarPost();
+        }
+    });
+
+    // Esperar a que Firebase esté listo
+    setTimeout(() => {
+        if(window.db) {
+            console.log("🔥 Cargando posts desde Firestore...");
+            cargarMensajesDesdeBD();
+        } else {
+            console.error("❌ Firebase no está inicializado");
+            muroFeed.innerHTML = '<p style="text-align:center;color:#D4AF37;">Error: Firebase no está disponible. Recarga la página.</p>';
+        }
+    }, 1000);
+
+    // Limpiar listener cuando se deja la página
+    window.addEventListener("beforeunload", () => {
+        if(unsubscribe) unsubscribe();
+    });
+});
+
+// Función global para agregar reacciones
+/* =========================
+ME ENCANTA
+========================= */
+window.agregarReaccion = async function(postId, emoji){
+
+    try{
+
+        if(!usuarioActual){
+
+            alert("Inicia sesión");
+
+            return;
+        }
+
+        const postRef =
+        doc(db, "posts", postId);
+
+        const postSnap =
+        await getDoc(postRef);
+
+        if(!postSnap.exists()) return;
+
+        const data =
+        postSnap.data();
+
+        let reacciones =
+        data.reacciones || {};
+
+        if(!reacciones[emoji]){
+
+            reacciones[emoji] = [];
+
+        }
+
+        const nombreUsuario =
+
+        usuarioActual.displayName
+        || usuarioActual.email;
+
+        // evitar duplicado
+        if(
+            !reacciones[emoji]
+            .includes(nombreUsuario)
+        ){
+
+            reacciones[emoji]
+            .push(nombreUsuario);
+
+        }
+
+        await updateDoc(postRef,{
+
+            reacciones: reacciones
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+// ==========================================
+// FUNCIÓN PARA COMENTAR Y RESPONDER (COMPATIBLE SIN ARRAYUNION)
+// ==========================================
+window.abrirFormularioComentario = async function(postId, autorMencionado = null) {
+    
+    // 1. Verificar sesión de usuario
+    const usuarioValido = (typeof usuarioActual !== 'undefined' && usuarioActual) 
+                          ? usuarioActual 
+                          : (window.auth && window.auth.currentUser);
+
+    if (!usuarioValido) {
+        alert("Debes iniciar sesión con Google para poder comentar.");
+        return;
+    }
+
+    // 2. Texto automático si es una respuesta
+    let textoInicial = autorMencionado ? `@${autorMencionado} ` : "";
+    let comentarioTexto = prompt("Escribe tu comentario:", textoInicial);
+
+    // 3. Si el usuario escribió algo y le dio aceptar
+    if (comentarioTexto && comentarioTexto.trim() !== "") {
+        try {
+            const postRef = window.doc(window.db, "posts", postId);
+            
+            // PASO CLAVE: Leer el post actual primero (esto ya te funciona perfecto)
+            const postSnap = await window.getDoc(postRef);
+            
+            if (postSnap.exists()) {
+                const post = postSnap.data();
+                
+                // Obtener los comentarios que ya existen, o crear una lista vacía si es el primero
+                let comentariosActuales = post.comentarios || [];
+
+                // Armar tu nuevo comentario
+                const nuevoComentario = {
+                    autor: usuarioValido.displayName,
+                    avatar: usuarioValido.photoURL || "👤",
+                    texto: comentarioTexto.trim(),
+                    timestamp: { seconds: Math.floor(Date.now() / 1000) } 
+                };
+
+                // Agregar tu comentario a la lista
+                comentariosActuales.push(nuevoComentario);
+
+                // Subir la lista completa actualizada a Firebase
+                await window.updateDoc(postRef, {
+                    comentarios: comentariosActuales
+                });
+
+                console.log("✅ Comentario guardado con éxito en Firebase");
+            }
+
+        } catch (error) {
+            console.error("❌ Error al guardar el comentario:", error);
+            alert("Hubo un error al publicar tu comentario. Revisa tu conexión.");
+        }
+    }
+};
+// Función para compartir posts
+function compartirPost(autor) {
+    const texto = `¡Mira este post en el Muro Social de la Generación 2026! 🎓`;
+    if(navigator.share) {
+        navigator.share({
+            title: `Post de ${autor}`,
+            text: texto,
+            url: window.location.href
+        });
+    } else {
+        alert(texto);
+    }
+}
+
+// ===== PREMIOS - COMPARTIR =====
+function compartirPremio(premio) {
+    const texto = `🏆 Acabo de recibir el premio "${premio}" en la Generación 2026 de Preparatoria San Andrés 🎓`;
+    
+    if(navigator.share) {
+        navigator.share({
+            title: "Premio Generación 2026",
+            text: texto,
+            url: window.location.href
+        }).catch(err => console.log("Error compartiendo:", err));
+    } else {
+        // Fallback para navegadores que no soportan share
+        const mensaje = `${texto}\n\n${window.location.href}`;
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(mensaje).then(() => {
+                alert(`✅ Texto copiado: "${premio}"\n\nAhora puedes pegarlo en tus redes sociales`);
+            });
+        } else {
+            alert(`🎉 ${premio}\n\n${texto}`);
+        }
+    }
+}
+
+// ===== GALERÍA =====
+// ===== GALERÍA HÍBRIDA EN TIEMPO REAL =====
+document.addEventListener("DOMContentLoaded", () => {
+    const gallery = document.getElementById("gallery");
+    const filterButtons = document.getElementById("filterButtons");
+    const progressBar = document.getElementById("progressBar");
+    const scrollInfo = document.getElementById("scrollInfo");
+    const prevBtn = document.getElementById("galleryPrev");
+    const nextBtn = document.getElementById("galleryNext");
+    const autoplayBtn = document.getElementById("autoplayBtn");
+    const ruta = "HISTORIA/";
+    
+    let autoplayInterval = null;
+    let isAutoplayActive = false;
+    let categoriasLocales = {}; // Guardará las fotos del JSON
+    let fotosFirebase = [];     // Guardará las fotos en tiempo real de Firebase
+
+    function actualizarProgreso() {
+        const scrollLeft = gallery.scrollLeft;
+        const scrollWidth = gallery.scrollWidth - gallery.clientWidth;
+        const progress = scrollWidth === 0 ? 0 : (scrollLeft / scrollWidth) * 100;
+        if(progressBar) progressBar.style.width = progress + "%";
+        
+        const totalFotos = gallery.querySelectorAll(".gallery-item").length;
+        if(scrollInfo) scrollInfo.textContent = `Desliza para ver más • ${totalFotos} fotos`;
+        
+        actualizarBotonesNavegacion();
+    }
+
+    function actualizarBotonesNavegacion() {
+        const scrollLeft = gallery.scrollLeft;
+        const scrollWidth = gallery.scrollWidth - gallery.clientWidth;
+        if(prevBtn) prevBtn.classList.toggle("disabled", scrollLeft <= 0);
+        if(nextBtn) nextBtn.classList.toggle("disabled", scrollLeft >= scrollWidth - 10);
+    }
+
+    function navegar(direccion) {
+        const itemWidth = gallery.querySelector(".gallery-item")?.offsetWidth || 0;
+        const gap = 15;
+        const desplazamiento = (itemWidth + gap) * direccion;
+        
+        gallery.scrollBy({ left: desplazamiento, behavior: 'smooth' });
+    }
+
+    // --- CARGA Y FUSIÓN DE DATOS ---
+    // 1. Traemos las fotos fijas del JSON local
+    fetch("HISTORIA/lista.json")
+    .then(res => {
+        if (!res.ok) throw new Error("No se pudo cargar lista.json");
+        return res.json();
+    })
+    .then(data => {
+        categoriasLocales = data.categorias;
+        
+        // 2. Nos conectamos a Firebase en tiempo real para traer los aportes de los alumnos
+        window.onSnapshot(window.collection(window.db, "galeria"), (snapshot) => {
+            fotosFirebase = [];
+            snapshot.forEach(doc => {
+                const dataDoc = doc.data();
+                if (dataDoc.imagen) fotosFirebase.push(dataDoc.imagen.trim());
+            });
+
+            // Cada vez que cambie Firebase, reconstruimos los botones y la vista
+            crearFiltrosYMostrar();
+        });
+    })
+    .catch(err => console.error("Error cargando galería:", err));
+
+    function crearFiltrosYMostrar() {
+        filterButtons.innerHTML = ""; // Limpiamos botones viejos
+
+        // Botón "Todos"
+        const btnTodos = document.createElement("button");
+        btnTodos.className = "filter-btn active";
+        btnTodos.textContent = "Todos";
+        btnTodos.addEventListener("click", () => {
+            let todas = [];
+            // Juntamos locales
+            Object.values(categoriasLocales).forEach(fotos => todas = todas.concat(fotos));
+            // Juntamos las de Firebase
+            todas = todas.concat(fotosFirebase);
+            
+            mostrarFotos(todas);
+            actualizarBotones(btnTodos);
+            gallery.scrollTo({ left: 0, behavior: 'smooth' });
+        });
+        filterButtons.appendChild(btnTodos);
+
+        // Botones del JSON original
+        Object.keys(categoriasLocales).forEach(categoria => {
+            const btn = document.createElement("button");
+            btn.className = "filter-btn";
+            btn.textContent = categoria;
+            btn.addEventListener("click", () => {
+                mostrarFotos(categoriasLocales[categoria]);
+                actualizarBotones(btn);
+                gallery.scrollTo({ left: 0, behavior: 'smooth' });
+            });
+            filterButtons.appendChild(btn);
+        });
+
+        // 🔥 NUEVO FILTRO AUTOMÁTICO: Solo lo creado por alumnos
+        if (fotosFirebase.length > 0) {
+            const btnAlumnos = document.createElement("button");
+            btnAlumnos.className = "filter-btn";
+            btnAlumnos.textContent = "Alumnos 📸";
+            btnAlumnos.addEventListener("click", () => {
+                mostrarFotos(fotosFirebase);
+                actualizarBotones(btnAlumnos);
+                gallery.scrollTo({ left: 0, behavior: 'smooth' });
+            });
+            filterButtons.appendChild(btnAlumnos);
+        }
+
+        // Al cargar por primera vez, muestra "Todos" de golpe
+        btnTodos.click();
+    }
+
+    function mostrarFotos(fotos) {
+        gallery.innerHTML = "";
+        fotos.forEach(img => {
+            const div = document.createElement("div");
+            div.className = "gallery-item";
+
+            const image = document.createElement("img");
+            
+            // FILTRO HÍBRIDO: Si es link de ImgBB (http) lo usa directo, si no le pone HISTORIA/
+            image.src = img.startsWith("http") ? img : (ruta + img);
+            image.alt = "Foto de la galería";
+
+            image.onerror = function() {
+                this.parentElement.style.display = 'none';
+            };
+
+            image.addEventListener("click", () => {
+                if (typeof abrirLightbox === "function") abrirLightbox(image.src);
+            });
+
+            div.appendChild(image);
+            gallery.appendChild(div);
+        });
+        
+        setTimeout(() => actualizarProgreso(), 150);
+    }
+
+    function actualizarBotones(btnActivo) {
+        document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+        btnActivo.classList.add("active");
+    }
+
+    // Controles de navegación y autoplay heredados
+    if(prevBtn) prevBtn.addEventListener("click", () => navegar(-1));
+    if(nextBtn) nextBtn.addEventListener("click", () => navegar(1));
+    if(gallery) gallery.addEventListener("scroll", actualizarProgreso);
+});
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal');
+
+function checkReveal() {
+    reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            el.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', checkReveal);
+window.addEventListener('load', checkReveal);
+
+// ===== EGRESADOS LIGHTBOX =====
+const egressImage = document.getElementById('egressImage');
+if(egressImage){
+    egressImage.addEventListener('click', () => {
+        abrirLightbox(egressImage.src);
+    });
+}
+
+// ===== MÚSICA =====
+const backgroundMusic = document.getElementById('backgroundMusic');
+const musicToggle = document.getElementById('musicToggle');
+
+backgroundMusic.volume = 0.15;
+backgroundMusic.loop = true;
+
+function playMusic() {
+    const playPromise = backgroundMusic.play();
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => console.log("🎵 Música reproduciendo"))
+            .catch(err => console.log("⚠️ Autoplay bloqueado. Haz clic para reproducir música"));
+    }
+}
+
+   // MODIFICACIÓN DEL EVENTO PARA EL PRELOADER (Versión Optimizada)
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Tus funciones originales se ejecutan de inmediato
+    if (typeof playMusic === 'function') playMusic();
+    if (typeof checkReveal === 'function') checkReveal(); 
+
+    const preloader = document.getElementById("preloader");
+    
+    // Ocultar la pantalla de carga rápidamente
+    // Cambiamos los 6 segundos (6000) por solo medio segundo (500)
+    setTimeout(() => {
+        if (preloader) {
+            preloader.style.transition = "opacity 0.5s ease"; // Suaviza la salida
+            preloader.style.opacity = "0";
+
+            // En lugar de esperar 1200ms, esperamos solo 500ms para quitarlo del camino
+            setTimeout(() => {
+                preloader.style.display = "none";
+            }, 500);
+        }
+    }, 500); 
+});
+
+// 🚨 EL BOTÓN DE PÁNICO (Seguro de vida)
+// Si algo se traba, a los 4 segundos forzamos que desaparezca sí o sí.
+setTimeout(() => {
+    const preloader = document.getElementById("preloader");
+    if (preloader && preloader.style.display !== "none") {
+        console.log("Preloader forzado a cerrar para no bloquear al usuario.");
+        preloader.style.opacity = "0";
+        setTimeout(() => {
+            preloader.style.display = "none";
+        }, 500);
+    }
+}, 4000);
+
+let firstClick = false;
+document.addEventListener('click', () => {
+    if(!firstClick && backgroundMusic.paused){
+        firstClick = true;
+        playMusic();
+    }
+});
+
+let isMuted = false;
+
+musicToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    isMuted = !isMuted;
+    
+    if(isMuted){
+        backgroundMusic.volume = 0;
+        musicToggle.classList.add('muted');
+        musicToggle.querySelector('.music-icon').textContent = '🔇';
+        musicToggle.title = 'Activar música';
+    } else {
+        backgroundMusic.volume = 0.15;
+        musicToggle.classList.remove('muted');
+        musicToggle.querySelector('.music-icon').textContent = '🔊';
+        musicToggle.title = 'Silenciar música';
+        
+        if(backgroundMusic.paused){
+            playMusic();
+        }
+    }
+});
+
+// ===== COUNTDOWN DE GRADUACIÓN =====
+const fechaEvento = new Date("july  10, 2026 14:00:00  ").getTime();
+
+const relojInterval = setInterval(() => {
+    const ahora = new Date().getTime();
+    const diferencia = fechaEvento - ahora;
+
+    // 🔥 EXPLOSIÓN DE LA HORA CERO
+    if (diferencia <= 0) {
+        clearInterval(relojInterval);
+
+        // 1. Apuntamos al nuevo ID que agrupa todo el bloque
+        const contenedorReloj = document.getElementById("zona-reloj"); 
+        
+        if(contenedorReloj) {
+            // Reemplazamos los números y el "Faltan..." por el mensaje de victoria dorado
+           contenedorReloj.innerHTML = `
+    <style>
+        /* Animación del brillo dorado pasando por el texto */
+        @keyframes brillo-metalico {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        /* Efecto de explosión al aparecer */
+        @keyframes pop-entrada {
+            0% { transform: scale(0.5); opacity: 0; filter: blur(10px); }
+            70% { transform: scale(1.1); opacity: 1; filter: blur(0px); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Entrada elegante para el texto de abajo */
+        @keyframes fade-arriba {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .titulo-epico {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #AA771C, #D4AF37, #FCF6BA, #D4AF37, #AA771C);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0px 0px 20px rgba(212, 175, 55, 0.6));
+            animation: pop-entrada 1s ease-out both, brillo-metalico 3s linear infinite 1s;
+        }
+        
+        .subtitulo-epico {
+            color: #ffffff;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            /* 🔥 CAMBIAMOS 'forwards' por 'both' para que no desaparezca en celulares ni PC */
+            animation: fade-arriba 1s ease-out 0.8s both; 
+        }
+        
+        .detalle-generacion {
+            display: block;
+            font-size: 0.9rem;
+            color: #D4AF37;
+            letter-spacing: 5px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+    </style>
+
+    <h2 class="titulo-epico">¡LLEGÓ EL GRAN DÍA! 🎓</h2>
+    <p class="subtitulo-epico">
+        Bienvenidos a la Ceremonia de Clausura
+        <span class="detalle-generacion">Generación 2023 - 2026</span>
+    </p>
+`;
+        }
+
+        // 2. Lluvia de confeti elegante (Dorado y plateado)
+        const duration = 15 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999999 };
+
+        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+        const confetiInterval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(confetiInterval);
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                colors: ['#D4AF37', '#AA8529', '#FFFFFF'],
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } 
+            }));
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                colors: ['#D4AF37', '#AA8529', '#FFFFFF'],
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } 
+            }));
+        }, 250);
+
+        return; 
+    }
+
+    // --- FUNCIONAMIENTO NORMAL DEL RELOJ ---
+    const dias = Math.floor(diferencia / (1000*60*60*24));
+    const horas = Math.floor((diferencia % (1000*60*60*24)) / (1000*60*60));
+    const minutos = Math.floor((diferencia % (1000*60*60)) / (1000*60));
+    const segundos = Math.floor((diferencia % (1000*60)) / 1000);
+
+    document.getElementById("dias").textContent = dias;
+    document.getElementById("horas").textContent = horas;
+    document.getElementById("minutos").textContent = minutos;
+    document.getElementById("segundos").textContent = segundos;
+
+}, 1000);
+
+/* =========================
+LLUVIA PREMIUM
+========================= */
+
+const rain = document.querySelector(".graduation-rain");
+
+for(let i = 0; i < 70; i++){
+
+    const hat = document.createElement("div");
+
+    hat.className = "hat";
+
+    hat.innerHTML = "🎓";
+
+    hat.style.left =
+    Math.random() * 100 + "vw";
+
+    hat.style.fontSize =
+    (20 + Math.random() * 25) + "px";
+
+    hat.style.animationDuration =
+    (6 + Math.random() * 8) + "s";
+
+    hat.style.animationDelay =
+    Math.random() * 8 + "s";
+
+    hat.style.setProperty(
+        "--drift",
+        ((Math.random() * 300) - 150) + "px"
+    );
+
+    hat.style.opacity =
+    0.3 + Math.random() * 0.7;
+
+    rain.appendChild(hat);
+
+}
+/* =========================
+ABRIR ALUMNO
+========================= */
+
+window.abrirAlumno = function(card){
+    const modal = document.getElementById("modalAlumno");
+    const img = document.getElementById("imgAlumno");
+    const nombre = document.getElementById("nombreAlumno");
+
+    // 1. Ponemos el nombre y abrimos la ventana
+    nombre.innerHTML = card.dataset.nombre;
+    modal.style.display = "flex";
+
+    // 2. EL ADIVINADOR DE IMÁGENES
+    const extensiones = [".jpg", ".jpeg", ".png", ".webp", ".JPG", ".PNG", ".JPEG"];
+    let intento = 0;
+    const rutaBase = card.dataset.img; // Ej: "alumnos/ROBERTOMICHEL" (sin extensión)
+
+    // Si la imagen da error (porque no existe en ese formato), dispara esta función:
+    img.onerror = function() {
+        intento++;
+        
+        // Si aún nos quedan extensiones por probar...
+        if(intento < extensiones.length) {
+            img.src = rutaBase + extensiones[intento]; // Prueba la siguiente
+        } 
+        // Si ya probó todas y no encontró ninguna foto del alumno...
+        else {
+            // Genera un Avatar Premium con sus iniciales en color dorado
+            const nombreUrl = encodeURIComponent(card.dataset.nombre);
+            img.src = `https://ui-avatars.com/api/?name=${nombreUrl}&background=D4AF37&color=000&size=250&bold=true`;
+            img.onerror = null; // Apaga el adivinador para evitar bucles
+        }
+    };
+
+    // 3. Arranca el motor haciendo el primer intento con .jpg
+    img.src = rutaBase + extensiones[0];
+}
+/* =========================
+   CERRAR FOTO AUTOMÁTICAMENTE
+========================= */
+window.cerrarAlumno = function() {
+    const modal = document.getElementById("modalAlumno");
+    if (modal) {
+        modal.style.display = "none";
+    }
+};/* =========================================
+   ARRANQUE FORZADO DEL MARCADOR EN VIVO
+========================================= */
+let intentarArrancar = setInterval(() => {
+    // Si Firebase y las herramientas ya cargaron...
+    if (window.db && window.collection && window.onSnapshot && typeof window.iniciarConteoPremios === "function") {
+        
+        window.iniciarConteoPremios(); // Arrancamos las medallas
+        console.log("🏆 Marcador público arrancado con éxito!");
+        
+        clearInterval(intentarArrancar); // Apagamos el motor de arranque
+    }
+}, 500); // Revisa cada medio segundo
+</script>
+
+<!-- =========================
+BOTÓN AVISO PRIVACIDAD
+========================= -->
+
+<div style="text-align:center; margin:40px 0;">
+
+<button onclick="abrirPrivacidad()" style="
+padding:12px 28px;
+border:none;
+border-radius:12px;
+background:#111;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+">
+Aviso de Privacidad
+</button>
+
+</div>
+
+<!-- =========================
+VENTANA EMERGENTE
+========================= -->
+
+<div id="modalPrivacidad" style="
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(5px);
+overflow:auto;
+">
+
+<div style="
+background:white;
+max-width:900px;
+margin:60px auto;
+padding:40px;
+border-radius:20px;
+position:relative;
+font-family:Arial, sans-serif;
+line-height:1.8;
+color:#222;
+animation:fadeIn 0.4s ease;
+">
+
+<!-- BOTÓN CERRAR -->
+
+<span onclick="cerrarPrivacidad()" style="
+position:absolute;
+top:15px;
+right:20px;
+font-size:32px;
+cursor:pointer;
+font-weight:bold;
+color:#000;
+">
+&times;
+</span>
+
+<h2 style="
+font-size:2rem;
+margin-bottom:20px;
+text-align:center;
+">
+Aviso de Privacidad
+</h2>
+
+<p>
+En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, se informa que los datos personales proporcionados en este sitio web serán utilizados únicamente para fines relacionados con la organización y difusión de la ceremonia de graduación.
+</p>
+
+<h3>Datos recopilados</h3>
+
+<ul>
+<li>Nombre de alumnos e invitados.</li>
+<li>Fotografías y videos del evento.</li>
+<li>Datos de contacto proporcionados voluntariamente.</li>
+</ul>
+
+<h3>Finalidad</h3>
+
+<ul>
+<li>Difusión de la graduación.</li>
+<li>Galerías fotográficas.</li>
+<li>Recuerdos digitales.</li>
+<li>Información relacionada con el evento.</li>
+</ul>
+
+<h3>Uso de imágenes</h3>
+
+<p>
+Durante el evento podrán capturarse fotografías y videos con fines institucionales y conmemorativos.
+</p>
+
+<h3>Protección de información</h3>
+
+<p>
+La información será tratada de manera confidencial y no será compartida con terceros ajenos a la organización.
+</p>
+
+<p style="
+margin-top:30px;
+font-size:14px;
+opacity:0.7;
+text-align:center;
+">
+Última actualización: Mayo 2026
+</p>
+
+</div>
+
+</div>
+
+
+<script>
+   window.iniciarConteoPremios = function() {
+    const votosRef = window.collection(window.db, "votos_premios");
+    
+    window.onSnapshot(votosRef, (snapshot) => {
+        let conteos = { puntual: {}, divertido: {}, dormilon: {}, sociable: {} };
+        
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            // Revisamos cada categoría posible
+            Object.keys(conteos).forEach(cat => {
+                if (data[cat]) {
+                    conteos[cat][data[cat]] = (conteos[cat][data[cat]] || 0) + 1;
+                }
+            });
+        });
+
+        // Función para renderizar que usamos dentro
+        const renderTop3 = (catId) => {
+            const contenedor = document.getElementById(`resultados-${catId}`);
+            if (!contenedor) return;
+            
+            const votosCat = conteos[catId];
+            const top = Object.entries(votosCat).sort((a, b) => b[1] - a[1]).slice(0, 3);
+            
+            if (top.length === 0) {
+                contenedor.innerHTML = '<div class="sin-votos">Sin votos aún</div>';
+                return;
+            }
+            
+            let html = '<div style="color:#D4AF37; margin-bottom:10px; text-align:center; font-weight:800; font-size:11px;">🏆 TOP 3</div>';
+            
+            top.forEach((item, index) => {
+                let medalla = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
+                let nombreArchivoFoto = item[0].replace(/\s+/g, '').toUpperCase();
+                
+                html += `
+                    <div class="resultado-item" 
+                         style="cursor: pointer; padding:5px; background:rgba(0,0,0,0.2); margin:3px; border-radius:5px;"
+                         onmouseenter="this.style.background='rgba(212, 175, 55, 0.2)'; document.getElementById('modalAlumno').style.pointerEvents='none'; abrirAlumno(this);" 
+                         onmouseleave="this.style.background='rgba(0,0,0,0.2)'; document.getElementById('modalAlumno').style.pointerEvents='auto'; cerrarAlumno();"
+                         data-img="alumnos/${nombreArchivoFoto}" 
+                         data-nombre="${item[0]}">
+                        <span>${medalla} ${item[0]}</span>
+                        <span style="float:right; color:#FFD700;">${item[1]}</span>
+                    </div>
+                `;
+            });
+            contenedor.innerHTML = html;
+        };
+
+        // Pintamos todo
+        renderTop3('puntual');
+        renderTop3('divertido');
+        renderTop3('dormilon');
+        renderTop3('sociable');
+    });
+    // Y el motor de arranque que también debe ir aquí afuera
+    let intentarArrancar = setInterval(() => {
+        if (typeof window.iniciarConteoPremios === "function") {
+            window.iniciarConteoPremios();
+            console.log("🏆 Marcador público arrancado con éxito!");
+            clearInterval(intentarArrancar);
+        }
+    }, 500);
+    };
+    
+</script>
+<script>
+
+function abrirPrivacidad() {
+    document.getElementById("modalPrivacidad").style.display = "block";
+}
+
+function cerrarPrivacidad() {
+    document.getElementById("modalPrivacidad").style.display = "none";
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById("modalPrivacidad");
+
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+
+
+<!-- =========================
+ANIMACIÓN
+========================= -->
+
+<style>
+    /* ESTILO DEL BOTÓN RESPONDER DENTRO DE LOS COMENTARIOS */
+.comentario-acciones {
+    margin-top: 6px;
+    text-align: left;
+}
+
+.btn-responder {
+    background: transparent;
+    border: none;
+    color: #D4AF37; /* Tono dorado elegante */
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+.btn-responder:hover {
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+    transform: translateX(3px); /* Pequeño desplazamiento a la derecha */
+}
+    /* =========================================
+   ESTILOS PARA EL BOTÓN "ME ENCANTA"
+   ========================================= */
+.btn-me-encanta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05); /* Fondo base muy sutil */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Estado cuando el usuario YA le dio like */
+.btn-me-encanta.liked {
+    background: rgba(255, 68, 68, 0.15); /* Fondo rojizo premium */
+    color: #ff4444; /* Texto rojo brillante */
+    border-color: rgba(255, 68, 68, 0.4);
+}
+
+/* Dispara la animación del latido solo en el corazón cuando está "liked" */
+.btn-me-encanta.liked span {
+    animation: latidoCorazon 0.5s ease-in-out;
+}
+
+/* Efecto al pasar el cursor (Hover) */
+.btn-me-encanta:hover {
+    background: rgba(255, 68, 68, 0.25);
+    border-color: #ff4444;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ANIMACIÓN DE LATIDO */
+@keyframes latidoCorazon {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.4); }
+    50% { transform: scale(0.95); }
+    75% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.btn-libro{
+    display:inline-block;
+    padding:16px 35px;
+    background:linear-gradient(135deg,#ffd700,#ffb700);
+    color:#111;
+    text-decoration:none;
+    font-weight:bold;
+    border-radius:15px;
+    transition:0.4s;
+    box-shadow:0 10px 30px rgba(255,215,0,0.35);
+}
+
+.btn-libro:hover{
+    transform:translateY(-5px) scale(1.05);
+    box-shadow:0 20px 40px rgba(255,215,0,0.5);
+}
+@keyframes fadeIn {
+    from {
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+<!-- =========================
+FOOTER CRÉDITOS PREMIUM
+========================= -->
+
+<footer style="
+width:100%;
+padding:30px 20px;
+text-align:center;
+background:linear-gradient(135deg,#0f0f0f,#1b1b1b);
+color:white;
+font-family:Arial, sans-serif;
+position:relative;
+overflow:hidden;
+">
+
+<!-- EFECTO BRILLO -->
+
+<div style="
+position:absolute;
+top:-50px;
+left:-50px;
+width:200px;
+height:200px;
+background:rgba(255,255,255,0.05);
+border-radius:50%;
+filter:blur(40px);
+"></div>
+
+<div style="
+position:absolute;
+bottom:-60px;
+right:-60px;
+width:220px;
+height:220px;
+background:rgba(255,215,0,0.08);
+border-radius:50%;
+filter:blur(50px);
+"></div>
+
+
+<!-- TEXTO -->
+
+<p style="
+margin:0;
+font-size:15px;
+letter-spacing:1px;
+opacity:0.8;
+">
+Desarrollado con pasión y creatividad
+</p>
+
+<h2 style="
+margin:10px 0 0 0;
+font-size:28px;
+font-weight:800;
+background:linear-gradient(90deg,#ffffff,#ffd700,#ffffff);
+-webkit-background-clip:text;
+background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:brillo 4s linear infinite;
+">
+By Ing. J. Roberto Arce A.
+</h2>
+
+<p style="
+margin-top:10px;
+font-size:13px;
+opacity:0.6;
+">
+     Diseño Web Premium para Graduaciones
+</p>
+
+</footer>
+
+
+<!-- =========================
+ANIMACIÓN
+========================= -->
+
+<style>
+
+@keyframes brillo {
+
+    0%{
+        background-position:-200px;
+    }
+
+    100%{
+        background-position:200px;
+    }
+
+}
+
+footer h2{
+    background-size:200% auto;
+}
+
+</style>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000, // Cuánto dura la animación (1 segundo)
+        once: true,     // Se anima una sola vez cuando el usuario baja
+        offset: 100     // Empieza a animarse 100px antes de que el elemento aparezca del todo
+    });
+</script>
+
+<!-- POPUP ALUMNO -->
+
+<div class="modal-alumno" id="modalAlumno">
+    <div class="popup-alumno">
+        
+        <span class="cerrar-alumno" onclick="document.getElementById('modalAlumno').style.display='none'">
+            &times;
+        </span>
+
+        <img id="imgAlumno" alt="Foto del nominado">
+
+        <h2 id="nombreAlumno"></h2>
+
+    </div>
+</div>
+
+</div>
+<div id="modalVotacion" class="modal-votacion-overlay" style="display: none;">
+    <div class="modal-votacion-box">
+        <h3 id="modalVotacionTitulo" style="color: #D4AF37; font-family: 'Cinzel', serif; margin-bottom: 10px;">Nominar Premio</h3>
+        <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 20px;">Selecciona a tu compañero de la lista:</p>
+        
+        <select id="selectAlumnoVoto" class="select-elegante">
+            <option value="" disabled selected>Elige un alumno...</option>
+            </select>
+        
+        <div class="modal-botones" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center;">
+            <button onclick="cerrarModalVotacion()" class="btn-cancelar-voto">Cancelar</button>
+            <button onclick="confirmarVotoFirebase()" class="btn-confirmar-voto">Enviar Voto</button>
+        </div>
+    </div>
+    
+</div>
+</body>
+    
+</body>
+</html>
