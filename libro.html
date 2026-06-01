@@ -10,58 +10,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
-    
-/* BOTÓN VOLVER AL INICIO - FORZADO ABSOLUTO A LA DERECHA */
+ /* BOTÓN VOLVER AL INICIO - FORZADO ABSOLUTO A LA DERECHA */
 .btn-volver-flotante {
-    position: static !important;   /* Congelado en la pantalla */
-    top: 25px !important;         /* Separación del borde superior */
-    right: 25px !important;       /* ¡CRUCIAL! Lo empuja al extremo derecho pase lo que pase */
-    left: auto !important;        /* Cancela cualquier alineación izquierda previa */
-    z-index: 9999 !important;     /* Capa máxima sobre todo el diseño */
+    position: fixed; /* ¡Esta es la magia! Lo fija en la pantalla */
+    bottom: 30px;    /* Distancia desde abajo */
+    right: 30px;     /* Distancia desde la derecha */
+    z-index: 99999;  /* Asegura que siempre esté por encima de las fotos y modales */
     
+    /* Diseño del botón (Elegante con dorado y negro) */
+    background-color: #D4AF37; 
+    color: #020617; 
+    padding: 12px 24px;
+    border-radius: 50px; 
+    font-weight: bold;
     text-decoration: none;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 10px 22px;
-    border-radius: 30px;
-    
-    /* Estética de cristal translúcido oscuro y oro */
-    background: rgba(15, 23, 42, 0.85) !important; 
-    color: #D4AF37 !important;
-    border: 1px solid rgba(212, 175, 55, 0.6) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    
-    display: inline-flex !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    gap: 8px;
 }
 
 /* Efecto al pasar el cursor encima */
 .btn-volver-flotante:hover {
-    background: #D4AF37 !important;
-    color: #020617 !important;
-    border-color: #D4AF37 !important;
-    box-shadow: 0 4px 25px rgba(212, 175, 55, 0.7);
-    transform: translateY(-2px);
+   background-color: #b5952f; /* Se oscurece un poco al pasar el mouse */
+    transform: scale(1.05);    /* Crece un poquito */
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 /* Adaptación inteligente para Celulares */
 @media (max-width: 768px) {
-    .btn-volver-flotante {
-        position: relative !important; /* En celular vuelve al centro para no tapar nada */
-        top: 0 !important;
-        right: 0 !important;
-        margin: 20px auto 10px auto !important;
-        display: flex !important;
-        max-width: 220px;
+    /* ¡CORREGIDO! Ahora usa el mismo nombre de clase */
+    .btn-volver-flotante { 
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 18px;
+        font-size: 14px;
     }
 }
-    
 /* ESTILO PARA EL TEXTO JUSTO ABAJO DE LA FOTO */
 .titulo-bajo-foto {
     font-family: 'Poppins', sans-serif;
@@ -708,9 +694,9 @@ MOSAICO Y CREDENCIAL
 </head>
 
 <body>
-    <a href="index.html" class="btn btn-inicio">
-            ← Volver al Inicio
-        </a>
+   <a href="index.html" class="btn-volver-flotante">
+    ⬅️ Volver al Inicio
+</a>
 <section class="presentacion-grupal-container">
     <div class="marco-llamativo">
         <div class="brillo-efecto"></div>
@@ -900,42 +886,43 @@ const frasesGraduacion = [
 // DATOS DE LOS ALUMNOS (INCLUYE FOTOS DE IDENTIFICACIÓN)
 // =========================
 const listaAlumnos = [
-    { nombre: "ARCE HERNANDEZ ROBERTO MICHEL", correo: "robmichelarce@gmail.com", nacimiento: "13/05/2008", fotoToga: "IMG_1680.JPG", fotoCasual: "IMG_1641.JPG", fotoId: "IMG_3029.JPG" },
-    { nombre: "CARRILLO CORONEL EDGAR", correo: "edgar.carillo@gmail.com", nacimiento: "20/05/2008", fotoToga: "IMG_1681.JPG", fotoCasual: "IMG_1642.JPG", fotoId: "IMG_3039.JPG" },
-    { nombre: "CARRILLO GARCIA RICARDO EMILIANO", correo: "carrillograciaricardoemiliano@gmail.com", nacimiento: "04/01/2008", fotoToga: "IMG_1682.JPG", fotoCasual: "IMG_1643.JPG", fotoId: "IMG_3020.JPG" },
-    { nombre: "CARRILLO RUIZ KAROLY HARUMY", correo: "carrilloarumi297@gmail.com", nacimiento: "19/03/2008", fotoToga: "IMG_1714.JPG", fotoCasual: "IMG_1679.JPG", fotoId: "IMG_3048.JPG" },
-    { nombre: "CORONEL RAMOS ALEJANDRO", correo: "alejandro01coronel11@gmail.com", nacimiento: "01/11/2008", fotoToga: "IMG_1713.JPG", fotoCasual: "IMG_1678.JPG", fotoId: "IMG_3053.JPG" },
-    { nombre: "CORONEL RUBIO JOSE MANUEL", correo: "jmanuelcoro02@gmail.com", nacimiento: "02/06/2008", fotoToga: "IMG_1683.JPG", fotoCasual: "IMG_1644.JPG", fotoId: "IMG_3030.JPG" },
-    { nombre: "DIAZ ESCOBEDO RENATA", correo: "renata.diaz0063@alumnos.udg.mx", nacimiento: "05/03/2008", fotoToga: "IMG_1684.JPG", fotoCasual: "IMG_1645.JPG", fotoId: "IMG_3041.JPG" },
-    { nombre: "GARCIA CARRILLO CRISTHOFER", correo: "christofergarcia2703@gmail.com", nacimiento: "27/03/2008", fotoToga: "IMG_1685.JPG", fotoCasual: "IMG_1646.JPG", fotoId: "IMG_3021.JPG" },
-    { nombre: "GARCIA RODRIGUEZ DAFNE MARIELA", correo: "dafne.garcia0073@alumnos.udg.mmx", nacimiento: "18/04/2008", fotoToga: "IMG_1686.JPG", fotoCasual: "IMG_1647.JPG", fotoId: "IMG_3044.JPG" },
-    { nombre: "GARCIA SANTIAGO YURIDIA GUADALUPE", correo: "yuridia.garcia0090@alumnos.udg.mx", nacimiento: "23/09/2008", fotoToga: "IMG_1688.JPG", fotoCasual: "IMG_1649.JPG", fotoId: "IMG_3051.JPG" },
-    { nombre: "GARCIA SANTOIAGO SEBASTIAN", correo: "sebasgarciasantiago242008@gmail.com", nacimiento: "24/09/2008", fotoToga: "IMG_1687.JPG", fotoCasual: "IMG_1648.JPG", fotoId: "IMG_3035.JPG" },
-    { nombre: "GOMEZ CARRILLO HECTOR FRANCISCO", correo: "hg3768525@gmail.com", nacimiento: "19/03/2008", fotoToga: "IMG_1689.JPG", fotoCasual: "IMG_1650.JPG", fotoId: "IMG_3019.JPG" },
-    { nombre: "HERNANDEZ FIGUEROA DANNA PAOLA", correo: "dana.hernandez0077@alumnos.udg.mx", nacimiento: "21/09/2008", fotoToga: "IMG_1690.JPG", fotoCasual: "IMG_1652.JPG", fotoId: "IMG_3054.JPG" },
-    { nombre: "HERNANDEZ GONZALEZ ESBEHIDY", correo: "esbehidy.hernandez0091@alumos.udg.mx", nacimiento: "14/09/2008", fotoToga: "IMG_1691.JPG", fotoCasual: "IMG_1654.JPG", fotoId: "IMG_3042.JPG" },
-    { nombre: "HERNANDEZ HERNANDEZ RUBEN ARON", correo: "hrubenaron@gmail.com", nacimiento: "31/10/2008", fotoToga: "IMG_1692.JPG", fotoCasual: "IMG_1655.JPG", fotoId: "IMG_3037.JPG" },
-    { nombre: "HERNANDEZ OSUNA ROGELIO", correo: "rogelio.hernnadez@alumnos.udg.mx", nacimiento: "13/09/2008", fotoToga: "IMG_1693.JPG", fotoCasual: "IMG_1656.JPG", fotoId: "IMG_3034.JPG" },
-    { nombre: "HERNANDEZ SANCHEZ GERARDO", correo: "gerardo.hernandez0072@alumos.udg.mx", nacimiento: "23/07/2007", fotoToga: "IMG_1694.JPG", fotoCasual: "IMG_1657.JPG", fotoId: "IMG_3026.JPG" },
-    { nombre: "HERNANDEZ SANCHEZ LUIS DANIEL", correo: "luis.hernnadez0065@alumos.udg.mx", nacimiento: "19/10/2008", fotoToga: "IMG_1695.JPG", fotoCasual: "IMG_1658.JPG", fotoId: "IMG_3032.JPG" },
-    { nombre: "HERRERA CARRILLO CHRISTIAN", correo: "alexherrera800224@gmail.com", nacimiento: "04/02/2008", fotoToga: "IMG_1696.JPG", fotoCasual: "IMG_1659.JPG", fotoId: "IMG_3025.JPG" },
-    { nombre: "LEAL JR JUAN JOSE", correo: "ivanleallopez3@hotmail.com", nacimiento: "22/04/2008", fotoToga: "IMG_1697.JPG", fotoCasual: "IMG_1660.JPG", fotoId: "IMG_3031.JPG" },
-    { nombre: "MARTINEZ BAUTISTA LUIS FERNANDO", correo: "luisfernandom0910@gmail.com", nacimiento: "09/10/2008", fotoToga: "IMG_1698.JPG", fotoCasual: "IMG_1661.JPG", fotoId: "IMG_3022.JPG" },
-    { nombre: "MARTINEZ CARRILLO JOSE EMILIANO", correo: "emi28lz0120g@gmail.com", nacimiento: "02/10/2008", fotoToga: "IMG_1699.JPG", fotoCasual: "IMG_1662.JPG", fotoId: "IMG_3023.JPG" },
-    { nombre: "MORENO ARCE NAZARET", correo: "nazaretarce63@gmail.com", nacimiento: "28/09/2008", fotoToga: "IMG_1700.JPG", fotoCasual: "IMG_1663.JPG", fotoId: "IMG_3045.JPG" },
-    { nombre: "RAMIREZ CORONEL KARLA CITLALI", correo: "citlalicoronel19@gmail.com", nacimiento: "21/07/2008", fotoToga: "IMG_1701.JPG", fotoCasual: "IMG_1664.JPG", fotoId: "IMG_3046.JPG" },
-    { nombre: "RODRIGUEZ CARRILLO ROMAN", correo: "romancarrillo2206@gmail.com", nacimiento: "22/06/2008", fotoToga: "IMG_1702.JPG", fotoCasual: "IMG_1665.JPG", fotoId: "IMG_3036.JPG" },
-    { nombre: "RODRIGUEZ MARTINEZ JOSE ANGEL", correo: "jose.rodriguez0088@alumnos.udg.mx", nacimiento: "29/04/2008", fotoToga: "IMG_1703.JPG", fotoCasual: "IMG_1666.JPG", fotoId: "IMG_3027.JPG" },
-    { nombre: "RUBIO CARRILLO ENEDINA YAMILETH", correo: "yamilethrubiocarrillo@gmail.com", nacimiento: "06/11/2008", fotoToga: "IMG_1704.JPG", fotoCasual: "IMG_1667.JPG", fotoId: "IMG_3040.JPG" },
-    { nombre: "RUBIO GARCIA DANIEL", correo: "danielrubio2602@gmail.com", nacimiento: "26/02/2008", fotoToga: "IMG_1705.JPG", fotoCasual: "IMG_1668.JPG", fotoId: "IMG_3028.JPG" },
-    { nombre: "RUBIO MERCADO ANGEL", correo: "angel.rubio@alumnos.ud.mx", nacimiento: "07/08/2008", fotoToga: "IMG_1706.JPG", fotoCasual: "IMG_1669.JPG", fotoId: "IMG_3033.JPG" },
-    { nombre: "SANTIAGO BECERRA ADAN", correo: "santiagobecerraadan@gmail.com", nacimiento: "14/06/2008", fotoToga: "IMG_1707.JPG", fotoCasual: "IMG_1670.JPG", fotoId: "IMG_3038.JPG" },
-    { nombre: "SANTIAGO CARRILLO ELIZABETH", correo: "elizabethsan242@gmail.com", nacimiento: "24/12/2008", fotoToga: "IMG_1708.JPG", fotoCasual: "IMG_1672.JPG", fotoId: "IMG_3047.JPG" },
-    { nombre: "SANTIAGO HERNANDEZ CARELY ANAHI", correo: "caansahe23022008@gmail.com", nacimiento: "23/02/2008", fotoToga: "IMG_1709.JPG", fotoCasual: "IMG_1673.JPG", fotoId: "IMG_3050.JPG" },
-    { nombre: "TAPIA ROMERO ERYX", correo: "tapiaf778@gmail.com", nacimiento: "22/03/2008", fotoToga: "IMG_1712.JPG", fotoCasual: "IMG_1677.JPG", fotoId: "IMG_3052.JPG" },
-    { nombre: "TORRES BERNAL KEIVIN ZAVIT", correo: "keivintorres09676@gmail.com", nacimiento: "29/12/2008", fotoToga: "IMG_1711.JPG", fotoCasual: "IMG_1674.JPG", fotoId: "IMG_3043.JPG" },
-    { nombre: "VILLEGAS RUIZ JUAN PABLO", correo: "No proporcionado", nacimiento: "16/02/2008", fotoToga: "IMG_1710.JPG", fotoCasual: "IMG_1675.JPG", fotoId: "IMG_3049.JPG" }
+    { nombre: "ARCE HERNANDEZ ROBERTO MICHEL", correo: "robmichelarce@gmail.com", nacimiento: "13/05/2008", fotoToga: "IMG_1680.jpg", fotoCasual: "IMG_1641.jpg", fotoId: "IMG_3029.jpg" },
+    { nombre: "CARRILLO CORONEL EDGAR", correo: "edgar.carillo@gmail.com", nacimiento: "20/05/2008", fotoToga: "IMG_1681.jpg", fotoCasual: "IMG_1642.jpg", fotoId: "IMG_3039.jpg" },
+    { nombre: "CARRILLO GARCIA RICARDO EMILIANO", correo: "carrillograciaricardoemiliano@gmail.com", nacimiento: "04/01/2008", fotoToga: "IMG_1682.jpg", fotoCasual: "IMG_1643.jpg", fotoId: "IMG_3020.jpg" },
+    { nombre: "CARRILLO RUIZ KAROLY HARUMY", correo: "carrilloarumi297@gmail.com", nacimiento: "19/03/2008", fotoToga: "IMG_1714.jpg", fotoCasual: "IMG_1679.jpg", fotoId: "IMG_3048.jpg" },
+    { nombre: "CORONEL RAMOS ALEJANDRO", correo: "alejandro01coronel11@gmail.com", nacimiento: "01/11/2008", fotoToga: "IMG_1713.jpg", fotoCasual: "IMG_1678.jpg", fotoId: "IMG_3053.jpg" },
+    { nombre: "CORONEL RUBIO JOSE MANUEL", correo: "jmanuelcoro02@gmail.com", nacimiento: "02/06/2008", fotoToga: "IMG_1683.jpg", fotoCasual: "IMG_1644.jpg", fotoId: "IMG_3030.jpg" },
+    { nombre: "DIAZ ESCOBEDO RENATA", correo: "renata.diaz0063@alumnos.udg.mx", nacimiento: "05/03/2008", fotoToga: "IMG_1684.jpg", fotoCasual: "IMG_1645.jpg", fotoId: "IMG_3041.jpg" },
+    { nombre: "GARCIA CARRILLO CRISTHOFER", correo: "christofergarcia2703@gmail.com", nacimiento: "27/03/2008", fotoToga: "IMG_1685.jpg", fotoCasual: "IMG_1646.jpg", fotoId: "IMG_3021.jpg" },
+    { nombre: "GARCIA RODRIGUEZ DAFNE MARIELA", correo: "dafne.garcia0073@alumnos.udg.mmx", nacimiento: "18/04/2008", fotoToga: "IMG_1686.jpg", fotoCasual: "IMG_1647.jpg", fotoId: "IMG_3044.jpg" },
+    { nombre: "GARCIA SANTIAGO YURIDIA GUADALUPE", correo: "yuridia.garcia0090@alumnos.udg.mx", nacimiento: "23/09/2008", fotoToga: "IMG_1688.jpg", fotoCasual: "IMG_1649.jpg", fotoId: "IMG_3051.jpg" },
+    { nombre: "GARCIA SANTOIAGO SEBASTIAN", correo: "sebasgarciasantiago242008@gmail.com", nacimiento: "24/09/2008", fotoToga: "IMG_1687.jpg", fotoCasual: "IMG_1648.jpg", fotoId: "IMG_3035.jpg" },
+    { nombre: "GOMEZ CARRILLO HECTOR FRANCISCO", correo: "hg3768525@gmail.com", nacimiento: "19/03/2008", fotoToga: "IMG_1689.jpg", fotoCasual: "IMG_1650.jpg", fotoId: "IMG_3019.jpg" },
+    { nombre: "HERNANDEZ FIGUEROA DANNA PAOLA", correo: "dana.hernandez0077@alumnos.udg.mx", nacimiento: "21/09/2008", fotoToga: "IMG_1690.jpg", fotoCasual: "IMG_1652.jpg", fotoId: "IMG_3054.jpg" },
+    { nombre: "HERNANDEZ GONZALEZ ESBEHIDY", correo: "esbehidy.hernandez0091@alumos.udg.mx", nacimiento: "14/09/2008", fotoToga: "IMG_1691.jpg", fotoCasual: "IMG_1654.jpg", fotoId: "IMG_3042.jpg" },
+    { nombre: "HERNANDEZ HERNANDEZ RUBEN ARON", correo: "hrubenaron@gmail.com", nacimiento: "31/10/2008", fotoToga: "IMG_1692.jpg", fotoCasual: "IMG_1655.jpg", fotoId: "IMG_3037.jpg" },
+    { nombre: "HERNANDEZ OSUNA ROGELIO", correo: "rogelio.hernnadez@alumnos.udg.mx", nacimiento: "13/09/2008", fotoToga: "IMG_1693.jpg", fotoCasual: "IMG_1656.jpg", fotoId: "IMG_3034.jpg" },
+    { nombre: "HERNANDEZ SANCHEZ GERARDO", correo: "gerardo.hernandez0072@alumos.udg.mx", nacimiento: "23/07/2007", fotoToga: "IMG_1694.jpg", fotoCasual: "IMG_1657.jpg", fotoId: "IMG_3026.jpg" },
+    { nombre: "HERNANDEZ SANCHEZ LUIS DANIEL", correo: "luis.hernnadez0065@alumos.udg.mx", nacimiento: "19/10/2008", fotoToga: "IMG_1695.jpg", fotoCasual: "IMG_1658.jpg", fotoId: "IMG_3032.jpg" },
+    { nombre: "HERRERA CARRILLO CHRISTIAN", correo: "alexherrera800224@gmail.com", nacimiento: "04/02/2008", fotoToga: "IMG_1696.jpg", fotoCasual: "IMG_1659.jpg", fotoId: "IMG_3025.jpg" },
+    { nombre: "LEAL JR JUAN JOSE", correo: "ivanleallopez3@hotmail.com", nacimiento: "22/04/2008", fotoToga: "IMG_1697.jpg", fotoCasual: "IMG_1660.jpg", fotoId: "IMG_3031.jpg" },
+    { nombre: "MARTINEZ BAUTISTA LUIS FERNANDO", correo: "luisfernandom0910@gmail.com", nacimiento: "09/10/2008", fotoToga: "IMG_1698.jpg", fotoCasual: "IMG_1661.jpg", fotoId: "IMG_3022.jpg" },
+    { nombre: "MARTINEZ CARRILLO JOSE EMILIANO", correo: "emi28lz0120g@gmail.com", nacimiento: "02/10/2008", fotoToga: "IMG_1699.jpg", fotoCasual: "IMG_1662.jpg", fotoId: "IMG_3023.jpg" },
+    { nombre: "MORENO ARCE NAZARET", correo: "nazaretarce63@gmail.com", nacimiento: "28/09/2008", fotoToga: "IMG_1700.jpg", fotoCasual: "IMG_1663.jpg", fotoId: "IMG_3045.jpg" },
+    { nombre: "RAMIREZ CORONEL KARLA CITLALI", correo: "citlalicoronel19@gmail.com", nacimiento: "21/07/2008", fotoToga: "IMG_1701.jpg", fotoCasual: "IMG_1664.jpg", fotoId: "IMG_3046.jpg" },
+    { nombre: "RODRIGUEZ CARRILLO ROMAN", correo: "romancarrillo2206@gmail.com", nacimiento: "22/06/2008", fotoToga: "IMG_1702.jpg", fotoCasual: "IMG_1665.jpg", fotoId: "IMG_3036.jpg" },
+    { nombre: "RODRIGUEZ MARTINEZ JOSE ANGEL", correo: "jose.rodriguez0088@alumnos.udg.mx", nacimiento: "29/04/2008", fotoToga: "IMG_1703.jpg", fotoCasual: "IMG_1666.jpg", fotoId: "IMG_3027.jpg" },
+    { nombre: "RUBIO CARRILLO ENEDINA YAMILETH", correo: "yamilethrubiocarrillo@gmail.com", nacimiento: "06/11/2008", fotoToga: "IMG_1704.jpg", fotoCasual: "IMG_1667.jpg", fotoId: "IMG_3040.jpg" },
+    { nombre: "RUBIO GARCIA DANIEL", correo: "danielrubio2602@gmail.com", nacimiento: "26/02/2008", fotoToga: "IMG_1705.jpg", fotoCasual: "IMG_1668.jpg", fotoId: "IMG_3028.jpg" },
+    { nombre: "RUBIO MERCADO ANGEL", correo: "angel.rubio@alumnos.ud.mx", nacimiento: "07/08/2008", fotoToga: "IMG_1706.jpg", fotoCasual: "IMG_1669.jpg", fotoId: "IMG_3033.jpg" },
+    { nombre: "SANTIAGO BECERRA ADAN", correo: "santiagobecerraadan@gmail.com", nacimiento: "14/06/2008", fotoToga: "IMG_1707.jpg", fotoCasual: "IMG_1670.jpg", fotoId: "IMG_3038.jpg" },
+    { nombre: "SANTIAGO CARRILLO ELIZABETH", correo: "elizabethsan242@gmail.com", nacimiento: "24/12/2008", fotoToga: "IMG_1708.jpg", fotoCasual: "IMG_1672.jpg", fotoId: "IMG_3047.jpg" },
+    { nombre: "SANTIAGO HERNANDEZ CARELY ANAHI", correo: "caansahe23022008@gmail.com", nacimiento: "23/02/2008", fotoToga: "IMG_1709.jpg", fotoCasual: "IMG_1673.jpg", fotoId: "IMG_3050.jpg" },
+    { nombre: "TAPIA ROMERO ERYX", correo: "tapiaf778@gmail.com", nacimiento: "22/03/2008", fotoToga: "IMG_1712.jpg", fotoCasual: "IMG_1677.jpg", fotoId: "IMG_3052.jpg" },
+    { nombre: "TORRES BERNAL KEIVIN ZAVIT", correo: "keivintorres09676@gmail.com", nacimiento: "29/12/2008", fotoToga: "IMG_1711.jpg", fotoCasual: "IMG_1674.jpg", fotoId: "IMG_3043.jpg" },
+    { nombre: "VILLEGAS RUIZ JUAN PABLO", correo: "No proporcionado", nacimiento: "16/02/2008", fotoToga: "IMG_1710.jpg", fotoCasual: "IMG_1675.jpg", fotoId: "IMG_3049.jpg" }
 ];
+
 const contenedorAlumnos = document.getElementById('contenedor-alumnos');
 const mosaicoContenedor = document.getElementById('mosaico-contenedor');
 
@@ -945,10 +932,9 @@ listaAlumnos.forEach((alumno, index) => {
     const fraseAleatoria = frasesGraduacion[Math.floor(Math.random() * frasesGraduacion.length)];
     const tarjetaHTML = `
     <div class="book-card">
-        <!-- ¡CORREGIDO! Se cambió /alumnos por ./alumnos -->
-        <img src="./alumnos/${alumno.fotoToga}" 
-             onmouseover="this.src='./alumnos/${alumno.fotoCasual}'" 
-             onmouseout="this.src='./alumnos/${alumno.fotoToga}'"
+        <img src="/alumnos/${alumno.fotoToga}" 
+             onmouseover="this.src='/alumnos/${alumno.fotoCasual}'" 
+             onmouseout="this.src='/alumnos/${alumno.fotoToga}'"
              class="clickable-img" alt="${alumno.nombre}">
         <div class="book-info">
             <h2>${alumno.nombre}</h2>
@@ -966,13 +952,11 @@ listaAlumnos.forEach((alumno, index) => {
     // Fotito para el mosaico (Identificación)
     const mosaicoHTML = `
     <div class="mosaico-item" onclick="abrirCredencial(${index})">
-        <!-- ¡CORREGIDO! Se cambió /alumnos por ./alumnos -->
-        <img src="./alumnos/${alumno.fotoId}" alt="${alumno.nombre}" title="${alumno.nombre}">
+        <img src="/alumnos/${alumno.fotoId}" alt="${alumno.nombre}" title="${alumno.nombre}">
     </div>
     `;
     mosaicoContenedor.innerHTML += mosaicoHTML;
 });
-
 // 2. EVENTO PARA LAS IMÁGENES GRANDES (EL ZOOM)
 const modalDinamico = document.getElementById("modalImg");
 const modalImgDinamico = document.getElementById("imagenGrande");
@@ -997,8 +981,7 @@ function abrirCredencial(index) {
     const alumno = listaAlumnos[index];
     credencialContenido.innerHTML = `
         <div class="credencial-foto">
-            <!-- ¡CORREGIDO! Se cambió /alumnos por ./alumnos -->
-            <img src="./alumnos/${alumno.fotoId}" alt="Foto ID">
+            <img src="/alumnos/${alumno.fotoId}" alt="Foto ID">
         </div>
         <div class="credencial-datos">
             <h3>Preparatoria San Andrés</h3>
