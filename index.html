@@ -4779,17 +4779,16 @@ window.cerrarAlumno = function() {
 };/* =========================================
    ARRANQUE FORZADO DEL MARCADOR EN VIVO
 ========================================= */
-if (typeof window.intentarArrancar === 'undefined') {
-    window.intentarArrancar = setInterval(() => {
-        if (typeof window.iniciarConteoPremios === "function") {
-            window.iniciarConteoPremios();
-            console.log("🏆 Marcador público arrancado con éxito!");
-            clearInterval(window.intentarArrancar);
-            // Borramos la variable después de usarla para limpiar memoria
-            window.intentarArrancar = undefined;
-        }
-    }, 500);
-}
+let intentarArrancar = setInterval(() => {
+    // Si Firebase y las herramientas ya cargaron...
+    if (window.db && window.collection && window.onSnapshot && typeof window.iniciarConteoPremios === "function") {
+        
+        window.iniciarConteoPremios(); // Arrancamos las medallas
+        console.log("🏆 Marcador público arrancado con éxito!");
+        
+        clearInterval(intentarArrancar); // Apagamos el motor de arranque
+    }
+}, 500); // Revisa cada medio segundo
 </script>
 
 <!-- =========================
@@ -4969,6 +4968,7 @@ text-align:center;
         renderTop3('dormilon');
         renderTop3('sociable');
     });
+     };
     // Y el motor de arranque que también debe ir aquí afuera
 if (typeof window.intentarArrancar === 'undefined') {
     window.intentarArrancar = setInterval(() => {
@@ -4980,7 +4980,7 @@ if (typeof window.intentarArrancar === 'undefined') {
             window.intentarArrancar = undefined;
         }
     }, 500);
-}    
+} 
 </script>
 <script>
 
