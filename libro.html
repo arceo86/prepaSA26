@@ -946,9 +946,10 @@ listaAlumnos.forEach((alumno, index) => {
     const fraseAleatoria = frasesGraduacion[Math.floor(Math.random() * frasesGraduacion.length)];
     const tarjetaHTML = `
     <div class="book-card">
-        <img src="/alumnos/${alumno.fotoToga}" 
-             onmouseover="this.src='/alumnos/${alumno.fotoCasual}'" 
-             onmouseout="this.src='/alumnos/${alumno.fotoToga}'"
+        <!-- ¡CORREGIDO! Se cambió /alumnos por ./alumnos -->
+        <img src="./alumnos/${alumno.fotoToga}" 
+             onmouseover="this.src='./alumnos/${alumno.fotoCasual}'" 
+             onmouseout="this.src='./alumnos/${alumno.fotoToga}'"
              class="clickable-img" alt="${alumno.nombre}">
         <div class="book-info">
             <h2>${alumno.nombre}</h2>
@@ -966,11 +967,13 @@ listaAlumnos.forEach((alumno, index) => {
     // Fotito para el mosaico (Identificación)
     const mosaicoHTML = `
     <div class="mosaico-item" onclick="abrirCredencial(${index})">
-        <img src="/alumnos/${alumno.fotoId}" alt="${alumno.nombre}" title="${alumno.nombre}">
+        <!-- ¡CORREGIDO! Se cambió /alumnos por ./alumnos -->
+        <img src="./alumnos/${alumno.fotoId}" alt="${alumno.nombre}" title="${alumno.nombre}">
     </div>
     `;
     mosaicoContenedor.innerHTML += mosaicoHTML;
 });
+
 // 2. EVENTO PARA LAS IMÁGENES GRANDES (EL ZOOM)
 const modalDinamico = document.getElementById("modalImg");
 const modalImgDinamico = document.getElementById("imagenGrande");
@@ -995,7 +998,8 @@ function abrirCredencial(index) {
     const alumno = listaAlumnos[index];
     credencialContenido.innerHTML = `
         <div class="credencial-foto">
-            <img src="/alumnos/${alumno.fotoId}" alt="Foto ID">
+            <!-- ¡CORREGIDO! Se cambió /alumnos por ./alumnos -->
+            <img src="./alumnos/${alumno.fotoId}" alt="Foto ID">
         </div>
         <div class="credencial-datos">
             <h3>Preparatoria San Andrés</h3>
