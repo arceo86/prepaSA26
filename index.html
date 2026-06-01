@@ -4912,7 +4912,7 @@ text-align:center;
 
 
 <script>
-   window.iniciarConteoPremios = function() {
+  window.iniciarConteoPremios = function() {
     const votosRef = window.collection(window.db, "votos_premios");
     
     window.onSnapshot(votosRef, (snapshot) => {
@@ -4945,16 +4945,26 @@ text-align:center;
             
             top.forEach((item, index) => {
                 let medalla = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
-                let nombreArchivoFoto = item[0].replace(/\s+/g, '').toUpperCase();
+                let nombreVotado = item[0];
+                
+                // MAGIA AQUÍ: Buscamos al alumno en la lista global
+                let alumnoEncontrado = null;
+                if (typeof listaAlumnos !== 'undefined') {
+                    alumnoEncontrado = listaAlumnos.find(a => a.nombre === nombreVotado);
+                }
+
+                // Si lo encuentra usa su foto casual, si no, usa un avatar por defecto
+                // ¡Aseguramos usar el ./ para que GitHub Pages lo lea bien!
+                let rutaImg = alumnoEncontrado ? `./alumnos/${alumnoEncontrado.fotoCasual}` : './alumnos/default.webp';
                 
                 html += `
                     <div class="resultado-item" 
                          style="cursor: pointer; padding:5px; background:rgba(0,0,0,0.2); margin:3px; border-radius:5px;"
                          onmouseenter="this.style.background='rgba(212, 175, 55, 0.2)'; document.getElementById('modalAlumno').style.pointerEvents='none'; abrirAlumno(this);" 
                          onmouseleave="this.style.background='rgba(0,0,0,0.2)'; document.getElementById('modalAlumno').style.pointerEvents='auto'; cerrarAlumno();"
-                         data-img="alumnos/${nombreArchivoFoto}" 
-                         data-nombre="${item[0]}">
-                        <span>${medalla} ${item[0]}</span>
+                         data-img="${rutaImg}" 
+                         data-nombre="${nombreVotado}">
+                        <span>${medalla} ${nombreVotado}</span>
                         <span style="float:right; color:#FFD700;">${item[1]}</span>
                     </div>
                 `;
@@ -4968,7 +4978,7 @@ text-align:center;
         renderTop3('dormilon');
         renderTop3('sociable');
     });
-     };
+};
     // Y el motor de arranque que también debe ir aquí afuera
 if (typeof window.intentarArrancar === 'undefined') {
     window.intentarArrancar = setInterval(() => {
