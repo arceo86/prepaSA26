@@ -2252,6 +2252,7 @@ TEXTOS
     
 </style>
 <script src="actualizar-galeria.js"></script>
+<script src="alumnos.js"></script>
 <!-- FIREBASE SDK MODULAR -->
  
 <script type="module">
@@ -4751,7 +4752,7 @@ for(let i = 0; i < 70; i++){
 ABRIR ALUMNO
 ========================= */
 
-window.abrirAlumno = function(card){
+window.abrirAlumno = function(card) {
     const modal = document.getElementById("modalAlumno");
     const img = document.getElementById("imgAlumno");
     const nombre = document.getElementById("nombreAlumno");
@@ -4760,31 +4761,17 @@ window.abrirAlumno = function(card){
     nombre.innerHTML = card.dataset.nombre;
     modal.style.display = "flex";
 
-    // 2. EL ADIVINADOR DE IMÁGENES
-    const extensiones = [".jpg", ".jpeg", ".png", ".webp", ".JPG", ".PNG", ".JPEG"];
-    let intento = 0;
-    const rutaBase = card.dataset.img; // Ej: "alumnos/ROBERTOMICHEL" (sin extensión)
+    // 2. Ruta directa al .webp
+    // card.dataset.img ya trae la ruta desde el script de premios
+    img.src = card.dataset.img; 
 
-    // Si la imagen da error (porque no existe en ese formato), dispara esta función:
+    // 3. Red de seguridad: si el .webp falla, pone el avatar dorado
     img.onerror = function() {
-        intento++;
-        
-        // Si aún nos quedan extensiones por probar...
-        if(intento < extensiones.length) {
-            img.src = rutaBase + extensiones[intento]; // Prueba la siguiente
-        } 
-        // Si ya probó todas y no encontró ninguna foto del alumno...
-        else {
-            // Genera un Avatar Premium con sus iniciales en color dorado
-            const nombreUrl = encodeURIComponent(card.dataset.nombre);
-            img.src = `https://ui-avatars.com/api/?name=${nombreUrl}&background=D4AF37&color=000&size=250&bold=true`;
-            img.onerror = null; // Apaga el adivinador para evitar bucles
-        }
+        const nombreUrl = encodeURIComponent(card.dataset.nombre);
+        img.src = `https://ui-avatars.com/api/?name=${nombreUrl}&background=D4AF37&color=000&size=250&bold=true`;
+        img.onerror = null; 
     };
-
-    // 3. Arranca el motor haciendo el primer intento con .jpg
-    img.src = rutaBase + extensiones[0];
-}
+};
 /* =========================
    CERRAR FOTO AUTOMÁTICAMENTE
 ========================= */
@@ -4796,16 +4783,17 @@ window.cerrarAlumno = function() {
 };/* =========================================
    ARRANQUE FORZADO DEL MARCADOR EN VIVO
 ========================================= */
-let intentarArrancar = setInterval(() => {
-    // Si Firebase y las herramientas ya cargaron...
-    if (window.db && window.collection && window.onSnapshot && typeof window.iniciarConteoPremios === "function") {
-        
-        window.iniciarConteoPremios(); // Arrancamos las medallas
-        console.log("🏆 Marcador público arrancado con éxito!");
-        
-        clearInterval(intentarArrancar); // Apagamos el motor de arranque
-    }
-}, 500); // Revisa cada medio segundo
+if (typeof window.intentarArrancar === 'undefined') {
+    window.intentarArrancar = setInterval(() => {
+        if (typeof window.iniciarConteoPremios === "function") {
+            window.iniciarConteoPremios();
+            console.log("🏆 Marcador público arrancado con éxito!");
+            clearInterval(window.intentarArrancar);
+            // Borramos la variable después de usarla para limpiar memoria
+            window.intentarArrancar = undefined;
+        }
+    }, 500);
+}
 </script>
 
 <!-- =========================
