@@ -4748,10 +4748,6 @@ for(let i = 0; i < 70; i++){
     rain.appendChild(hat);
 
 }
-/* =========================
-ABRIR ALUMNO
-========================= */
-
 window.abrirAlumno = function(card) {
     const modal = document.getElementById("modalAlumno");
     const img = document.getElementById("imgAlumno");
@@ -4974,15 +4970,17 @@ text-align:center;
         renderTop3('sociable');
     });
     // Y el motor de arranque que también debe ir aquí afuera
-    let intentarArrancar = setInterval(() => {
+if (typeof window.intentarArrancar === 'undefined') {
+    window.intentarArrancar = setInterval(() => {
         if (typeof window.iniciarConteoPremios === "function") {
             window.iniciarConteoPremios();
             console.log("🏆 Marcador público arrancado con éxito!");
-            clearInterval(intentarArrancar);
+            clearInterval(window.intentarArrancar);
+            // Borramos la variable después de usarla para limpiar memoria
+            window.intentarArrancar = undefined;
         }
     }, 500);
-    };
-    
+}    
 </script>
 <script>
 
