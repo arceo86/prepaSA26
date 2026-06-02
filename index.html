@@ -2249,7 +2249,26 @@ TEXTOS
     opacity: 0;
     visibility: hidden;
 }
-    
+    #contenedor-fotos-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Detrás del contenido del hero */
+    pointer-events: none; /* Muy importante para que no bloquee clics */
+}
+
+.foto-fondo {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    opacity: 0.7;
+    transition: opacity 2s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 </style>
 <script src="actualizar-galeria.js"></script>
 <script src="alumnos.js"></script>
@@ -2488,7 +2507,37 @@ window.cerrarHorario = function() {
         }, 400); // Espera a que termine la animación para ocultarlo
     }
 };
-   
+   function iniciarEfectoFondo() {
+    const contenedor = document.getElementById('contenedor-fotos-fondo');
+    
+    setInterval(() => {
+        // Elegir un alumno al azar
+        const alumno = listaAlumnos[Math.floor(Math.random() * listaAlumnos.length)];
+        
+        const img = document.createElement('img');
+        img.src = `./alumnos/${alumno.fotoId}`;
+        img.className = 'foto-fondo';
+        
+        // Posiciones aleatorias dentro del hero
+        img.style.left = `${Math.random() * 80}%`;
+        img.style.top = `${Math.random() * 80}%`;
+        
+        contenedor.appendChild(img);
+        
+        // Aparecer suave
+        setTimeout(() => img.style.opacity = '0.7', 50);
+        
+        // Desaparecer y eliminar
+        setTimeout(() => {
+            img.style.opacity = '0';
+            setTimeout(() => img.remove(), 2000);
+        }, 4000);
+        
+    }, 1000); // Nueva foto cada 2 segundos
+}
+
+// Ejecutar al cargar la página
+document.addEventListener('DOMContentLoaded', iniciarEfectoFondo);
    
 
    
@@ -2575,8 +2624,10 @@ window.cerrarHorario = function() {
 </div>
 
 <!-- HERO -->
-<section class="hero" id="inicio">
-    <div>
+<section class="hero" id="inicio" style="position: relative; overflow: hidden;">
+    <div id="contenedor-fotos-fondo"></div>
+
+    <div style="position: relative; z-index: 1;">
         <h2>Generación 2023 - 2026</h2>
         <p class="ceremonia-title">Ceremonia de Clausura</p>
 <button class="btn" style="font-size: 1.5rem; padding: 18px 45px; letter-spacing: 2px; font-weight: bold; border-radius: 50px;" onclick="abrirHorario()">
