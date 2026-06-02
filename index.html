@@ -2259,15 +2259,26 @@ TEXTOS
     pointer-events: none; /* Muy importante para que no bloquee clics */
 }
 
+/* Estilo base para escritorio */
 .foto-fondo {
     position: absolute;
-    width: 120px;
+    width: 120px; /* Tamaño normal */
     height: 120px;
     object-fit: cover;
     border-radius: 10px;
-    opacity: 0.7;
+    opacity: 0;
     transition: opacity 2s ease-in-out;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    pointer-events: none;
+}
+
+/* ADECUACIÓN PARA CELULAR (Pantallas menores a 600px) */
+@media (max-width: 600px) {
+    .foto-fondo {
+        width: 70px;  /* Reducimos el tamaño para móvil */
+        height: 70px;
+        border-radius: 6px;
+    }
 }
 </style>
 <script src="actualizar-galeria.js"></script>
@@ -2509,7 +2520,9 @@ window.cerrarHorario = function() {
 };
    function iniciarEfectoFondo() {
     const contenedor = document.getElementById('contenedor-fotos-fondo');
-    
+    function obtenerTamaño() {
+    return window.innerWidth < 600 ? 70 : 120; // 70px si es móvil, 120px si es escritorio
+}
     setInterval(() => {
         // Elegir un alumno al azar
         const alumno = listaAlumnos[Math.floor(Math.random() * listaAlumnos.length)];
@@ -2517,6 +2530,10 @@ window.cerrarHorario = function() {
         const img = document.createElement('img');
         img.src = `./alumnos/${alumno.fotoId}`;
         img.className = 'foto-fondo';
+
+        const tam = obtenerTamaño();
+        img.style.width = `${tam}px`;
+        img.style.height = `${tam}px`;
         
         // Posiciones aleatorias dentro del hero
         img.style.left = `${Math.random() * 80}%`;
