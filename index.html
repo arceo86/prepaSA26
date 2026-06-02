@@ -2520,39 +2520,41 @@ window.cerrarHorario = function() {
 };
    function iniciarEfectoFondo() {
     const contenedor = document.getElementById('contenedor-fotos-fondo');
+    
     function obtenerTamaño() {
-    return window.innerWidth < 600 ? 70 : 120; // 70px si es móvil, 120px si es escritorio
-}
+        return window.innerWidth < 600 ? 70 : 120;
+    }
+
     setInterval(() => {
-        // Elegir un alumno al azar
         const alumno = listaAlumnos[Math.floor(Math.random() * listaAlumnos.length)];
         
         const img = document.createElement('img');
         img.src = `./alumnos/${alumno.fotoId}`;
         img.className = 'foto-fondo';
-
+        
+        // 1. Aplicamos el tamaño dinámico
         const tam = obtenerTamaño();
         img.style.width = `${tam}px`;
         img.style.height = `${tam}px`;
         
-        // Posiciones aleatorias dentro del hero
-        img.style.left = `${Math.random() * 80}%`;
-        img.style.top = `${Math.random() * 80}%`;
+        // 2. Aplicamos la lógica del límite para que no se salgan de pantalla
+        const limite = window.innerWidth < 600 ? 70 : 80;
+        img.style.left = `${Math.random() * limite}%`;
+        img.style.top = `${Math.random() * limite}%`;
         
         contenedor.appendChild(img);
         
-        // Aparecer suave
+        // 3. Efecto visual
         setTimeout(() => img.style.opacity = '0.7', 50);
         
-        // Desaparecer y eliminar
+        // 4. Limpieza
         setTimeout(() => {
             img.style.opacity = '0';
             setTimeout(() => img.remove(), 2000);
         }, 4000);
         
-    }, 1000); // Nueva foto cada 2 segundos
+    }, 1000);
 }
-
 // Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', iniciarEfectoFondo);
    
