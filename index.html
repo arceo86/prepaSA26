@@ -2671,15 +2671,15 @@ document.addEventListener('DOMContentLoaded', iniciarEfectoFondo);
                     <span id="segundos">00</span>
                     <p>Seg</p>
                 </div>
+                <div class="contenedor-boton-panini">
+    <a href="libro.html">
+        <img src="./logopanini.jpg" alt="Libro Panini" class="boton-logo-panini">
+    </a>
+</div>
             </div>
         </div>
     </div>
-    <div class="contenedor-boton-panini">
-    <a href="libro.html" class="btn-panini">
-        <img src="./logopanini.png" alt="Libro Panini" class="logo-panini">
-        <span>Ver Libro Digital</span>
-    </a>
-</div>
+  
 </section>
 <div id="modal-horario" class="modal-overlay" style="display: none;">
     <div class="modal-horario-box">
@@ -3166,35 +3166,25 @@ ESTILOS
     font-size: 12px;
     margin-top: 15px;
 }
-    .contenedor-boton-panini {
-    margin-top: 30px;
+ .contenedor-boton-panini {
+    margin-top: 40px; /* Esto da el espacio necesario debajo del reloj */
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centrado horizontal */
+    width: 100%;
 }
 
-.btn-panini {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
-    padding: 10px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
+.boton-logo-panini {
+    width: 200px; /* Ajusta el ancho según prefieras */
+    max-width: 80%; /* Para que en celular no se desborde */
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-.btn-panini:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+.boton-logo-panini:hover {
     transform: scale(1.05);
-}
-
-.logo-panini {
-    width: 40px; /* Ajusta el tamaño de tu logo */
-    height: 40px;
-    border-radius: 50%; /* Si quieres que el logo sea circular */
-    object-fit: cover;
 }
 /* =========================
 SECCIÓN
