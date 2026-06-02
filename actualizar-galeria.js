@@ -6,17 +6,18 @@ async function cargarGaleria() {
     
     // Categorías según palabras clave
     const keywords = {
-        "PRIMEROS DIAS": ["PRIMER"],
-        "ESCOLTA": ["ESCOLTA"],
-        "REUNIONES": ["REUNION"],
-        "DIA DE MUERTOS": ["MUERTOS"],
-        "SEPTIEMBRE": ["SEPT"],
-        "NOVIEMBRE": ["NOV"],
-        "AVENTURA": ["AVENTURA"],
-        "AMIGOS": ["AMIX", "ALUMN"],
-        "RECONOCIMIENTOS": ["RECONO"],
-        "PADRES": ["PADRES", "PAPAS"]
-    };
+    "PRIMEROS DIAS": ["PRIMER", "BIENVENIDA", "INICIO", "ADAPTACION"],
+    "ESCOLTA": ["ESCOLTA", "BANDERA", "HONORES"],
+    "REUNIONES": ["REUNION", "JUNTA", "ASAMBLEA"],
+    "DIA DE MUERTOS": ["MUERTOS", "ALTAR", "CATRINA", "OFRENDA"],
+    "SEPTIEMBRE": ["SEPT", "INDEPENDENCIA", "GRITO", "PATRIAS"],
+    "NOVIEMBRE": ["NOV", "REVOLUCION"],
+    "AVENTURA": ["AVENTURA", "EXCURSION", "PASEO", "VIAJE"],
+    "AMIGOS": ["AMIX", "ALUMN"],
+    "RECONOCIMIENTOS": ["RECONO", "DIPLOMA", "PREMIO", "CONSTANCIA"],
+    "MAESTROS": ["DOCENTE", "MAESTRA", "PROFE", "MAESTRO"],
+    "PADRES": ["PADRES", "PAPAS", "MAMAS", "FAMILIA", "FAM"]
+};
 
     try {
         // 1. Obtener archivos desde GitHub API
